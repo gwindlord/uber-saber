@@ -1,31 +1,36 @@
 #!/bin/bash
 
 LOCAL_REPO="/data/slimsaber"
-SETTINGS_REPO="$LOCAL_REPO/packages/apps/Settings"
-KERNEL_INCLUDES="$LOCAL_REPO/kernel/oneplus/msm8974/"
-UBERCM_URL="https://github.com/UberCM/vendor_ubercm.git"
-DEVICE_REPO="$LOCAL_REPO/device/oppo/msm8974-common/"
-ROM_PACKAGES_MAKEFILE="$LOCAL_REPO/device/oppo/msm8974-common/msm8974.mk"
+
 VENDOR_REPO="$LOCAL_REPO/vendor/slim"
-MY_VENDOR_REPO="$LOCAL_REPO/vendor/gwindlord"
 CONFIG_FILE="config/common.mk"
-FRAMEWORKS_BASE="$LOCAL_REPO/frameworks/base"
-FRAMEWORKS_AV="$LOCAL_REPO/frameworks/av"
+MY_VENDOR_REPO="$LOCAL_REPO/vendor/gwindlord"
+
 COMMON_FILE="$LOCAL_REPO/vendor/slim/config/common.mk"
-BUILD_REPO="$LOCAL_REPO/build/"
+
+ROM_PACKAGES_MAKEFILE="$LOCAL_REPO/device/oppo/msm8974-common/msm8974.mk"
+
+DEVICE_REPO="$LOCAL_REPO/device/oppo/msm8974-common/"
+
 SYSTEM_CORE="$LOCAL_REPO/system/core"
-SULTAN_CORE_URL="https://github.com/sultanxda/android_system_core.git"
+
+FRAMEWORKS_BASE="$LOCAL_REPO/frameworks/base"
 TELEPHONY_REPO="$LOCAL_REPO/packages/services/Telephony"
+
 DEVICE_OPPO_REPO="$LOCAL_REPO/device/oppo/common/"
+
+BUILD_REPO="$LOCAL_REPO/build/"
+
+#SETTINGS_REPO="$LOCAL_REPO/packages/apps/Settings"
+#FRAMEWORKS_AV="$LOCAL_REPO/frameworks/av"
 
 pushd "$VENDOR_REPO"
 
   # setting Nova as default launcher
-  git remote add UberCM "$UBERCM_URL"
+  git remote add UberCM https://github.com/UberCM/vendor_ubercm.git
   git fetch UberCM
 
   git cherry-pick 45c7ba3f11968e23cbaa1c93bbd9a91f0ad9f8d1 || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
-#  git cherry-pick 7e68eb9c79f10931fbd16618cf59a3a929758281 || git add $(git status -s | awk '{print $2}') && git commit --allow-empty
 
   git remote rm UberCM
 
@@ -35,16 +40,11 @@ pushd "$VENDOR_REPO"
   git commit -m "Adding Browser sync backup script and CM File manager to the build"
 
   cp proprietary/CameraNextMod/Android.mk $LOCAL_REPO/vendor/gwindlord/proprietary/CameraNextMod/
-  git rm proprietary/CameraNextMod/Android.mk && git commit -m "Remove duplicate"
-
-#  cp $LOCAL_REPO/vendor/gwindlord/proprietary/CameraNextMod/CameraNextMod.apk proprietary/CameraNextMod/
-#  git add $(git status -s | awk '{print $2}') && git commit -m "Setting translated Camera"
+  git rm proprietary/CameraNextMod/Android.mk && git commit -m "Remove CameraNextMod duplicate"
 
 popd
 
 pushd "$MY_VENDOR_REPO"
-
-#  git rm proprietary/CameraNextMod/Android.mk && git commit -m "Remove duplicate"
 
   git add proprietary/CameraNextMod/Android.mk && git commit -m "Setting translated Camera"
 
@@ -71,15 +71,14 @@ popd
 # msm8974: Enable adaptive LMK (http://review.cyanogenmod.org/#/c/103749/)
 pushd "$DEVICE_REPO"
 
-  #git revert 20335991423c255d1f6471d804fa7a547a87b39d
-
   git fetch http://review.cyanogenmod.org/CyanogenMod/android_device_oppo_msm8974-common refs/changes/49/103749/1 && git cherry-pick FETCH_HEAD
 
 popd
 
+# liblog: Silence spammy logs from camera blobs (AEC_PORT and mm-camera)
 pushd "$SYSTEM_CORE"
 
-  git remote add SultanCore "$SULTAN_CORE_URL"
+  git remote add SultanCore https://github.com/sultanxda/android_system_core.git
   git fetch SultanCore
 
   git cherry-pick c407c8a2299183ce0fd0e7f7b1c026a66b5adb8d
@@ -113,14 +112,17 @@ pushd "$TELEPHONY_REPO"
 
 popd
 
+# Sultan's patches
 pushd "$FRAMEWORKS_BASE"
 
+  # StrictMode: Disable all strict mode functions when disable prop is set
   wget https://github.com/CyanogenMod/android_frameworks_base/commit/e75f59e7fd349dd1fa5d452086c795f693776d89.patch && patch -p1 < e75f59e7fd349dd1fa5d452086c795f693776d89.patch
+  # telephony: Hack GSM and LTE signal strength
   wget https://github.com/sultanxda/android_frameworks_base/commit/0cbd4a88767d78640b7dd391674575f7d5e517e6.patch && patch -p1 < 0cbd4a88767d78640b7dd391674575f7d5e517e6.patch
   git clean -f -d
 
   git add $(git status -s | awk '{print $2}')
-  git commit -m "StrictMode: Disable all strict mode functions when disable prop is set; telephony: Hack GSM and LTE signal strength; telephony: Handle NPE in setDataEnabledUsingSubId(); SpamFilter : Avoid a requery for each item"
+  git commit -m "Placing Sultan's patches"
 
 popd
 
@@ -136,17 +138,18 @@ pushd "$DEVICE_OPPO_REPO"
   git remote add slimdevice https://github.com/SlimRoms/device_oppo_common.git
   git fetch slimdevice
 
+  # Don't break screen off gestures when dex preopting builds
   git cherry-pick a6d1ecd71eb3ce17fafae034068bc169f0b9005b
+  # Materialize DeviceHandler settings
   git cherry-pick f9aebb542b60eceb42db145ca34df4aa058a4449 || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
 
   git remote rm slimdevice
 
 popd
 
+# fixing build
 pushd "$LOCAL_REPO/vendor/cmsdk"
-
   git revert 1d927754055ec17e44470659faf7dc77d65aa7f5
-
 popd
 
 pushd "$BUILD_REPO"

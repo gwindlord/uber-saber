@@ -11,10 +11,6 @@ $SCRIPT_DIR/set_customcamera.sh
 # setting Uber version (currently works only for 4.8 - even 4.9 causes data alignment segfaults while working)
 # now taking some commits from DerRommeister and building kernel with 6.0 :)
 $SCRIPT_DIR/set_uber.sh
-#$SCRIPT_DIR/set_uber2.sh
-
-# copying old touchscreen firmware to kernel
-#$SCRIPT_DIR/old/touchscreen_drivers/copy_old_sultan_firmware.sh
 
 # setting GPS configuration for Belarus
 $SCRIPT_DIR/bel_gps/copy_gps_conf.sh
