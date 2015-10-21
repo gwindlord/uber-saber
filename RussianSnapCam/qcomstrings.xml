@@ -1,0 +1,467 @@
+<!--
+    Copyright (c) 2012-2014, The Linux Foundation. All rights reserved.
+
+    Not a Contribution.
+
+    Copyright (C) 2007 The Android Open Source Project
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+
+<resources>
+
+    <!-- Settings screen, Power Mode title -->
+    <string name="pref_camera_powermode_title">Режим питания</string>
+
+    <!-- Settings screen, Power mode dialog radio button choices -->
+    <string name="pref_camera_powermode_entry_lp">Низкое энергопотребление</string>
+    <string name="pref_camera_powermode_entry_np">Обычное энергопотребление</string>
+
+    <!-- Settings screen, Select auto exposure title -->
+    <string name="pref_camera_autoexposure_title">Выбрать режим автоэкспозиции</string>
+
+    <!-- Settings screen, auto exposure dialog radio button choices -->
+    <string name="pref_camera_autoexposure_entry_frameaverage">Средняя по кадру</string>
+    <string name="pref_camera_autoexposure_entry_centerweighted">Центровзвешенная</string>
+    <string name="pref_camera_autoexposure_entry_spotmetering">Точечная</string>
+
+    <!-- Settings screen, Video encoder title -->
+    <string name="pref_camera_videoencoder_title">Кодирование видео</string>
+
+    <!-- Settings screen, Video encoder dialog title -->
+    <string name="pref_camera_videoencoder_dialogtitle">Кодирование видео</string>
+
+    <!-- Settings screen, Audio encoder title -->
+    <string name="pref_camera_audioencoder_title">Кодирование аудио</string>
+
+    <!-- Settings screen, Video duration title -->
+    <string name="pref_camera_video_duration_title">Длительность видео</string>
+
+    <!-- Settings screen, Video duration dialog radio button choices -->
+    <string name="pref_camera_video_duration_entry_mms">30 секунд (MMS)</string>
+    <string name="pref_camera_video_duration_entry_10">10 минут</string>
+    <string name="pref_camera_video_duration_entry_30">30 минут</string>
+    <string name="pref_camera_video_duration_entry_nolimit">без ограничения</string>
+
+    <!-- Settings screen, Select Skin Tone Enhancement title -->
+    <string name="pref_camera_skinToneEnhancement_title">Усиление тона кожи</string>
+
+    <!-- Settings screen, Skin Tone Enhancement radio button choices -->
+    <string name="pref_camera_skinToneEnhancement_entry_enable">Вкл</string>
+    <string name="pref_camera_skinToneEnhancement_entry_disable">Выкл</string>
+
+    <!-- Settings screen, setting title text for ZSL-->
+    <string name="pref_camera_zsl_title">Быстрая съемка</string>
+
+     <!-- Settings screen, Selectable zone af title -->
+     <string name="pref_camera_selectablezoneaf_title">Выбор зоны автофокуса</string>
+
+     <!-- Settings screen, Selectable Zone Af dialog radio button choices -->
+     <string name="pref_camera_selectablezoneaf_entry_auto">Авто</string>
+     <string name="pref_camera_selectablezoneaf_entry_centerweighted">Центровзвешенный</string>
+     <string name="pref_camera_selectablezoneaf_entry_frameaverage">Средний по кадру</string>
+     <string name="pref_camera_selectablezoneaf_entry_spotmetering">Точечный</string>
+
+     <!-- Settings screen, Selectable advanced features title -->
+     <string name="pref_camera_advanced_features_title">Дополнительные настройки</string>
+
+     <!-- Settings screen, Selectable Zone Af dialog radio button choices -->
+     <string name="pref_camera_advanced_feature_entry_none">Нет</string>
+     <string name="pref_camera_advanced_feature_entry_trueportrait">Настоящий портрет</string>
+     <string name="pref_camera_advanced_feature_entry_multi_touch_focus">Многозонная фокусировка</string>
+
+     <!-- Manual exposure control entry values -->
+     <string name="pref_camera_manual_exp_title">Ручная экспозиция</string>
+     <string name="pref_camera_manual_exp_entry_ISO_priority">Приоритет ISO</string>
+     <string name="pref_camera_manual_exp_entry_exptime_priority">Приоритет времени экспозиции</string>
+     <string name="pref_camera_manual_exp_entry_user_setting">Пользовательский</string>
+     <string name="pref_camera_manual_exp_entry_off">Выкл</string>
+
+     <!-- Manual white balance entry values -->
+     <string name="pref_camera_manual_wb_title">Ручной баланс белого</string>
+     <string name="pref_camera_manual_wb_entry_color_temperature">Температура цвета</string>
+     <string name="pref_camera_manual_wb_entry_rbgb_gains">Усиление RBGB</string>
+     <string name="pref_camera_manual_wb_entry_off">Выкл</string>
+
+     <!-- Manual Focus entry values -->
+     <string name="pref_camera_manual_focus_title">Ручной фокус</string>
+     <string name="pref_camera_manual_focus_entry_scale_mode">Режим масштаба</string>
+     <string name="pref_camera_manual_focus_entry_diopter_mode">Режим диоптрий</string>
+     <string name="pref_camera_manual_focus_entry_off">Выкл</string>
+
+    <!-- Settings screen, ZSL location dialog choices -->
+    <string name="pref_camera_zsl_entry_off">Выкл</string>
+    <string name="pref_camera_zsl_entry_on">Вкл</string>
+
+    <!-- The message is shown in toast when HDR or scene mode is enabled -->
+    <string name="hdr_enable_message">HDR включен, поддерживается только автоматический режим съемки</string>
+    <string name="scene_enable_message">HDR поддерживается только в автоматическом режиме съемки</string>
+
+    <!-- Settings screen, Video HDR location dialog choices -->
+    <string name="pref_camera_video_hdr_entry_off">Выкл</string>
+    <string name="pref_camera_video_hdr_entry_on">Вкл</string>
+
+    <!-- Settings screen, CDS location dialog choices -->
+    <string name="pref_camera_cds_entry_off">Выкл</string>
+    <string name="pref_camera_cds_entry_on">Вкл</string>
+    <string name="pref_camera_cds_entry_auto">Авто</string>
+
+     <!-- Settings screen, video CDS location dialog choices -->
+    <string name="pref_camera_video_cds_entry_off">Выкл</string>
+    <string name="pref_camera_video_cds_entry_on">Вкл</string>
+    <string name="pref_camera_video_cds_entry_auto">Авто</string>
+
+    <!-- Settings screen, TNR location dialog choices -->
+    <string name="pref_camera_tnr_entry_disable">Выкл</string>
+    <string name="pref_camera_tnr_entry_enable">Вкл</string>
+
+    <!-- Settings screen, video TNR location dialog choices -->
+    <string name="pref_camera_video_tnr_entry_disable">Выкл</string>
+    <string name="pref_camera_video_tnr_entry_enable">Вкл</string>
+
+    <!-- Settings screen, setting title text for Video HDR-->
+    <string name="pref_camera_video_hdr_title">HDR-видео</string>
+
+    <!-- Settings menu, setting title text for cds mode-->
+    <string name="pref_camera_cds_title">Режим CDS</string>
+
+    <!-- Settings menu, setting title text for video cds mode-->
+    <string name="pref_camera_video_cds_title">Режим видео-CDS</string>
+
+     <!-- Settings menu, setting title text for tnr mode-->
+    <string name="pref_camera_tnr_title">Режим TNR</string>
+
+    <!-- Settings menu, setting title text for video tnr mode-->
+    <string name="pref_camera_video_tnr_title">Режим видео-TNR</string>
+
+    <!-- Settings screen, Select Face Detection -->
+    <string name="pref_camera_facedetection_title">Определение лиц</string>
+
+    <!-- Settings menu, Face Detection choices -->
+    <string name="pref_camera_facedetection_entry_off">Выкл</string>
+    <string name="pref_camera_facedetection_entry_on">Вкл</string>
+
+     <!-- Settings screen, Select Redeye Reduction -->
+     <string name="pref_camera_redeyereduction_title">Коррекция красных глаз</string>
+
+     <!-- Settings menu, redeye reduction choices -->
+     <string name="pref_camera_redeyereduction_entry_enable">Вкл</string>
+     <string name="pref_camera_redeyereduction_entry_disable">Выкл</string>
+
+     <!-- The message is shown in toast when the app encounters an unsupported selection for HFR/HSR mode -->
+     <string name="error_app_unsupported_hfr_selection">HFR/HSR не поддерживается для DIS/TimeLapse/HDR</string>
+
+     <!-- The message is shown in dialog when the app encounters an unsupported resolution for HFR mode -->
+     <string name="error_app_unsupported_hfr">HFR не поддерживается для выбранного разрешения. Выберите более низкое разрешение.</string>
+
+     <!-- The message is shown in toast when the app encounters an unsupported resolution for DIS mode -->
+     <string name="error_app_unsupported_dis">Неподдерживаемое разрешение видео для цифровой стабилизации изображения (DIS)</string>
+
+     <!-- The message is shown in dialog when the app
+         encounters an unsupported resolution for HSR mode -->
+     <string name="error_app_unsupported_hsr">Высокоскоростная съемка не поддерживается для выбранного разрешения. Выберите более низкое разрешение.</string>
+
+     <!-- The message is shown in dialog when the app encounters an unsupported video codec for HFR mode -->
+     <string name="error_app_unsupported_hfr_codec">При включенном HFR поддерживается только кодирование H264-видео</string>
+
+     <!-- The message is shown in dialog when the app encounters an unsupported video resolution-->
+     <string name="error_app_unsupported">Неподдерживаемое разрешение видео для выбранного кодирования</string>
+
+     <!-- The message is shown in dialog when the app encounters an unsupported video profile-->
+     <string name="error_app_unsupported_profile">Неподдерживаемый профиль видео</string>
+
+    <!--The message is shown in dialog when the raw snapshot is selected in zsl mode-->
+    <string name="error_app_unsupported_raw">RAW-съемка не поддерживается в режиме быстрой съемки, переключитесь в JPEG</string>
+
+     <!-- The message is shown in dialog when the app encounters an unsupported resolution (4k DCI) for video HDR-->
+     <string name="error_app_unsupported_video_hdr">HDR-видео не поддерживается для разрешения 4k DCI</string>
+
+     <!-- Settings screen, AE bracketing and HDR location dialog choices -->
+     <string name="pref_camera_ae_bracket_hdr_entry_ae_bracket">AE-Брекет</string>
+
+     <string name="pref_camera_ae_bracket_hdr_title">Брекетинг выдержки</string>
+
+     <string name="pref_camera_ae_bracket_hdr_entry_on">Вкл</string>
+
+     <string name="pref_camera_ae_bracket_hdr_entry_off">Выкл</string>
+
+     <string name="err_app_unsupport_ae_bracket_code">Брекетинг экспозиции не поддерживается приложениями</string>
+
+        <!-- The messsage shown if user selects a snapshot resolution lower than the current video size. -->
+    <string name="snapshot_lower_than_video">Размер эскиза видео меньше, чем размер видео, установлен размер видео. Пожалуйста, выберите разрешение больше или равное текущему разрешению видео.</string>
+
+    <!-- The messsage shown if user selects a snapshot resolution in low power mode. -->
+    <string name="snapshotsize_low_powermode">Изменение разрешения эскиза видео не поддерживается в режиме пониженного энергопотребления. Будет сделан эскиз с разрешением видео. Пожалуйста, выберите режим обычного энергопотребления для изменения размера эскиза.</string>
+
+    <!-- The messsage shown if user tries to take snapshot during D1/QCIF resolution. -->
+    <string name="snapshot_qcif_and_d1">Для этого разрешения поддерживается только размер эскиза, равный оригинальному размеру видео.</string>
+
+     <!-- Settings screen, Select hfr title -->
+     <string name="pref_camera_hfr_title">Видео с высокой скоростью кадров (HFR/HSR)</string>
+
+     <!-- Settings screen, hfr radio button choices -->
+     <string name="pref_camera_hfr_entry_off">Выкл</string>
+
+     <!-- Settings screen, Select See More title -->
+     <string name="pref_camera_see_more_title">Еще</string>
+
+     <!-- Settings screen, see more radio button choices -->
+     <string name="pref_camera_see_more_entry_off">Выкл</string>
+     <string name="pref_camera_see_more_entry_on">Вкл</string>
+
+        <!-- Denoise Settings screen, setting title text -->
+    <string name="pref_camera_denoise_title">Режим удаления шума</string>
+
+    <!-- Denoise Settings screen, Record location dialog choices -->
+    <string name="pref_camera_denoise_entry_off">Выкл</string>
+    <string name="pref_camera_denoise_entry_on">Вкл</string>
+
+     <!-- Settings screen, Select Iso title -->
+     <string name="pref_camera_iso_title">Выбор ISO</string>
+
+     <!-- Settings screen, ISO dialog radio button choices -->
+     <string name="pref_camera_iso_entry_auto">Авто</string>
+     <string name="pref_camera_iso_entry_isodeblur">Авто-ISO(HJR)</string>
+
+     <!-- Settings screen, Anti Banding title -->
+     <string name="pref_camera_antibanding_title">Удаление черезстрочной разверстки</string>
+
+     <!-- Settings screen, Anti Banding entries -->
+     <string name="pref_camera_antibanding_entry_0">Выкл</string>
+     <string name="pref_camera_antibanding_entry_3">Авто</string>
+
+    <!-- Settings screen, Select Color effect title -->
+    <string name="pref_camera_coloreffect_title">Цветовой эффект</string>
+
+    <!-- Settings screen, Color effect dialog radio button choices -->
+    <string name="pref_camera_coloreffect_entry_none">Нет</string>
+    <string name="pref_camera_coloreffect_entry_mono">Ч/Б</string>
+    <string name="pref_camera_coloreffect_entry_sepia">Сепия</string>
+    <string name="pref_camera_coloreffect_entry_negative">Негатив</string>
+    <!-- Color effect that overexposes and reverses some of the tones. -->
+    <string name="pref_camera_coloreffect_entry_solarize">Соляризация</string>
+    <string name="pref_camera_coloreffect_entry_posterize">Постеризация</string>
+    <string name="pref_camera_coloreffect_entry_aqua">Аква</string>
+    <string name="pref_camera_coloreffect_entry_emboss">Рельеф</string>
+    <string name="pref_camera_coloreffect_entry_sketch">Рисунок</string>
+    <string name="pref_camera_coloreffect_entry_neon">Неон</string>
+    <string name="pref_camera_coloreffect_entry_pastel">Пастель</string>
+    <string name="pref_camera_coloreffect_entry_mosaic">Мозаика</string>
+    <string name="pref_camera_coloreffect_entry_redtint">Красный оттенок</string>
+    <string name="pref_camera_coloreffect_entry_bluetint">Голубой оттенок</string>
+    <string name="pref_camera_coloreffect_entry_greentint">Зеленый оттенок</string>
+
+    <!-- Settings screen, Select Touch AF/AEC title -->
+    <string name="pref_camera_touchafaec_title">Сенсорная фокусировка</string>
+
+    <!-- Settings screen, Touch AF/AEC dialog radio button choices -->
+    <string name="pref_camera_touchafaec_entry_off">Выкл</string>
+    <string name="pref_camera_touchafaec_entry_on">Вкл</string>
+
+    <!-- Select IS title -->
+    <string name="pref_camera_dis_title">Цифровая стабилизация изображения</string>
+
+    <!-- DIS choices -->
+    <string name="pref_camera_dis_entry_off">Выкл</string>
+    <string name="pref_camera_dis_entry_on">Вкл</string>
+
+    <!-- Select Face Recognition title -->
+    <string name="pref_camera_facerc_title">Face Recognition</string>
+
+    <!-- Face Recognition choices -->
+    <string name="pref_camera_facerc_entry_off">Выкл</string>
+    <string name="pref_camera_facerc_entry_on">Вкл</string>
+
+    <!-- Settings screen, Multiple levels entries -->
+    <string name="pref_camera_sharpness_entry_level0">Уровень 0</string>
+    <string name="pref_camera_sharpness_entry_level1">Уровень 1</string>
+    <string name="pref_camera_sharpness_entry_level2">Уровень 2 (по умолчанию)</string>
+    <string name="pref_camera_sharpness_entry_level3">Уровень 3</string>
+    <string name="pref_camera_sharpness_entry_level4">Уровень 4</string>
+    <string name="pref_camera_sharpness_entry_level5">Уровень 5</string>
+    <string name="pref_camera_sharpness_entry_level6">Уровень 6</string>
+
+    <!-- Settings screen, Multiple levels entries -->
+    <string name="pref_camera_contrast_entry_level0">Уровень 0</string>
+    <string name="pref_camera_contrast_entry_level1">Уровень 1</string>
+    <string name="pref_camera_contrast_entry_level2">Уровень 2</string>
+    <string name="pref_camera_contrast_entry_level3">Уровень 3</string>
+    <string name="pref_camera_contrast_entry_level4">Уровень 4</string>
+    <string name="pref_camera_contrast_entry_level5">Уровень 5 (по умолчанию)</string>
+    <string name="pref_camera_contrast_entry_level6">Уровень 6</string>
+    <string name="pref_camera_contrast_entry_level7">Уровень 7</string>
+    <string name="pref_camera_contrast_entry_level8">Уровень 8</string>
+    <string name="pref_camera_contrast_entry_level9">Уровень 9</string>
+    <string name="pref_camera_contrast_entry_level10">Уровень 10</string>
+
+    <!-- Settings screen, Multiple levels entries -->
+    <string name="pref_camera_saturation_entry_level0">Уровень 0</string>
+    <string name="pref_camera_saturation_entry_level1">Уровень 1</string>
+    <string name="pref_camera_saturation_entry_level2">Уровень 2</string>
+    <string name="pref_camera_saturation_entry_level3">Уровень 3</string>
+    <string name="pref_camera_saturation_entry_level4">Уровень 4</string>
+    <string name="pref_camera_saturation_entry_level5">Уровень 5 (по умолчанию)</string>
+    <string name="pref_camera_saturation_entry_level6">Уровень 6</string>
+    <string name="pref_camera_saturation_entry_level7">Уровень 7</string>
+    <string name="pref_camera_saturation_entry_level8">Уровень 8</string>
+    <string name="pref_camera_saturation_entry_level9">Уровень 9</string>
+    <string name="pref_camera_saturation_entry_level10">Уровень 10</string>
+
+    <!-- Settings screen, Select sharpness title -->
+    <string name="pref_camera_sharpness_title">Резкость</string>
+
+    <!-- Settings screen, Select contrast title -->
+    <string name="pref_camera_contrast_title">Контраст</string>
+
+    <!-- Settings screen, Select saturation title -->
+    <string name="pref_camera_saturation_title">Насыщенность</string>
+
+    <!-- Settings screen, Select Picture format title -->
+    <string name="pref_camera_picture_format_title">Выбрать формат фото</string>
+
+    <!-- Settings screen, Picture quality title -->
+    <string name="pref_camera_jpegquality_title">Качество фото</string>
+
+    <!-- Settings screen, Picture quality dialog radio button choices -->
+    <string name="pref_camera_jpegquality_entry_superfine">Отличное</string>
+    <string name="pref_camera_jpegquality_entry_fine">Хорошее</string>
+    <string name="pref_camera_jpegquality_entry_normal">Нормальное</string>
+
+     <!-- Settings screen, Select Histogram title -->
+     <string name="pref_camera_histogram_title">Гистограмма</string>
+
+     <!-- Settings screen, Histogram radio button choices -->
+     <string name="pref_camera_histogram_entry_enable">Вкл</string>
+     <string name="pref_camera_histogram_entry_disable">Выкл</string>
+
+    <string name="pref_camera_focusmode_entry_normal">Обычный</string>
+    <string name="pref_camera_focusmode_entry_continuous">Непрерывный</string>
+    <string name="pref_video_focusmode_entry_continuous">Непрерывный видео</string>
+
+    <string name="pref_camera_scenemode_entry_asd">Лучший снимок</string>
+    <!-- Scene mode that takes an image with as little noise as possible so details of the subject are maintained. -->
+    <string name="pref_camera_scenemode_entry_portrait">Портрет</string>
+    <!-- Scene mode that takes an image of a landscape assuming all subjects are relatively far from the phone. -->
+    <string name="pref_camera_scenemode_entry_landscape">Пейзаж</string>
+
+     <!-- Scene mode that takes night shots with long exposure and flash to illuminate the subject while still capturing darker detail in the background. -->
+    <string name="pref_camera_scenemode_entry_night_portrait">Ночной портрет</string>
+    <!-- Scene mode to be used in a stage show. -->
+    <string name="pref_camera_scenemode_entry_theatre">Театр</string>
+    <!-- Scene mode optimized for taking images on the beach. -->
+    <string name="pref_camera_scenemode_entry_beach">Пляж</string>
+    <!-- Scene mode optimized for taking images in the snow. -->
+    <string name="pref_camera_scenemode_entry_snow">Снег</string>
+
+    <!-- Scene mode for taking a photo as sharp as possible. -->
+    <string name="pref_camera_scenemode_entry_steadyphoto">Фото со штатива</string>
+    <!-- Scene mode optimized for taking images of fireworks. -->
+    <string name="pref_camera_scenemode_entry_fireworks">Фейерверк</string>
+    <!-- Scene mode optimized for taking images during sports . -->
+    <string name="pref_camera_scenemode_entry_sports">Спорт</string>
+    <!-- Scene mode optimized for capturing the naturally warm color of scenes lit by candles. [CHAR LIMIT=16] -->
+    <string name="pref_camera_scenemode_entry_candlelight">Свечи</string>
+    <!-- Scene mode for taking a photo with backlight. -->
+    <string name="pref_camera_scenemode_entry_backlight">Фоновый свет</string>
+    <!-- Scene mode optimized for taking images of flowers. -->
+    <string name="pref_camera_scenemode_entry_flowers">Цветы</string>
+    <!-- Scene mode optimized for taking images of AR. -->
+    <string name="pref_camera_scenemode_entry_ar">Дополненная реальность</string>
+
+    <!-- Settings screen, Select Auto Scene Detection -->
+    <string name="pref_camera_scenedetect_title">Автоопределение режима съемки</string>
+
+    <!-- Settings menu, auto scene detection choices -->
+    <string name="pref_camera_scenedetect_entry_off">Выкл</string>
+    <!-- Scene detection set to on - supports backlight and snow cloudy detection. -->
+    <string name="pref_camera_scenedetect_entry_on">Вкл</string>
+
+    <!-- Toast showing error if invalid size selected for  time lapse  [CHAR LIMIT=65] -->
+    <string name="time_lapse_error">Неверный размер видео для записи time-lapse.</string>
+
+    <!-- longshot value -->
+    <string name="pref_camera_longshot_title">Непрерывная съемка</string>
+    <string name="msg_cancel_longshot_for_limited_memory">заканчивается память, отключение непрерывной съемки</string>
+
+    <!-- Toast showing non-supported functionality for flash in AE bracket -->
+    <string name="flash_aebracket_message">Вспышка не поддерживается при брекетинге экспозиции</string>
+
+    <!-- Settings screen, setting title text for Auto HDR-->
+    <string name="pref_camera_auto_hdr_title">Авто-HDR</string>
+
+    <!-- Settings screen, Auto HDR location dialog choices -->
+    <string name="pref_camera_auto_hdr_entry_enable">Вкл</string>
+    <string name="pref_camera_auto_hdr_entry_disable">Выкл</string>
+
+    <!-- toast message for storage location switch -->
+    <string name="on_switch_save_path_to_sdcard">Во внутренней памяти недостаточно места - переключение сохранения на карту памяти</string>
+
+    <!-- Settings screen, Selectable HDR mode title -->
+    <string name="pref_camera_hdr_mode_title">Режим HDR</string>
+
+    <!-- Settings screen, Selectable HDR mode radio button choices -->
+    <string name="pref_camera_hdr_mode_entry_sensor">Сенсорный HDR</string>
+    <string name="pref_camera_hdr_mode_entry_multi_frame">Многокадровый HDR</string>
+
+    <!-- Settings screen, Selectable HDR need 1x frame title -->
+    <string name="pref_camera_hdr_need_1x_title">Для HDR требуется первый кадр</string>
+
+    <!--Settings screen, video rotation title-->
+    <string name="pref_camera_video_rotation_title">Поворот видео</string>
+
+    <!--Menu, video rotation label-->
+    <string name="pref_camera_video_rotation_label">ПОВОРОТ ВИДЕО</string>
+
+    <!-- The message is shown in toast when click showOnMap Menu and there is no map app -->
+    <string name="map_activity_not_found_err">Отсутствует приложение карт для отображения местоположения.</string>
+
+    <!-- Continous shot enable message -->
+    <string name="longshot_enable_message">Дополнительные настройки не поддерживаются в режиме непрерывной съемки</string>
+    <!-- Advance features enable message -->
+    <string name="advance_feature_enable_msg">Непрерывная съемка не поддерживается при включенных дополнительных настройках</string>
+
+    <!-- The alas of CameraActivity for gesture operation -->
+     <string name="camera_gesture_title">Открыть камеру</string>
+     <string name="pref_camera_tsmakeup_title">Украшение</string>
+     <string name="pref_camera_tsmakeup_entry_on">Вкл</string>
+     <string name="pref_camera_tsmakeup_entry_off">Выкл</string>
+     <string name="pref_camera_tsmakeup_custom">Свой</string>
+     <string name="pref_camera_tsmakeup_level_whiten">Забелить</string>
+     <string name="pref_camera_tsmakeup_level_clean">Смягчить</string>
+     <string name="text_tsmakeup_alert_title">Внимание</string>
+     <string name="text_tsmakeup_alert_msg">Для режима украшения определение лиц должно быть включено. Включить или выйти?</string>
+     <string name="text_tsmakeup_alert_continue">Продолжить</string>
+     <string name="text_tsmakeup_alert_quit">Выход</string>
+
+    <string name="all_in_focus">Фокус на всем</string>
+
+    <string name="pref_camera_shutter_speed_title">Скорость затвора</string>
+    <string name="pref_camera_shutter_speed_entry_off">Авто</string>
+    <string name="pref_camera_shutter_speed_entry_1_5000th">1/5000 секунды</string>
+    <string name="pref_camera_shutter_speed_entry_1_2500th">1/2500 секунды</string>
+    <string name="pref_camera_shutter_speed_entry_1_1500th">1/1500 секунды</string>
+    <string name="pref_camera_shutter_speed_entry_1_1000th">1/1000 секунды</string>
+    <string name="pref_camera_shutter_speed_entry_1_500th">1/500 секунды</string>
+    <string name="pref_camera_shutter_speed_entry_1_250th">1/250 секунды</string>
+    <string name="pref_camera_shutter_speed_entry_1_125th">1/125 секунды</string>
+    <string name="pref_camera_shutter_speed_entry_1_64th">1/64 секунды</string>
+    <string name="pref_camera_shutter_speed_entry_1_32nd">1/32 секунды</string>
+    <string name="pref_camera_shutter_speed_entry_1_16th">1/16 секунды</string>
+    <string name="pref_camera_shutter_speed_entry_1_8th">1/8 секунды</string>
+    <string name="pref_camera_shutter_speed_entry_1_4th">1/4 секунды</string>
+    <string name="pref_camera_shutter_speed_entry_1_2">1/2 секунды</string>
+    <string name="pref_camera_shutter_speed_entry_1">1 секунда</string>
+    <string name="pref_camera_shutter_speed_entry_2">2 секунды</string>
+
+</resources>
+
