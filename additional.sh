@@ -21,6 +21,8 @@ DEVICE_OPPO_REPO="$LOCAL_REPO/device/oppo/common/"
 
 BUILD_REPO="$LOCAL_REPO/build/"
 
+FRAMEWORKS_OPT_TELEPHONY="$LOCAL_REPO/frameworks/opt/telephony"
+
 #SETTINGS_REPO="$LOCAL_REPO/packages/apps/Settings"
 #FRAMEWORKS_AV="$LOCAL_REPO/frameworks/av"
 
@@ -119,6 +121,17 @@ pushd "$FRAMEWORKS_BASE"
   wget https://github.com/CyanogenMod/android_frameworks_base/commit/e75f59e7fd349dd1fa5d452086c795f693776d89.patch && patch -p1 < e75f59e7fd349dd1fa5d452086c795f693776d89.patch
   # telephony: Hack GSM and LTE signal strength
   wget https://github.com/sultanxda/android_frameworks_base/commit/0cbd4a88767d78640b7dd391674575f7d5e517e6.patch && patch -p1 < 0cbd4a88767d78640b7dd391674575f7d5e517e6.patch
+  git clean -f -d
+
+  git add $(git status -s | awk '{print $2}')
+  git commit -m "Placing Sultan's patches"
+
+popd
+
+pushd "$FRAMEWORKS_OPT_TELEPHONY"
+
+  # UiccController: Don't dispose of UICC card when modem is unavailable
+  wget https://github.com/sultanxda/android_frameworks_opt_telephony/commit/279bcac13acffa186483aff97f359597a8875b18.patch && patch -p1 < 279bcac13acffa186483aff97f359597a8875b18.patch
   git clean -f -d
 
   git add $(git status -s | awk '{print $2}')
