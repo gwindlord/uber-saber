@@ -29,3 +29,6 @@ $SCRIPT_DIR/NovaUpdate/copy_nova.sh
 
 # set translation for SnapCam
 $SCRIPT_DIR/RussianSnapCam/copy_russian_snapcam.sh
+
+# temporary changes, which will be removed or something
+$SCRIPT_DIR/temp.sh

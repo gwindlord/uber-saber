@@ -139,6 +139,16 @@ pushd "$FRAMEWORKS_OPT_TELEPHONY"
 
 popd
 
+pushd frameworks/opt/net/wifi
+
+  wget https://github.com/sultanxda/android_frameworks_opt_net_wifi/commit/fd779363dc10cf3e4b178c2ce5d3b1e84f46d378.patch && patch -p1 < fd779363dc10cf3e4b178c2ce5d3b1e84f46d378.patch
+  git clean -f -d
+
+  git add $(git status -s | awk '{print $2}')
+  git commit -m "Placing Sultan's patches"
+
+popd
+
 # removing Viper commit
 pushd external/sepolicy/
 
