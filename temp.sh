@@ -2,6 +2,8 @@
 
 LOCAL_REPO="/data/slimsaber"
 
+exit 0
+
 pushd $LOCAL_REPO/device/oppo/msm8974-common
 
   # msm8974: Update WCNSS WiFi config
