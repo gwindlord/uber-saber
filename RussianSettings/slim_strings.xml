@@ -1127,4 +1127,7 @@
   <string name="recent_app_sidebar_label_color_title">Цвет надписей</string>
   <string name="recent_app_sidebar_bg_color_title">Цвет фона</string>
   <string name="recent_app_sidebar_scale_title">Размер</string>
+
+  <string name="bug_report_title">Отчет об ошибке</string>
+  <string name="general_title">Общие</string>
 </resources>
