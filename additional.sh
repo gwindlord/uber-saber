@@ -23,6 +23,8 @@ BUILD_REPO="$LOCAL_REPO/build/"
 
 FRAMEWORKS_OPT_TELEPHONY="$LOCAL_REPO/frameworks/opt/telephony"
 
+DEVICE_ONEPLUS_REPO="$LOCAL_REPO/device/oneplus/bacon"
+
 #SETTINGS_REPO="$LOCAL_REPO/packages/apps/Settings"
 #FRAMEWORKS_AV="$LOCAL_REPO/frameworks/av"
 
@@ -173,6 +175,14 @@ popd
 # fixing build
 pushd "$LOCAL_REPO/vendor/cmsdk"
   git revert 1d927754055ec17e44470659faf7dc77d65aa7f5
+popd
+
+# reverting play with earphone volume to 95
+pushd "$DEVICE_ONEPLUS_REPO"
+
+  git revert 049e0d932fea084aa44faa7cea2adfb20ccad4ea
+  git revert cb4314a0a6bdbdec1e344e0a15d076d789c63655
+
 popd
 
 exit 0
