@@ -175,6 +175,10 @@ pushd "$LOCAL_REPO/vendor/cmsdk"
   git revert 1d927754055ec17e44470659faf7dc77d65aa7f5
 popd
 
+exit 0
+
+#################################################################
+
 pushd "$BUILD_REPO"
 
   sed -i "s#LMY48U#LMY48W#" core/build_id.mk
@@ -183,10 +187,6 @@ pushd "$BUILD_REPO"
   git commit -m "Setting correct version id"
 
 popd
-
-exit 0
-
-#################################################################
 
 pushd "$SETTINGS_REPO"
 

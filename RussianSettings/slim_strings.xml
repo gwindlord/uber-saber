@@ -975,7 +975,6 @@
   <string name="navigation_edit_button_text">Изменить</string>
   <string name="navigation_save_button_text">Сохранить</string>
   <string name="navigation_bar_reset_message">Удалить текущие настройки и восстановить стандартный набор?</string>
-  <string name="security_patch">Обновление системы безопасности</string>
 
   <string name="double_tap_sleep_anywhere_title">Двойной тап для сна</string>
   <string name="double_tap_sleep_anywhere_summary">Дважды нажмите на экран в любом месте чтобы заблокировать устройство</string>
