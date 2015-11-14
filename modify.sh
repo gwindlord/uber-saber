@@ -36,5 +36,8 @@ $SCRIPT_DIR/RussianSettings/copy_rus_settings.sh
 # set translation for DeviceHandler
 $SCRIPT_DIR/RussianDeviceHandler/copy_rus_devicehandler.sh
 
+# set translation for Telephony
+$SCRIPT_DIR/RussianTelephony/copy_rus_telephony.sh
+
 # temporary changes, which will be removed or something
 $SCRIPT_DIR/temp.sh
