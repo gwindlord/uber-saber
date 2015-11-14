@@ -33,5 +33,8 @@ $SCRIPT_DIR/RussianSnapCam/copy_russian_snapcam.sh
 # set translation for Settings
 $SCRIPT_DIR/RussianSettings/copy_rus_settings.sh
 
+# set translation for DeviceHandler
+$SCRIPT_DIR/RussianDeviceHandler/copy_rus_devicehandler.sh
+
 # temporary changes, which will be removed or something
 $SCRIPT_DIR/temp.sh

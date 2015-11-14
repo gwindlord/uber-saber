@@ -6,8 +6,6 @@ VENDOR_REPO="$LOCAL_REPO/vendor/slim"
 CONFIG_FILE="config/common.mk"
 MY_VENDOR_REPO="$LOCAL_REPO/vendor/gwindlord"
 
-COMMON_FILE="$LOCAL_REPO/vendor/slim/config/common.mk"
-
 ROM_PACKAGES_MAKEFILE="$LOCAL_REPO/device/oppo/msm8974-common/msm8974.mk"
 
 DEVICE_REPO="$LOCAL_REPO/device/oppo/msm8974-common/"
@@ -54,9 +52,9 @@ pushd "$MY_VENDOR_REPO"
 
 popd
 
-pushd $(dirname "$COMMON_FILE")
+pushd "$VENDOR_REPO"
 
-  sed -i 's#%Y%m%d#%Y%m%d-%H%M#' "$COMMON_FILE"
+  sed -i 's#%Y%m%d#%Y%m%d-%H%M#' "$CONFIG_FILE"
 
   git add $(git status -s | awk '{print $2}')
   git commit -m "Setting more presice zip date"
@@ -141,16 +139,6 @@ pushd "$FRAMEWORKS_OPT_TELEPHONY"
 
 popd
 
-pushd frameworks/opt/net/wifi
-
-  wget https://github.com/sultanxda/android_frameworks_opt_net_wifi/commit/fd779363dc10cf3e4b178c2ce5d3b1e84f46d378.patch && patch -p1 < fd779363dc10cf3e4b178c2ce5d3b1e84f46d378.patch
-  git clean -f -d
-
-  git add $(git status -s | awk '{print $2}')
-  git commit -m "Placing Sultan's patches"
-
-popd
-
 # removing Viper commit
 pushd external/sepolicy/
 
@@ -188,6 +176,17 @@ popd
 exit 0
 
 #################################################################
+
+# 34d0618faf6ba74351ea9b37fafcdb870b11c17a should fix that patch necessity (in the other way tho)
+pushd frameworks/opt/net/wifi
+
+  wget https://github.com/sultanxda/android_frameworks_opt_net_wifi/commit/fd779363dc10cf3e4b178c2ce5d3b1e84f46d378.patch && patch -p1 < fd779363dc10cf3e4b178c2ce5d3b1e84f46d378.patch
+  git clean -f -d
+
+  git add $(git status -s | awk '{print $2}')
+  git commit -m "Placing Sultan's patches"
+
+popd
 
 pushd "$BUILD_REPO"
 
