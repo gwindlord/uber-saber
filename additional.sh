@@ -67,12 +67,17 @@ pushd "$DEVICE_REPO"
   git add $(git status -s | awk '{print $2}')
   git commit -m "Adding Browser sync"
 
-popd
 
-# msm8974: Enable adaptive LMK (http://review.cyanogenmod.org/#/c/103749/)
-pushd "$DEVICE_REPO"
-
+  # msm8974: Enable adaptive LMK (http://review.cyanogenmod.org/#/c/103749/)
   git fetch http://review.cyanogenmod.org/CyanogenMod/android_device_oppo_msm8974-common refs/changes/49/103749/1 && git cherry-pick FETCH_HEAD
+
+  # fixing build - msm8974: remove unused resources
+  git remote add YoshiShaPow https://github.com/YoshiShaPow/android_device_oppo_msm8974-common.git
+  git fetch YoshiShaPow
+
+  git cherry-pick 2cdb7c4ddb349be16ee7ecfdb4f1bc634c0d267d
+
+  git remote rm YoshiShaPow
 
 popd
 
