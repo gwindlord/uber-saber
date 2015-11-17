@@ -6,9 +6,8 @@ VENDOR_REPO="$LOCAL_REPO/vendor/slim"
 CONFIG_FILE="config/common.mk"
 MY_VENDOR_REPO="$LOCAL_REPO/vendor/gwindlord"
 
-ROM_PACKAGES_MAKEFILE="$LOCAL_REPO/device/oppo/msm8974-common/msm8974.mk"
-
 DEVICE_REPO="$LOCAL_REPO/device/oppo/msm8974-common/"
+ROM_PACKAGES_MAKEFILE="msm8974.mk"
 
 SYSTEM_CORE="$LOCAL_REPO/system/core"
 
@@ -61,7 +60,7 @@ pushd "$VENDOR_REPO"
 
 popd
 
-pushd $(dirname "$ROM_PACKAGES_MAKEFILE")
+pushd "$DEVICE_REPO"
 
   sed -i 's/^    libantradio/    libantradio\n\n# ChromeBookmarksSyncAdapter\nPRODUCT_PACKAGES += \\\n    ChromeBookmarksSyncAdapter/' "$ROM_PACKAGES_MAKEFILE"
 
