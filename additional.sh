@@ -169,11 +169,24 @@ pushd "$LOCAL_REPO/vendor/cmsdk"
   git revert 1d927754055ec17e44470659faf7dc77d65aa7f5
 popd
 
-# reverting play with earphone volume to 95
+
 pushd "$DEVICE_ONEPLUS_REPO"
 
+  # reverting play with earphone volume to 95
   git revert 049e0d932fea084aa44faa7cea2adfb20ccad4ea
   git revert cb4314a0a6bdbdec1e344e0a15d076d789c63655
+
+  # fixing build - msm8974: remove unused resources
+  git remote add YoshiShaPow https://github.com/YoshiShaPow/android_device_oneplus_bacon.git
+  git fetch YoshiShaPow
+
+  git cherry-pick 58fe5f0b0431eda155827f45e61f574838a23ba1
+  git cherry-pick 76250cf690ea9ba54a3436c2781e73ed788cf3bc
+  git cherry-pick 7ede547aa174bf9b857c285aa20078fa515c9b84
+  git cherry-pick 7064a00e4454315e7d8dd2514dcf8d2d31ccdba6
+  git cherry-pick 5eb42a3da06f71e0ad0154a766a81773259dd9b8
+
+  git remote rm YoshiShaPow
 
 popd
 
