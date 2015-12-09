@@ -445,6 +445,7 @@
     <string name="all_in_focus">Фокус на всем</string>
 
     <string name="pref_camera_touchfocus_duration_title">Длительность фокуса касанием</string>
+    <string name="pref_camera_touchfocus_duration_entry_0">0 секунд</string>
     <string name="pref_camera_touchfocus_duration_entry_3">3 секунды</string>
     <string name="pref_camera_touchfocus_duration_entry_5">5 секунд</string>
     <string name="pref_camera_touchfocus_duration_entry_10">10 секунд</string>
