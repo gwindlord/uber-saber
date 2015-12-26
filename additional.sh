@@ -190,6 +190,8 @@ pushd "$DEVICE_ONEPLUS_REPO"
 
 popd
 
+exit 0
+
 pushd "$BUILD_REPO"
 
   perl -p -i -e 's/\s\s\s\sDocumentsUI \\\n//' target/product/core.mk
@@ -198,8 +200,6 @@ pushd "$BUILD_REPO"
   git commit -m "Get rid of DocumentsUI - unnecessary to my mind"
 
 popd
-
-exit 0
 
 #################################################################
 
