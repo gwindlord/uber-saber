@@ -1,6 +1,6 @@
 #!/bin/bash
 
-LOCAL_REPO="/data/slimsaber"
+LOCAL_REPO="$HOME/slimsaber"
 ROM_PACKAGES_MAKEFILE="$LOCAL_REPO/device/oppo/msm8974-common/msm8974.mk"
 
 pushd $(dirname "$ROM_PACKAGES_MAKEFILE")

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-LOCAL_REPO="/data/slimsaber"
+LOCAL_REPO="$HOME/slimsaber"
 TELEPHONY_RUS_DIR="$LOCAL_REPO/packages/services/Telephony/res/values-ru/"
 SCRIPT_DIR="$(dirname $(readlink -f $0))"
 

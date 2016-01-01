@@ -1,6 +1,6 @@
 #!/bin/bash
 
-LOCAL_REPO="/data/slimsaber"
+LOCAL_REPO="$HOME/slimsaber"
 ADDON_DIR="$LOCAL_REPO/vendor/slim/prebuilt/common/bin"
 SCRIPT_DIR="$(dirname $(readlink -f $0))"
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-LOCAL_REPO="/data/slimsaber"
+LOCAL_REPO="$HOME/slimsaber"
 VERSION_FILE="$LOCAL_REPO/vendor/cm/config/version.mk"
 VENDOR_REPO="$LOCAL_REPO/vendor/slim"
 VENDORSETUP_FILE="vendorsetup.sh"

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-LOCAL_REPO="/data/slimsaber"
+LOCAL_REPO="$HOME/slimsaber"
 BOARD_CONFIG="$LOCAL_REPO/device/oneplus/bacon/BoardConfig.mk"
 
 # turning underclock off makes kernel stuck in constant activity

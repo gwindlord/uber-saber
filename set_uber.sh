@@ -1,6 +1,6 @@
 #!/bin/bash
 
-LOCAL_REPO="/data/slimsaber"
+LOCAL_REPO="$HOME/slimsaber"
 BOARD_CONFIG="$LOCAL_REPO/device/oneplus/bacon/BoardConfig.mk"
 KERNEL_INCLUDES="$LOCAL_REPO/kernel/oneplus/msm8974/"
 KERNEL_URL="https://github.com/DerRomtester/android_kernel_oneplus_msm8974.git"

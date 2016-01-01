@@ -1,6 +1,6 @@
 #!/bin/bash
 
-LOCAL_REPO="/data/slimsaber"
+LOCAL_REPO="$HOME/slimsaber"
 DHANDLER_RES_DIR="$LOCAL_REPO/device/oppo/common/DeviceHandler/res/"
 SCRIPT_DIR="$(dirname $(readlink -f $0))"
 

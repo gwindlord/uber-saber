@@ -3,7 +3,7 @@
 # patching android-5.1.1_r26 to android-5.1.1_r30
 # taking changes from log http://www.androidpolice.com/android_aosp_changelogs/android-5.1.1_r26-to-android-5.1.1_r30-AOSP-changelog.html
 
-LOCAL_REPO="/data/slimsaber"
+LOCAL_REPO="$HOME/slimsaber"
 
 pushd "$LOCAL_REPO/build"
   git remote add aosp_build https://android.googlesource.com/platform/build

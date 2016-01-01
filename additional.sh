@@ -1,6 +1,6 @@
 #!/bin/bash
 
-LOCAL_REPO="/data/slimsaber"
+LOCAL_REPO="$HOME/slimsaber"
 
 VENDOR_REPO="$LOCAL_REPO/vendor/slim"
 CONFIG_FILE="config/common.mk"
@@ -35,10 +35,11 @@ pushd "$VENDOR_REPO"
 
   git remote rm UberCM
 
-  sed -i 's#:system/etc/backup.conf#:system/etc/backup.conf \\\n    vendor/slim/prebuilt/common/bin/73-browsersync.sh:system/addon.d/73-browsersync.sh#' "$CONFIG_FILE"
-  sed -i 's#    SlimLauncher \\#    CMFileManager \\#' "$CONFIG_FILE"
+#  sed -i 's#:system/etc/backup.conf#:system/etc/backup.conf \\\n    vendor/slim/prebuilt/common/bin/73-browsersync.sh:system/addon.d/73-browsersync.sh#' "$CONFIG_FILE"
+  #sed -i 's#    SlimLauncher \\#    CMFileManager \\#' "$CONFIG_FILE"
+  sed -i 's#    SlimLauncher \\#    CMFileManager \\\n    SWE_Browser \\\n    libswewebrefiner \\\n    libswev8 \\\n    libsweskia \\\n    libswenetxt_plugin \\\n    libswecore \\\n    libsweadrenoext_plugin \\\n    libsweadrenoext_23_plugin \\\n    libsweadrenoext_22_plugin \\\n    libswe \\\n    libsta \\\n    libicuuc.cr \\\n    libicui18n.cr \\\n    libgiga_client \\\n    libc++_shared \\#' "$CONFIG_FILE"
   git add $(git status -s | awk '{print $2}')
-  git commit -m "Adding Browser sync backup script and CM File manager to the build"
+  git commit -m "Adding Snapdragon Chromium and CM File manager to the build"
 
   cp proprietary/CameraNextMod/Android.mk $LOCAL_REPO/vendor/gwindlord/proprietary/CameraNextMod/
   git rm proprietary/CameraNextMod/Android.mk && git commit -m "Remove CameraNextMod duplicate"
@@ -62,10 +63,10 @@ popd
 
 pushd "$DEVICE_REPO"
 
-  sed -i 's/^    libantradio/    libantradio\n\n# ChromeBookmarksSyncAdapter\nPRODUCT_PACKAGES += \\\n    ChromeBookmarksSyncAdapter/' "$ROM_PACKAGES_MAKEFILE"
+#  sed -i 's/^    libantradio/    libantradio\n\n# ChromeBookmarksSyncAdapter\nPRODUCT_PACKAGES += \\\n    ChromeBookmarksSyncAdapter/' "$ROM_PACKAGES_MAKEFILE"
 
-  git add $(git status -s | awk '{print $2}')
-  git commit -m "Adding Browser sync"
+#  git add $(git status -s | awk '{print $2}')
+#  git commit -m "Adding Browser sync"
 
 
   # msm8974: Enable adaptive LMK (http://review.cyanogenmod.org/#/c/103749/)
@@ -192,6 +193,8 @@ popd
 
 exit 0
 
+#################################################################
+
 pushd "$BUILD_REPO"
 
   perl -p -i -e 's/\s\s\s\sDocumentsUI \\\n//' target/product/core.mk
@@ -200,8 +203,6 @@ pushd "$BUILD_REPO"
   git commit -m "Get rid of DocumentsUI - unnecessary to my mind"
 
 popd
-
-#################################################################
 
 # 34d0618faf6ba74351ea9b37fafcdb870b11c17a should fix that patch necessity (in the other way tho)
 pushd frameworks/opt/net/wifi

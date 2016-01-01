@@ -1,6 +1,6 @@
 #!/bin/bash
 
-LOCAL_REPO="/data/slimsaber"
+LOCAL_REPO="$HOME/slimsaber"
 SETTINGS_RUS_DIR="$LOCAL_REPO/packages/apps/Settings/res/values-ru"
 SCRIPT_DIR="$(dirname $(readlink -f $0))"
 

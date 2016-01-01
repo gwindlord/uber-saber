@@ -16,7 +16,7 @@ $SCRIPT_DIR/set_uber.sh
 $SCRIPT_DIR/bel_gps/copy_gps_conf.sh
 
 # copying browser sync backup script
-$SCRIPT_DIR/browsersync/copy_browsersync.sh
+#$SCRIPT_DIR/browsersync/copy_browsersync.sh
 
 # any additional actions
 $SCRIPT_DIR/additional.sh
