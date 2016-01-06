@@ -45,5 +45,8 @@ $SCRIPT_DIR/aosp_r30.sh
 # patching SlimSaber sources with AOSP changes from android-5.1.1_r30 to android-5.1.1_r33
 $SCRIPT_DIR/aosp_r33.sh
 
+# adding pre-built Chromium Snapdragon
+$SCRIPT_DIR/chromium.sh
+
 # temporary changes, which will be removed or something
 $SCRIPT_DIR/temp.sh
