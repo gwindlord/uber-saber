@@ -36,8 +36,8 @@ pushd "$VENDOR_REPO"
   git remote rm UberCM
 
 #  sed -i 's#:system/etc/backup.conf#:system/etc/backup.conf \\\n    vendor/slim/prebuilt/common/bin/73-browsersync.sh:system/addon.d/73-browsersync.sh#' "$CONFIG_FILE"
-  #sed -i 's#    SlimLauncher \\#    CMFileManager \\#' "$CONFIG_FILE"
-  sed -i 's#    SlimLauncher \\#    CMFileManager \\\n    SWE_Browser \\\n    libswewebrefiner \\\n    libswev8 \\\n    libsweskia \\\n    libswenetxt_plugin \\\n    libswecore \\\n    libsweadrenoext_plugin \\\n    libsweadrenoext_23_plugin \\\n    libsweadrenoext_22_plugin \\\n    libswe \\\n    libsta \\\n    libicuuc.cr \\\n    libicui18n.cr \\\n    libgiga_client \\\n    libc++_shared \\#' "$CONFIG_FILE"
+  sed -i 's#    SlimLauncher \\#    CMFileManager \\#' "$CONFIG_FILE"
+#  sed -i 's#    SlimLauncher \\#    CMFileManager \\\n    SWE_Browser \\\n    libswewebrefiner \\\n    libswev8 \\\n    libsweskia \\\n    libswenetxt_plugin \\\n    libswecore \\\n    libsweadrenoext_plugin \\\n    libsweadrenoext_23_plugin \\\n    libsweadrenoext_22_plugin \\\n    libswe \\\n    libsta \\\n    libicuuc.cr \\\n    libicui18n.cr \\\n    libgiga_client \\\n    libc++_shared \\#' "$CONFIG_FILE"
   git add $(git status -s | awk '{print $2}')
   git commit -m "Adding Snapdragon Chromium and CM File manager to the build"
 
