@@ -6,14 +6,14 @@ KERNEL_INCLUDES="$LOCAL_REPO/kernel/oneplus/msm8974/"
 KERNEL_URL="https://github.com/DerRomtester/android_kernel_oneplus_msm8974.git"
 LIBCORE_DIR="$LOCAL_REPO/libcore"
 
-pushd $(dirname "$BOARD_CONFIG")
+pushd "$(dirname $(readlink -f $BOARD_CONFIG))"
 
-# sed -i 's/# Bluetooth/KERNEL_TOOLCHAIN_PREFIX := arm-eabi-\nKERNEL_TOOLCHAIN := "\$\(ANDROID_BUILD_TOP\)\/prebuilts\/gcc\/\$\(HOST_OS\)-x86\/arm\/arm-eabi-4.8\/bin\/"\n\n# Bluetooth/' "$BOARD_CONFIG"
-#  sed -i 's/# Bluetooth/KERNEL_TOOLCHAIN_PREFIX := arm-eabi-\nKERNEL_TOOLCHAIN := "\$\(ANDROID_BUILD_TOP\)\/prebuilts\/gcc\/\$\(HOST_OS\)-x86\/arm\/arm-eabi-4.9\/bin\/"\n\n# Bluetooth/' "$BOARD_CONFIG"
-#  sed -i 's/# Bluetooth/KERNEL_TOOLCHAIN_PREFIX := arm-eabi-\nKERNEL_TOOLCHAIN := "\$\(ANDROID_BUILD_TOP\)\/prebuilts\/gcc\/\$\(HOST_OS\)-x86\/arm\/arm-eabi-4.9_cortex_a15\/bin\/"\n\n# Bluetooth/' "$BOARD_CONFIG"
-#  sed -i 's/# Bluetooth/KERNEL_TOOLCHAIN_PREFIX := arm-eabi-\nKERNEL_TOOLCHAIN := "\$\(ANDROID_BUILD_TOP\)\/prebuilts\/gcc\/\$\(HOST_OS\)-x86\/arm\/arm-eabi-5.1\/bin\/"\n\n# Bluetooth/' "$BOARD_CONFIG"
-  sed -i 's/# Bluetooth/KERNEL_TOOLCHAIN_PREFIX := arm-eabi-\nKERNEL_TOOLCHAIN := "\$\(ANDROID_BUILD_TOP\)\/prebuilts\/gcc\/\$\(HOST_OS\)-x86\/arm\/arm-eabi-6.0\/bin\/"\n\n# Bluetooth/' "$BOARD_CONFIG"
-#  sed -i 's/# Bluetooth/KERNEL_TOOLCHAIN_PREFIX := arm-eabi-\nKERNEL_TOOLCHAIN := "\$\(ANDROID_BUILD_TOP\)\/prebuilts\/gcc\/\$\(HOST_OS\)-x86\/arm\/arm-cortex_a15-linux-gnueabihf-linaro_4.9\/bin\/"\n\n# Bluetooth/' "$BOARD_CONFIG"
+# sed -i 's/# Camera/KERNEL_TOOLCHAIN_PREFIX := arm-eabi-\nKERNEL_TOOLCHAIN := "\$\(ANDROID_BUILD_TOP\)\/prebuilts\/gcc\/\$\(HOST_OS\)-x86\/arm\/arm-eabi-4.8\/bin\/"\n\n# Camera/' "$BOARD_CONFIG"
+#  sed -i 's/# Camera/KERNEL_TOOLCHAIN_PREFIX := arm-eabi-\nKERNEL_TOOLCHAIN := "\$\(ANDROID_BUILD_TOP\)\/prebuilts\/gcc\/\$\(HOST_OS\)-x86\/arm\/arm-eabi-4.9\/bin\/"\n\n# Camera/' "$BOARD_CONFIG"
+#  sed -i 's/# Camera/KERNEL_TOOLCHAIN_PREFIX := arm-eabi-\nKERNEL_TOOLCHAIN := "\$\(ANDROID_BUILD_TOP\)\/prebuilts\/gcc\/\$\(HOST_OS\)-x86\/arm\/arm-eabi-4.9_cortex_a15\/bin\/"\n\n# Camera/' "$BOARD_CONFIG"
+#  sed -i 's/# Camera/KERNEL_TOOLCHAIN_PREFIX := arm-eabi-\nKERNEL_TOOLCHAIN := "\$\(ANDROID_BUILD_TOP\)\/prebuilts\/gcc\/\$\(HOST_OS\)-x86\/arm\/arm-eabi-5.1\/bin\/"\n\n# Camera/' "$BOARD_CONFIG"
+  sed -i 's/# Camera/KERNEL_TOOLCHAIN_PREFIX := arm-eabi-\nKERNEL_TOOLCHAIN := "\$\(ANDROID_BUILD_TOP\)\/prebuilts\/gcc\/\$\(HOST_OS\)-x86\/arm\/arm-eabi-6.0\/bin\/"\n\n# Camera/' "$BOARD_CONFIG"
+#  sed -i 's/# Camera/KERNEL_TOOLCHAIN_PREFIX := arm-eabi-\nKERNEL_TOOLCHAIN := "\$\(ANDROID_BUILD_TOP\)\/prebuilts\/gcc\/\$\(HOST_OS\)-x86\/arm\/arm-cortex_a15-linux-gnueabihf-linaro_4.9\/bin\/"\n\n# Camera/' "$BOARD_CONFIG"
 
   git add $(git status -s | awk '{print $2}')
   git commit -m "Setting Uber toolchain"
