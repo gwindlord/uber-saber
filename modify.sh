@@ -28,7 +28,8 @@ $SCRIPT_DIR/odex.sh
 $SCRIPT_DIR/NovaUpdate/copy_nova.sh
 
 # set translation for SnapCam
-$SCRIPT_DIR/RussianSnapCam/copy_russian_snapcam.sh
+# accidentally added this while merging LA.BR.1.2.5_rb2.28 (after such merge "repo sync" does not refresh local repo)
+#$SCRIPT_DIR/RussianSnapCam/copy_russian_snapcam.sh
 
 # set translation for Settings
 $SCRIPT_DIR/RussianSettings/copy_rus_settings.sh
@@ -45,8 +46,14 @@ $SCRIPT_DIR/aosp_r30.sh
 # patching SlimSaber sources with AOSP changes from android-5.1.1_r30 to android-5.1.1_r33
 $SCRIPT_DIR/aosp_r33.sh
 
+# patching SlimSaber sources with AOSP changes from android-5.1.1_r33 to android-5.1.1_r34
+$SCRIPT_DIR/aosp_r34.sh
+
+# patch code to be compiled with UBER 5.3
+#$SCRIPT_DIR/androideabi5.sh
+
 # adding pre-built Chromium Snapdragon
-$SCRIPT_DIR/chromium.sh
+#$SCRIPT_DIR/chromium.sh
 
 # temporary changes, which will be removed or something
 $SCRIPT_DIR/temp.sh

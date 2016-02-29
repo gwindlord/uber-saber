@@ -1,6 +1,7 @@
 #!/bin/bash
 
 LOCAL_REPO="$HOME/slimsaber"
+SCRIPT_DIR="$(dirname $(readlink -f $0))"
 
 VENDOR_REPO="$LOCAL_REPO/vendor/slim"
 CONFIG_FILE="config/common.mk"
@@ -16,14 +17,13 @@ TELEPHONY_REPO="$LOCAL_REPO/packages/services/Telephony"
 
 DEVICE_OPPO_REPO="$LOCAL_REPO/device/oppo/common/"
 
-BUILD_REPO="$LOCAL_REPO/build/"
-
 FRAMEWORKS_OPT_TELEPHONY="$LOCAL_REPO/frameworks/opt/telephony"
 
 DEVICE_ONEPLUS_REPO="$LOCAL_REPO/device/oneplus/bacon"
 
-#SETTINGS_REPO="$LOCAL_REPO/packages/apps/Settings"
-#FRAMEWORKS_AV="$LOCAL_REPO/frameworks/av"
+DIALER_REPO="$LOCAL_REPO/packages/apps/Dialer"
+
+
 
 pushd "$VENDOR_REPO"
 
@@ -35,20 +35,11 @@ pushd "$VENDOR_REPO"
 
   git remote rm UberCM
 
-#  sed -i 's#:system/etc/backup.conf#:system/etc/backup.conf \\\n    vendor/slim/prebuilt/common/bin/73-browsersync.sh:system/addon.d/73-browsersync.sh#' "$CONFIG_FILE"
   sed -i 's#    SlimLauncher \\#    CMFileManager \\#' "$CONFIG_FILE"
-#  sed -i 's#    SlimLauncher \\#    CMFileManager \\\n    SWE_Browser \\\n    libswewebrefiner \\\n    libswev8 \\\n    libsweskia \\\n    libswenetxt_plugin \\\n    libswecore \\\n    libsweadrenoext_plugin \\\n    libsweadrenoext_23_plugin \\\n    libsweadrenoext_22_plugin \\\n    libswe \\\n    libsta \\\n    libicuuc.cr \\\n    libicui18n.cr \\\n    libgiga_client \\\n    libc++_shared \\#' "$CONFIG_FILE"
   git add $(git status -s | awk '{print $2}')
   git commit -m "Adding Snapdragon Chromium and CM File manager to the build"
 
-  cp proprietary/CameraNextMod/Android.mk $LOCAL_REPO/vendor/gwindlord/proprietary/CameraNextMod/
   git rm proprietary/CameraNextMod/Android.mk && git commit -m "Remove CameraNextMod duplicate"
-
-popd
-
-pushd "$MY_VENDOR_REPO"
-
-  git add proprietary/CameraNextMod/Android.mk && git commit -m "Setting translated Camera"
 
 popd
 
@@ -62,12 +53,6 @@ pushd "$VENDOR_REPO"
 popd
 
 pushd "$DEVICE_REPO"
-
-#  sed -i 's/^    libantradio/    libantradio\n\n# ChromeBookmarksSyncAdapter\nPRODUCT_PACKAGES += \\\n    ChromeBookmarksSyncAdapter/' "$ROM_PACKAGES_MAKEFILE"
-
-#  git add $(git status -s | awk '{print $2}')
-#  git commit -m "Adding Browser sync"
-
 
   # msm8974: Enable adaptive LMK (http://review.cyanogenmod.org/#/c/103749/)
   git fetch http://review.cyanogenmod.org/CyanogenMod/android_device_oppo_msm8974-common refs/changes/49/103749/1 && git cherry-pick FETCH_HEAD
@@ -126,6 +111,8 @@ pushd "$FRAMEWORKS_BASE"
   wget https://github.com/CyanogenMod/android_frameworks_base/commit/e75f59e7fd349dd1fa5d452086c795f693776d89.patch && patch -p1 < e75f59e7fd349dd1fa5d452086c795f693776d89.patch
   # telephony: Hack GSM and LTE signal strength
   wget https://github.com/sultanxda/android_frameworks_base/commit/0cbd4a88767d78640b7dd391674575f7d5e517e6.patch && patch -p1 < 0cbd4a88767d78640b7dd391674575f7d5e517e6.patch
+  # Wifi tile: don't set items visible from non-ui thread
+  wget -q https://github.com/CyanogenMod/android_frameworks_base/commit/06c39e200cd5edfb6019cd725343654e1d9a8fe3.patch && patch -p1 -s < 06c39e200cd5edfb6019cd725343654e1d9a8fe3.patch
   git clean -f -d
 
   git add $(git status -s | awk '{print $2}')
@@ -189,137 +176,25 @@ pushd "$DEVICE_ONEPLUS_REPO"
 
   git remote rm YoshiShaPow
 
+  sed -Ei -z 's#(\s+)<ctl name="RX3 Digital Volume" value="80" />#\1<ctl name="RX3 Digital Volume" value="87" />#' audio/mixer_paths.xml
+  sed -Ei -z 's#(\s+)<ctl name="RX4 Digital Volume" value="80" />#\1<ctl name="RX4 Digital Volume" value="87" />#' audio/mixer_paths.xml
+  git add $(git status -s | awk '{print $2}') && git commit -m "Increasing speaker volume"
+
+popd
+
+pushd "$DIALER_REPO"
+
+  git remote add CM https://github.com/CyanogenMod/android_packages_apps_Dialer.git
+  git fetch CM
+
+  git cherry-pick 4395a7ed38676f405d1b0da67916cc849526b083
+  git cherry-pick 5fbf6ec963f37803e61f449f8fd7b9a4636bc1dd
+
+  git remote rm CM
+
 popd
 
 exit 0
 
 #################################################################
 
-pushd "$BUILD_REPO"
-
-  perl -p -i -e 's/\s\s\s\sDocumentsUI \\\n//' target/product/core.mk
-
-  git add $(git status -s | awk '{print $2}')
-  git commit -m "Get rid of DocumentsUI - unnecessary to my mind"
-
-popd
-
-# 34d0618faf6ba74351ea9b37fafcdb870b11c17a should fix that patch necessity (in the other way tho)
-pushd frameworks/opt/net/wifi
-
-  wget https://github.com/sultanxda/android_frameworks_opt_net_wifi/commit/fd779363dc10cf3e4b178c2ce5d3b1e84f46d378.patch && patch -p1 < fd779363dc10cf3e4b178c2ce5d3b1e84f46d378.patch
-  git clean -f -d
-
-  git add $(git status -s | awk '{print $2}')
-  git commit -m "Placing Sultan's patches"
-
-popd
-
-pushd "$BUILD_REPO"
-
-  sed -i "s#LMY48U#LMY48W#" core/build_id.mk
-
-  git add $(git status -s | awk '{print $2}')
-  git commit -m "Setting correct version id"
-
-popd
-
-pushd "$SETTINGS_REPO"
-
-  git fetch https://gerrit.omnirom.org/android_packages_apps_Settings refs/changes/80/10180/3 && git cherry-pick FETCH_HEAD || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
-
-popd
-
-pushd "$VENDOR_REPO"
-
-  # setting Nova as default launcher
-  git remote add UberCM "$UBERCM_URL"
-  git fetch UberCM
-
-  git cherry-pick 189b2c10d0dd5b1025c5994c5093094b84c62aa0
-  git cherry-pick 45c7ba3f11968e23cbaa1c93bbd9a91f0ad9f8d1
-  git cherry-pick a22924b5baea579bc74df2272785ec6b4b626080
-  git cherry-pick 7e68eb9c79f10931fbd16618cf59a3a929758281 || git add $(git status -s | awk '{print $2}') && git commit --allow-empty
-
-  git remote rm UberCM
-
-popd
-
-# fixing media (and bootloop)
-# http://review.cyanogenmod.org/#/c/106198/
-# http://review.cyanogenmod.org/#/c/106197/
-
-pushd "$FRAMEWORKS_BASE"
-  git fetch http://review.cyanogenmod.org/CyanogenMod/android_frameworks_base refs/changes/98/106198/3 && git cherry-pick FETCH_HEAD
-popd
-
-pushd "$FRAMEWORKS_AV"
-  git fetch http://review.cyanogenmod.org/CyanogenMod/android_frameworks_av refs/changes/97/106197/2 && git cherry-pick FETCH_HEAD
-popd
-
-
-# UberCM
-# su sign removal
-# non-intrusive calls
-
-pushd "$FRAMEWORKS_BASE"
-
-  git remote add UberCMfb https://github.com/UberCM/frameworks_base.git
-  git fetch UberCMfb
-
-  git cherry-pick 5f061adcaf478e2f4681f1b7926b721200e96704
-  git cherry-pick 5135ef05d3300739dd0b91ab6b4c1e6f9453cd34 || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
-
-  git remote rm UberCMfb
-
-popd
-
-pushd "$SETTINGS_REPO"
-
-  git remote add UberCMsettings https://github.com/UberCM/packages_apps_Settings.git
-  git fetch UberCMsettings
-
-  git cherry-pick 1b66c3e9410bbc8356a11958f5b6dce14f12548c || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
-
-  git remote rm UberCMsettings
-
-
-popd
-
-pushd "$TELEPHONY_REPO"
-
-  git remote add UberCMtelephony https://github.com/UberCM/packages_services_Telephony.git
-  git fetch UberCMtelephony
-
-  git cherry-pick 064ff6eedc3878d336724028aa5fdbd1d3b36187 || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
-
-  git remote rm UberCMtelephony
-
-popd
-
-exit 0
-
-# reverting optimizations, which require libc 2.17
-pushd "$BUILD_REPO"
-
-#  git revert 13e2e8ccbb96beb9034f05c47e500f829dba56c9 || git rm core/jgcaap.mk && git revert --continue
-
-  sed -i "s#4.8#4.6#" core/clang/HOST_x86_common.mk
-  sed -i "s#4.8#4.6#" core/combo/HOST_linux-x86_64.mk
-  sed -i "s#4.8#4.6#" core/combo/HOST_linux-x86.mk
-
-  git add $(git status -s | awk '{print $2}')
-  git commit -m "Reverting optimizations, which require libc 2.17"
-
-popd
-
-exit 0
-
-pushd "$SETTINGS_REPO"
-
-  sed -i "s#UberCM build#Build#" res/values/ubercm_strings.xml
-
-  git add $(git status -s | awk '{print $2}')
-  git commit -m "Setting more common build name string"
-
-popd
