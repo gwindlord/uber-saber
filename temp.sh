@@ -1,8 +1,17 @@
 #!/bin/bash
 
-LOCAL_REPO="$HOME/slimsaber"
+LOCAL_REPO="$1"
+if [[ "$#" != "1"  ]]; then
+  echo "usage: $0 LOCAL_REPO" >&2
+  exit 1
+fi
+
+# errors on
+set -e
+
 BUILD_REPO="$LOCAL_REPO/build/"
 DEVICE_REPO="$LOCAL_REPO/device/oppo/msm8974-common/"
+SCRIPT_DIR="$(dirname $(readlink -f $0))"
 
 # cm: sepolicy: allow kernel to read storage (http://review.cyanogenmod.org/#/c/127767/)
 pushd "$LOCAL_REPO/vendor/slim"
@@ -34,7 +43,16 @@ pushd "$LOCAL_REPO/packages/apps/ContactsCommon"
   git fetch http://review.cyanogenmod.org/CyanogenMod/android_packages_apps_ContactsCommon refs/changes/94/129294/1 && git cherry-pick FETCH_HEAD
 popd
 
+pushd "$LOCAL_REPO/kernel/oneplus/msm8974/"
+  # KEYS: Fix race between read and revoke - CVE-2015-7550 (http://review.cyanogenmod.org/#/c/134713/)
+  git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_htc_msm8974 refs/changes/13/134713/1 && git cherry-pick FETCH_HEAD
+  # tty: Fix unsafe ldisc reference via ioctl(TIOCGETD) (http://review.cyanogenmod.org/#/c/134722/)
+  git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_htc_msm8974 refs/changes/22/134722/2 && git cherry-pick FETCH_HEAD
+popd
+
 exit 0
+
+#################
 
 # LZ4
 pushd "$LOCAL_REPO/kernel/oneplus/msm8974"
