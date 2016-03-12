@@ -1,7 +1,8 @@
 #!/bin/bash
 
-# patching android-5.1.1_r34 to android-5.1.1_r35
+# patching android-5.1.1_r34 to android-5.1.1_r36
 # taking changes from log http://www.androidpolice.com/android_aosp_changelogs/android-5.1.1_r34-to-android-5.1.1_r35-AOSP-changelog.html
+# and results of own android-5.1.1_r35 to android-5.1.1_r36 investigation
 
 LOCAL_REPO="$1"
 if [[ "$#" != "1"  ]]; then
@@ -17,6 +18,7 @@ pushd "$LOCAL_REPO/build"
   git fetch aosp_build
   git cherry-pick fa1323c3b38495606fba31518e552faec530b199
   git cherry-pick fafe789699316238ce8755f92ae0a1a9aa79c6ac
+  git cherry-pick c56338d6b3871b1cd0f261c4911d4a850c00d86d
   git remote rm aosp_build
 popd
 

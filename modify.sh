@@ -45,7 +45,9 @@ $SCRIPT_DIR/RussianDeviceHandler/copy_rus_devicehandler.sh $LOCAL_REPO
 $SCRIPT_DIR/RussianTelephony/copy_rus_telephony.sh $LOCAL_REPO
 
 # Adding new Sultan's camera
-$SCRIPT_DIR/OPXCamDrivers/copy_drivers.sh $LOCAL_REPO
+# shots, taken at my flat, are noticeably worse with these drivers
+# they set enorumous ISO, like 1977 or 2290, where the old drivers set 778-801
+#$SCRIPT_DIR/OPXCamDrivers/copy_drivers.sh $LOCAL_REPO
 
 # patching SlimSaber sources with AOSP changes from android-5.1.1_r26 to android-5.1.1_r30
 $SCRIPT_DIR/aosp_r30.sh $LOCAL_REPO
@@ -57,7 +59,7 @@ $SCRIPT_DIR/aosp_r33.sh $LOCAL_REPO
 $SCRIPT_DIR/aosp_r34.sh $LOCAL_REPO
 
 # patching SlimSaber sources with AOSP changes from android-5.1.1_r33 to android-5.1.1_r35
-$SCRIPT_DIR/aosp_r35.sh $LOCAL_REPO
+$SCRIPT_DIR/aosp_r35_r36.sh $LOCAL_REPO
 
 # patch code to be compiled with UBER 5.3
 #$SCRIPT_DIR/androideabi5.sh
