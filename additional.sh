@@ -144,7 +144,7 @@ pushd "$DEVICE_ONEPLUS_REPO"
   git cherry-pick 7064a00e4454315e7d8dd2514dcf8d2d31ccdba6
   git cherry-pick 5eb42a3da06f71e0ad0154a766a81773259dd9b8
   git remote rm YoshiShaPow
-  sed -Ei -z 's#(\s+<path name="ear">\n\s+<ctl name="RX1 MIX1 INP1" value="RX1" />\n\s+<ctl name="CLASS_H_DSM MUX" value="DSM_HPHL_RX1" />\n\s+)<ctl name="RX1 Digital Volume" value="100" />#\1<ctl name="RX1 Digital Volume" value="95" />#' audio/mixer_paths.xml
+  sed -Ei -z 's#(\s+<path name="ear">\n\s+<ctl name="RX1 MIX1 INP1" value="RX1" />\n\s+<ctl name="CLASS_H_DSM MUX" value="DSM_HPHL_RX1" />\n\s+)<ctl name="RX1 Digital Volume" value="98" />#\1<ctl name="RX1 Digital Volume" value="95" />#' audio/mixer_paths.xml
   sed -Ei -z 's#(\s+)<ctl name="RX3 Digital Volume" value="80" />#\1<ctl name="RX3 Digital Volume" value="88" />#' audio/mixer_paths.xml
   sed -Ei -z 's#(\s+)<ctl name="RX4 Digital Volume" value="80" />#\1<ctl name="RX4 Digital Volume" value="88" />#' audio/mixer_paths.xml
   git add $(git status -s | awk '{print $2}') && git commit -m "Increasing speaker volume and reverting earphone volume to 95"
