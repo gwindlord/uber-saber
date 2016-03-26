@@ -17,6 +17,11 @@ pushd "$LOCAL_REPO/vendor/slim"
   git fetch http://review.cyanogenmod.org/CyanogenMod/android_vendor_cm refs/changes/67/127767/2 && git cherry-pick FETCH_HEAD
 popd
 
+pushd "$LOCAL_REPO/packages/apps/CMFileManager"
+  perl -p -i -e 's#\<\/xliff\:g\> \%\<#\<\/xliff\:g\> \\\%\<#' res/values-ru/strings.xml
+  git add $(git status -s | awk '{print $2}') && git commit -m "Fixing Russian locale"
+popd
+
 # CM12 recent features
 
 # Lockscreen: Show redaction interstitial when swipe selected
@@ -43,30 +48,34 @@ popd
 pushd "$LOCAL_REPO/packages/apps/ContactsCommon"
   git fetch http://review.cyanogenmod.org/CyanogenMod/android_packages_apps_ContactsCommon refs/changes/94/129294/1 && git cherry-pick FETCH_HEAD
 popd
-pushd "$LOCAL_REPO/kernel/oneplus/msm8974/"
-  # KEYS: Fix race between read and revoke - CVE-2015-7550 (http://review.cyanogenmod.org/#/c/134713/)
-  git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_htc_msm8974 refs/changes/13/134713/1 && git cherry-pick FETCH_HEAD
-  # tty: Fix unsafe ldisc reference via ioctl(TIOCGETD) (http://review.cyanogenmod.org/#/c/134722/)
-  git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_htc_msm8974 refs/changes/22/134722/2 && git cherry-pick FETCH_HEAD
-  # mmc: move to a SCHED_FIFO thread (http://review.cyanogenmod.org/#/c/135785/)
-  git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/85/135785/2 && git cherry-pick FETCH_HEAD
-  # asoc: wcd9320: Fix teardown and UHQA issues (http://review.cyanogenmod.org/#/c/135208/)
-  git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/08/135208/1 && git cherry-pick FETCH_HEAD
-  # ARM: dts: msm: update 28nm DSI PHY regulator settings (http://review.cyanogenmod.org/#/c/135207/)
-  git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/07/135207/1 && git cherry-pick FETCH_HEAD
-  # sched: Fix load avg vs cpu-hotplug (http://review.cyanogenmod.org/#/c/135203/)
-  git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/03/135203/1 && git cherry-pick FETCH_HEAD
-  # ASoC: wcd9xxx: Update hph/ear class-H parameters (http://review.cyanogenmod.org/#/c/135209/)
-  git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/09/135209/1 && git cherry-pick FETCH_HEAD
-  # timekeeping: fix 32-bit overflow in get_monotonic_boottime (http://review.cyanogenmod.org/#/c/134043/)
-  git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/43/134043/2 && git cherry-pick FETCH_HEAD
-popd
 pushd "$LOCAL_REPO/device/oppo/msm8974-common/"
   # http://review.cyanogenmod.org/#/c/135685/
   sed -i "s#audio.offload.pcm.16bit.enable=true#audio.offload.pcm.16bit.enable=false#" msm8974.mk
   git add $(git status -s | awk '{print $2}') && git commit -m "bacon: Disable 16-bit PCM offload for good (http://review.cyanogenmod.org/#/c/135685/)"
+  # oppo_msm8974-common: support f2fs volumes (http://review.cyanogenmod.org/#/c/92999/)
+  git fetch http://review.cyanogenmod.org/CyanogenMod/android_device_oppo_msm8974-common refs/changes/99/92999/2 && git cherry-pick FETCH_HEAD
 popd
 
+# F2FS support
+pushd "$LOCAL_REPO/device/oneplus/bacon"
+  #git cherry-pick e5308ebdd4eff41ffd781301febae11467cb6a38 || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
+  # http://review.cyanogenmod.org/#/c/92998
+  git fetch http://review.cyanogenmod.org/CyanogenMod/android_device_oneplus_bacon refs/changes/98/92998/2 && git cherry-pick FETCH_HEAD || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
+popd
+# fs: introduce a generic shutdown ioctl (http://review.cyanogenmod.org/#/c/92997)
+pushd "$LOCAL_REPO/kernel/oneplus/msm8974"
+  git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/97/92997/2 && git cherry-pick FETCH_HEAD
+popd
+
+# Forward Port: Add Camera sound toggle [3/3] - was suddenly missing, so camera sound switcher did nothing >_<
+pushd "$LOCAL_REPO/frameworks/av"
+  git fetch https://review.slimroms.org/SlimRoms/frameworks_av refs/changes/53/1853/1 && git cherry-pick FETCH_HEAD
+popd
+
+# init: fix usage of otg-usb storage devices from within applications (http://review.cyanogenmod.org/#/c/134914/)
+pushd "$LOCAL_REPO/device/oneplus/bacon"
+  git fetch http://review.cyanogenmod.org/CyanogenMod/android_device_oneplus_bacon refs/changes/14/134914/1 && git cherry-pick FETCH_HEAD
+popd
 
 exit 0
 

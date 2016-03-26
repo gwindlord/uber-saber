@@ -32,7 +32,7 @@ $SCRIPT_DIR/odex.sh $LOCAL_REPO
 $SCRIPT_DIR/NovaUpdate/copy_nova.sh $LOCAL_REPO
 
 # set translation for SnapCam
-# accidentally added this while merging LA.BR.1.2.5_rb2.28 (after such merge "repo sync" does not refresh local repo)
+# added this while merging LA.BR.1.2.5_rb2.28 (after checkout out the branch "repo sync" does not refresh local repo, only remote commit refreshes it after that)
 #$SCRIPT_DIR/RussianSnapCam/copy_russian_snapcam.sh $LOCAL_REPO
 
 # set translation for Settings

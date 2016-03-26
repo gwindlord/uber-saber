@@ -144,10 +144,21 @@ pushd "$DEVICE_ONEPLUS_REPO"
   git cherry-pick 7064a00e4454315e7d8dd2514dcf8d2d31ccdba6
   git cherry-pick 5eb42a3da06f71e0ad0154a766a81773259dd9b8
   git remote rm YoshiShaPow
-  sed -Ei -z 's#(\s+<path name="ear">\n\s+<ctl name="RX1 MIX1 INP1" value="RX1" />\n\s+<ctl name="CLASS_H_DSM MUX" value="DSM_HPHL_RX1" />\n\s+)<ctl name="RX1 Digital Volume" value="98" />#\1<ctl name="RX1 Digital Volume" value="95" />#' audio/mixer_paths.xml
+  # bacon: Re-enable Fluence from CM13
+  git cherry-pick c31a9e117266929b5ff15c665b6f587ff95f8f0f || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
+  git cherry-pick 4303c6dbfd49831388fc53b702650a1492b2b9d8 || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
+  git cherry-pick 73d5bfae8cb6ae58fbb1ba7ffab17c6108150cbe || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
+  mv audio/acdb/MTP_Handset_cal.acdb $DEVICE_REPO/audio/acdb/
+  mv audio/acdb/MTP_Speaker_cal.acdb $DEVICE_REPO/audio/acdb/
+  git rm $(git status -s | awk '{print $2}') && git commit -m "Moving necessary 5.1 files"
+  sed -Ei -z 's#(\s+<path name="ear">\n\s+<ctl name="RX1 MIX1 INP1" value="RX1" />\n\s+<ctl name="CLASS_H_DSM MUX" value="DSM_HPHL_RX1" />\n\s+)<ctl name="RX1 Digital Volume" value="90" />#\1<ctl name="RX1 Digital Volume" value="95" />#' audio/mixer_paths.xml
   sed -Ei -z 's#(\s+)<ctl name="RX3 Digital Volume" value="80" />#\1<ctl name="RX3 Digital Volume" value="88" />#' audio/mixer_paths.xml
   sed -Ei -z 's#(\s+)<ctl name="RX4 Digital Volume" value="80" />#\1<ctl name="RX4 Digital Volume" value="88" />#' audio/mixer_paths.xml
   git add $(git status -s | awk '{print $2}') && git commit -m "Increasing speaker volume and reverting earphone volume to 95"
+popd
+
+pushd "$DEVICE_REPO"
+  git add $(git status -s | awk '{print $2}') && git commit -m "Moving necessary 5.1 Fluence files"
 popd
 
 pushd "$DIALER_REPO"
@@ -156,6 +167,12 @@ pushd "$DIALER_REPO"
   git cherry-pick 4395a7ed38676f405d1b0da67916cc849526b083
   git cherry-pick 5fbf6ec963f37803e61f449f8fd7b9a4636bc1dd
   git remote rm CM
+popd
+
+pushd "$LOCAL_REPO/external/sqlite"
+  cp $SCRIPT_DIR/sqlite3.11.1.patch .
+  git apply sqlite3.11.1.patch && git add $(git status -s | awk '{print $2}') && git commit -m "Upgrade SQLite to 3.11.1"
+  rm sqlite3.11.1.patch
 popd
 
 #################################################################
