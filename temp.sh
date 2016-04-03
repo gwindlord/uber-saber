@@ -61,7 +61,10 @@ pushd "$LOCAL_REPO/device/oneplus/bacon"
   #git cherry-pick e5308ebdd4eff41ffd781301febae11467cb6a38 || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
   # http://review.cyanogenmod.org/#/c/92998
   git fetch http://review.cyanogenmod.org/CyanogenMod/android_device_oneplus_bacon refs/changes/98/92998/2 && git cherry-pick FETCH_HEAD || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
+  sed -i "s#BOARD_USERDATAEXTRAIMAGE_PARTITION_NAME := 64G#BOARD_USERDATAEXTRAIMAGE_PARTITION_NAME := 64G\nTARGET_USERIMAGES_USE_EXT4 := true\nTARGET_USERIMAGES_USE_F2FS := true#" BoardConfig.mk
+  git add $(git status -s | awk '{print $2}') && git commit -m "bacon: Add missing F2FS and EXT4 flags"
 popd
+
 # fs: introduce a generic shutdown ioctl (http://review.cyanogenmod.org/#/c/92997)
 pushd "$LOCAL_REPO/kernel/oneplus/msm8974"
   git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/97/92997/2 && git cherry-pick FETCH_HEAD
@@ -77,6 +80,22 @@ pushd "$LOCAL_REPO/device/oneplus/bacon"
   git fetch http://review.cyanogenmod.org/CyanogenMod/android_device_oneplus_bacon refs/changes/14/134914/1 && git cherry-pick FETCH_HEAD
 popd
 
+# The IT Crowd rocks! ;)
+pushd "$LOCAL_REPO/packages/apps/Dialer"
+  git remote add AOSP https://android.googlesource.com/platform/packages/apps/Dialer
+  git fetch AOSP
+  git cherry-pick 83131715419e89eebe8e4ea7ada7f96ec37dd8f9 || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
+  git remote rm AOSP
+popd
+
+# Force OpenWeatherMap to be the weather provider - Yahoo changed API again >_<
+pushd "$LOCAL_REPO/packages/apps/LockClock"
+  git reset --hard && git clean -f -d
+  wget -q https://github.com/sultanxda/android_packages_apps_LockClock/commit/201e3f432b9266dc7cb3d35a909e7710f9017ceb.patch
+  patch -p1 -s < 201e3f432b9266dc7cb3d35a909e7710f9017ceb.patch
+  git clean -f -d
+  git add $(git status -s | awk '{print $2}') && git commit -m "Force OpenWeatherMap to be the weather provider"
+popd
 exit 0
 
 #################

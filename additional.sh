@@ -151,10 +151,11 @@ pushd "$DEVICE_ONEPLUS_REPO"
   mv audio/acdb/MTP_Handset_cal.acdb $DEVICE_REPO/audio/acdb/
   mv audio/acdb/MTP_Speaker_cal.acdb $DEVICE_REPO/audio/acdb/
   git rm $(git status -s | awk '{print $2}') && git commit -m "Moving necessary 5.1 files"
+  sed -i 's#persist.audio.fluence.voicecall=true#persist.audio.fluence.voicecall=true\npersist.audio.fluence.voicerec=false\npersist.audio.fluence.speaker=false\nro.ril.amr.wideband.enable=1#' system.prop
   sed -Ei -z 's#(\s+<path name="ear">\n\s+<ctl name="RX1 MIX1 INP1" value="RX1" />\n\s+<ctl name="CLASS_H_DSM MUX" value="DSM_HPHL_RX1" />\n\s+)<ctl name="RX1 Digital Volume" value="90" />#\1<ctl name="RX1 Digital Volume" value="95" />#' audio/mixer_paths.xml
-  sed -Ei -z 's#(\s+)<ctl name="RX3 Digital Volume" value="80" />#\1<ctl name="RX3 Digital Volume" value="88" />#' audio/mixer_paths.xml
-  sed -Ei -z 's#(\s+)<ctl name="RX4 Digital Volume" value="80" />#\1<ctl name="RX4 Digital Volume" value="88" />#' audio/mixer_paths.xml
-  git add $(git status -s | awk '{print $2}') && git commit -m "Increasing speaker volume and reverting earphone volume to 95"
+  sed -Ei -z 's#(\s+)<ctl name="RX3 Digital Volume" value="80" />#\1<ctl name="RX3 Digital Volume" value="90" />#' audio/mixer_paths.xml
+  sed -Ei -z 's#(\s+)<ctl name="RX4 Digital Volume" value="80" />#\1<ctl name="RX4 Digital Volume" value="90" />#' audio/mixer_paths.xml
+  git add $(git status -s | awk '{print $2}') && git commit -m "Increasing speaker volume, reverting earphone volume to 95 and setting Fluence and wideband (HD call) additional parameters"
 popd
 
 pushd "$DEVICE_REPO"
