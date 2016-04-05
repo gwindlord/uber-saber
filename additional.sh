@@ -131,7 +131,7 @@ popd
 
 # fixing build
 pushd "$LOCAL_REPO/vendor/cmsdk"
-  git revert 1d927754055ec17e44470659faf7dc77d65aa7f5
+  git revert --no-edit 1d927754055ec17e44470659faf7dc77d65aa7f5
 popd
 
 pushd "$DEVICE_ONEPLUS_REPO"
