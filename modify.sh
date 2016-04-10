@@ -7,7 +7,7 @@ SCRIPT_DIR="$(dirname $(readlink -f $0))"
 set -e
 
 # turning Sultan's CPU underclock off
-$SCRIPT_DIR/turn_off_underclock.sh $LOCAL_REPO
+#$SCRIPT_DIR/turn_off_underclock.sh $LOCAL_REPO
 
 # setting custom camera as system one
 $SCRIPT_DIR/set_customcamera.sh $LOCAL_REPO

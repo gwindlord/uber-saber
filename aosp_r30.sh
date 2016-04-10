@@ -23,9 +23,7 @@ popd
 pushd "$LOCAL_REPO/external/skia"
   git remote add aosp_skia https://android.googlesource.com/platform/external/skia
   git fetch aosp_skia
-  set +e
   git cherry-pick 3a0fdc1e084a7815b9d16c7c81cd068007b5afa1 || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
-  set -e
   git remote rm aosp_skia
 popd
 
@@ -49,10 +47,8 @@ popd
 pushd "$LOCAL_REPO/frameworks/base"
   git remote add aosp_frameworks_base https://android.googlesource.com/platform/frameworks/base
   git fetch aosp_frameworks_base
-  set +e
   git cherry-pick ae98d39253ba54ddf6091ec8c3120076a6807899 || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
   git cherry-pick 4ce29f8179a5322e27fb8f4316059a497159f444
-  set -e
   git remote rm aosp_frameworks_base
 popd
 

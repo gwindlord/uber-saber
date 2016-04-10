@@ -96,6 +96,31 @@ pushd "$LOCAL_REPO/packages/apps/LockClock"
   git clean -f -d
   git add $(git status -s | awk '{print $2}') && git commit -m "Force OpenWeatherMap to be the weather provider"
 popd
+
+# Volume steps
+# http://gerrit.dirtyunicorns.com/#/c/17297/ and http://gerrit.dirtyunicorns.com/#/c/17296/
+pushd "$LOCAL_REPO/frameworks/base"
+  git fetch http://gerrit.dirtyunicorns.com/android_frameworks_base refs/changes/97/17297/2 && git cherry-pick FETCH_HEAD
+popd
+pushd "$LOCAL_REPO/packages/apps/Settings"
+  git fetch http://gerrit.dirtyunicorns.com/android_packages_apps_Settings refs/changes/96/17296/3 && git cherry-pick FETCH_HEAD || git rm res/values/du_* && git apply $HOME/uber-saber/patches/volume_steps.patch && git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
+popd
+
+# Enable RNG hardware support and diagnostics for SnoopSnitch utility support
+# https://play.google.com/store/apps/details?id=de.srlabs.snoopsnitch
+pushd "$LOCAL_REPO/kernel/oneplus/msm8974"
+  #sed -i 's#CONFIG_HW_RANDOM_MSM=y#CONFIG_DIAG_CHAR=y\nCONFIG_HW_RANDOM=y\nCONFIG_HW_RANDOM_MSM=y#' arch/arm/configs/bacon_defconfig
+  sed -i 's#CONFIG_HW_RANDOM_MSM=y#CONFIG_DIAG_CHAR=y\nCONFIG_HW_RANDOM_MSM=y#' arch/arm/configs/bacon_defconfig
+  git add $(git status -s | awk '{print $2}') && git commit -m "Enable diagnostics for SnoopSnitch utility support"
+popd
+
+# Fix for Sultan's RIL at LP - compiled sap-api.proto has "#include <string>" line, and compiler has no idea where to get this header :(
+pushd "$LOCAL_REPO/hardware/ril-caf"
+  git apply $HOME/uber-saber/patches/ril5.patch && git add $(git status -s | awk '{print $2}') && git commit -m "Adapt RIL"
+  git revert ed24474ebf87f38112129146e901590b8f8c757e || git rm libril/?ilS* && git revert --continue
+  git revert --no-edit 902098d12d7f14f42dac9b573a6be76160189591
+popd
+
 exit 0
 
 #################

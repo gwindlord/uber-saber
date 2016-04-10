@@ -1,0 +1,64 @@
+diff --git a/res/values-ru/slim_strings.xml b/res/values-ru/slim_strings.xml
+index 1594e55..ff29764 100644
+--- a/res/values-ru/slim_strings.xml
++++ b/res/values-ru/slim_strings.xml
+@@ -1129,4 +1129,15 @@
+ 
+   <string name="bug_report_title">Отчет об ошибке</string>
+   <string name="general_title">Общие</string>
++
++    <!-- Volume Steps -->
++    <string name="volume_steps_title">Шаги громкости</string>
++    <string name="volume_steps_alarm_title">Шаги громкости: Будильник</string>
++    <string name="volume_steps_dtmf_title">Шаги громкости: DTMF</string>
++    <string name="volume_steps_music_title">Шаги громкости: Музыка</string>
++    <string name="volume_steps_notification_title">Шаги громкости: Уведомления</string>
++    <string name="volume_steps_ring_title">Шаги громкости: Звонок</string>
++    <string name="volume_steps_system_title">Шаги громкости: Система</string>
++    <string name="volume_steps_voice_call_title">Шаги громкости: Голосовой вызов</string>
++
+ </resources>
+diff --git a/res/values/slim_arrays.xml b/res/values/slim_arrays.xml
+index 84b5528..52495cc 100644
+--- a/res/values/slim_arrays.xml
++++ b/res/values/slim_arrays.xml
+@@ -1164,4 +1164,14 @@
+         <item>@string/hidden_title</item>
+     </string-array>
+ 
++    <!-- Volume step options. -->
++    <string-array name="volume_steps_entries" translatable="false">
++        <item>@string/volume_steps_60</item>
++        <item>@string/volume_steps_45</item>
++        <item>@string/volume_steps_30</item>
++        <item>@string/volume_steps_15</item>
++        <item>@string/volume_steps_7</item>
++        <item>@string/volume_steps_5</item>
++    </string-array>
++
+ </resources>
+diff --git a/res/values/slim_strings.xml b/res/values/slim_strings.xml
+index 0ad7d2f..520b94b 100644
+--- a/res/values/slim_strings.xml
++++ b/res/values/slim_strings.xml
+@@ -1386,4 +1386,20 @@
+     <!-- About phone screen, status item label  [CHAR LIMIT=60] -->
+     <string name="security_patch">Android security patch level</string>
+ 
++    <!-- Volume Steps -->
++    <string name="volume_steps_title">Volume steps</string>
++    <string name="volume_steps_alarm_title">Volume steps: Alarm</string>
++    <string name="volume_steps_dtmf_title">Volume steps: DTMF</string>
++    <string name="volume_steps_music_title">Volume steps: Music</string>
++    <string name="volume_steps_notification_title">Volume steps: Notification</string>
++    <string name="volume_steps_ring_title">Volume steps: Ringer</string>
++    <string name="volume_steps_system_title">Volume steps: System</string>
++    <string name="volume_steps_voice_call_title">Volume steps: Voice Call</string>
++    <string name="volume_steps_60">60</string>
++    <string name="volume_steps_45">45</string>
++    <string name="volume_steps_30">30</string>
++    <string name="volume_steps_15">15</string>
++    <string name="volume_steps_7">7</string>
++    <string name="volume_steps_5">5</string>
++
+ </resources>

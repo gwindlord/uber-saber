@@ -37,9 +37,7 @@ pushd "$VENDOR_REPO"
   # setting Nova as default launcher
   git remote add UberCM https://github.com/UberCM/vendor_ubercm.git
   git fetch UberCM
-  set +e
   git cherry-pick 45c7ba3f11968e23cbaa1c93bbd9a91f0ad9f8d1 || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
-  set -e
   git remote rm UberCM
   sed -i 's#    SlimLauncher \\#    CMFileManager \\#' "$CONFIG_FILE"
   git add $(git status -s | awk '{print $2}')
@@ -76,17 +74,13 @@ popd
 pushd "$FRAMEWORKS_BASE"
   git remote add Slimfb https://github.com/SlimRoms/frameworks_base.git
   git fetch Slimfb
-  set +e
   git cherry-pick d1a5c06fa0bcd699ba6a6aec90bce732d7c68e43 || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
-  set -e
   git remote rm Slimfb
 popd
 pushd "$TELEPHONY_REPO"
   git remote add Slimtelephony https://github.com/SlimRoms/packages_services_Telephony.git
   git fetch Slimtelephony
-  set +e
   git cherry-pick a5c056daf1e8a4385ce9ed982e86b3945ad1dc69 || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
-  set -e
   git remote rm Slimtelephony
 popd
 
@@ -112,9 +106,7 @@ popd
 
 # removing Viper commit
 pushd external/sepolicy/
-  set -e
   git revert 9e46bc6fee9ca77f743b694739da9b3367c86017 || git revert --continue
-  set +e
 popd
 
 pushd "$DEVICE_OPPO_REPO"
@@ -123,9 +115,7 @@ pushd "$DEVICE_OPPO_REPO"
   # Don't break screen off gestures when dex preopting builds
   git cherry-pick a6d1ecd71eb3ce17fafae034068bc169f0b9005b
   # Materialize DeviceHandler settings
-  set +e
   git cherry-pick f9aebb542b60eceb42db145ca34df4aa058a4449 || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
-  set -e
   git remote rm slimdevice
 popd
 
@@ -153,8 +143,8 @@ pushd "$DEVICE_ONEPLUS_REPO"
   git rm $(git status -s | awk '{print $2}') && git commit -m "Moving necessary 5.1 files"
   sed -i 's#persist.audio.fluence.voicecall=true#persist.audio.fluence.voicecall=true\npersist.audio.fluence.voicerec=false\npersist.audio.fluence.speaker=false\nro.ril.amr.wideband.enable=1#' system.prop
   sed -Ei -z 's#(\s+<path name="ear">\n\s+<ctl name="RX1 MIX1 INP1" value="RX1" />\n\s+<ctl name="CLASS_H_DSM MUX" value="DSM_HPHL_RX1" />\n\s+)<ctl name="RX1 Digital Volume" value="90" />#\1<ctl name="RX1 Digital Volume" value="95" />#' audio/mixer_paths.xml
-  sed -Ei -z 's#(\s+)<ctl name="RX3 Digital Volume" value="80" />#\1<ctl name="RX3 Digital Volume" value="90" />#' audio/mixer_paths.xml
-  sed -Ei -z 's#(\s+)<ctl name="RX4 Digital Volume" value="80" />#\1<ctl name="RX4 Digital Volume" value="90" />#' audio/mixer_paths.xml
+  sed -Ei -z 's#(\s+)<ctl name="RX3 Digital Volume" value="80" />#\1<ctl name="RX3 Digital Volume" value="89" />#' audio/mixer_paths.xml
+  sed -Ei -z 's#(\s+)<ctl name="RX4 Digital Volume" value="80" />#\1<ctl name="RX4 Digital Volume" value="89" />#' audio/mixer_paths.xml
   git add $(git status -s | awk '{print $2}') && git commit -m "Increasing speaker volume, reverting earphone volume to 95 and setting Fluence and wideband (HD call) additional parameters"
 popd
 
@@ -171,7 +161,7 @@ pushd "$DIALER_REPO"
 popd
 
 pushd "$LOCAL_REPO/external/sqlite"
-  cp $SCRIPT_DIR/sqlite3.11.1.patch .
+  cp $SCRIPT_DIR/patches/sqlite3.11.1.patch .
   git apply sqlite3.11.1.patch && git add $(git status -s | awk '{print $2}') && git commit -m "Upgrade SQLite to 3.11.1"
   rm sqlite3.11.1.patch
 popd

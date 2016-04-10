@@ -17,6 +17,8 @@ pushd "$LOCAL_REPO/build"
   git fetch aosp
   git cherry-pick b2ac0ea
   git cherry-pick 604febc
+  git cherry-pick 64c1e8b # just for future merges consistency
+  git cherry-pick 04f82d5 # just for future merges consistency
   git remote rm aosp
 popd
 
@@ -86,8 +88,6 @@ popd
 pushd "$LOCAL_REPO/system/core"
   git remote add aosp https://android.googlesource.com/platform/system/core
   git fetch aosp
-  set +e
   git cherry-pick 81df1cc || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
-  set -e
   git remote rm aosp
 popd
