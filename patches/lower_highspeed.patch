@@ -1,0 +1,29 @@
+diff --git a/media/java/android/media/CamcorderProfile.java b/media/java/android/media/CamcorderProfile.java
+index c81dc25..3f0b4ac 100644
+--- a/media/java/android/media/CamcorderProfile.java
++++ b/media/java/android/media/CamcorderProfile.java
+@@ -253,6 +253,24 @@ public class CamcorderProfile
+     private static final int QUALITY_HIGH_SPEED_LIST_END = QUALITY_HIGH_SPEED_2160P;
+ 
+     /**
++     * High speed ( >= 100fps) quality level corresponding to the CIF (352 x 288)
++     * @hide
++     */
++    public static final int QUALITY_HIGH_SPEED_CIF = 10004;
++
++    /**
++     * High speed ( >= 100fps) quality level corresponding to the VGA (640 x 480)
++     * @hide
++     */
++    public static final int QUALITY_HIGH_SPEED_VGA = 10005;
++
++    /**
++     * High speed ( >= 100fps) quality level corresponding to the 4K-DCI (4096 x 2160)
++     * @hide
++     */
++    public static final int QUALITY_HIGH_SPEED_4kDCI = 10006;
++
++    /**
+      * Default recording duration in seconds before the session is terminated.
+      * This is useful for applications like MMS has limited file size requirement.
+      */

@@ -1,0 +1,100 @@
+diff --git a/services/core/java/com/android/server/pm/UserManagerService.java b/services/core/java/com/android/server/pm/UserManagerService.java
+index 0298b00..07e2a5d 100644
+--- a/services/core/java/com/android/server/pm/UserManagerService.java
++++ b/services/core/java/com/android/server/pm/UserManagerService.java
+@@ -38,6 +38,7 @@ import android.os.Environment;
+ import android.os.FileUtils;
+ import android.os.Handler;
+ import android.os.IUserManager;
++import android.os.Message;
+ import android.os.Process;
+ import android.os.RemoteException;
+ import android.os.ServiceManager;
+@@ -136,6 +137,9 @@ public class UserManagerService extends IUserManager.Stub {
+     private static final int[] BACKOFF_TIMES = { 0, 30*1000, 60*1000, 5*60*1000, 30*60*1000 };
+ 
+ 
++    static final int WRITE_USER_MSG = 1;
++    static final int WRITE_USER_DELAY = 2*1000;  // 2 seconds
++
+     private final Context mContext;
+     private final PackageManagerService mPm;
+     private final Object mInstallLock;
+@@ -257,6 +261,17 @@ public class UserManagerService extends IUserManager.Stub {
+                 Log.w(LOG_TAG, "Unable to notify AppOpsService of UserRestrictions");
+             }
+         }
++        UserInfo currentGuestUser = null;
++        synchronized (mPackagesLock) {
++            currentGuestUser = findCurrentGuestUserLocked();
++        }
++        if (currentGuestUser != null && !hasUserRestriction(
++                UserManager.DISALLOW_CONFIG_WIFI, currentGuestUser.id)) {
++            // If a guest user currently exists, apply the DISALLOW_CONFIG_WIFI option
++            // to it, in case this guest was created in a previous version where this
++            // user restriction was not a default guest restriction.
++            setUserRestriction(UserManager.DISALLOW_CONFIG_WIFI, true, currentGuestUser.id);
++        }
+     }
+ 
+     @Override
+@@ -475,6 +490,7 @@ public class UserManagerService extends IUserManager.Stub {
+         if (mGuestRestrictions.isEmpty()) {
+             mGuestRestrictions.putBoolean(UserManager.DISALLOW_OUTGOING_CALLS, true);
+             mGuestRestrictions.putBoolean(UserManager.DISALLOW_SMS, true);
++            mGuestRestrictions.putBoolean(UserManager.DISALLOW_CONFIG_WIFI, true);
+         }
+     }
+ 
+@@ -514,6 +530,15 @@ public class UserManagerService extends IUserManager.Stub {
+         }
+     }
+ 
++    public void setUserRestriction(String key, boolean value, int userId) {
++        checkManageUsersPermission("setUserRestriction");
++        synchronized (mPackagesLock) {
++              Bundle restrictions = getUserRestrictions(userId);
++              restrictions.putBoolean(key, value);
++              setUserRestrictionsInternalLocked(restrictions, userId);
++        }
++    }
++
+     @Override
+     public void setUserRestrictions(Bundle restrictions, int userId) {
+         checkManageUsersPermission("setUserRestrictions");
+@@ -534,6 +559,21 @@ public class UserManagerService extends IUserManager.Stub {
+         }
+     }
+ 
++    private void setUserRestrictionsInternalLocked(Bundle restrictions, int userId) {
++        final Bundle userRestrictions = mUserRestrictions.get(userId);
++        userRestrictions.clear();
++        userRestrictions.putAll(restrictions);
++        long token = Binder.clearCallingIdentity();
++        try {
++        mAppOpsService.setUserRestrictions(userRestrictions, userId);
++        } catch (RemoteException e) {
++            Log.w(LOG_TAG, "Unable to notify AppOpsService of UserRestrictions");
++        } finally {
++            Binder.restoreCallingIdentity(token);
++        }
++        scheduleWriteUserLocked(mUsers.get(userId));
++    }
++
+     /**
+      * Check if we've hit the limit of how many users can be created.
+      */
+@@ -749,6 +789,13 @@ public class UserManagerService extends IUserManager.Stub {
+         writeUserLocked(primary);
+     }
+ 
++    private void scheduleWriteUserLocked(UserInfo userInfo) {
++        if (!mHandler.hasMessages(WRITE_USER_MSG, userInfo)) {
++            Message msg = mHandler.obtainMessage(WRITE_USER_MSG, userInfo);
++            mHandler.sendMessageDelayed(msg, WRITE_USER_DELAY);
++        }
++    }
++
+     /*
+      * Writes the user file in this format:
+      *

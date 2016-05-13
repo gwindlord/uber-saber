@@ -67,6 +67,9 @@ $SCRIPT_DIR/aosp_r37.sh $LOCAL_REPO
 # patch code to be compiled with UBER 5.3
 #$SCRIPT_DIR/androideabi5.sh
 
+# patching sources with Google May security fixes
+$SCRIPT_DIR/aosp_may_2016.sh $LOCAL_REPO
+
 # adding pre-built Chromium Snapdragon
 #$SCRIPT_DIR/chromium.sh $LOCAL_REPO
 

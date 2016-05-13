@@ -17,11 +17,6 @@ pushd "$LOCAL_REPO/vendor/slim"
   git fetch http://review.cyanogenmod.org/CyanogenMod/android_vendor_cm refs/changes/67/127767/2 && git cherry-pick FETCH_HEAD
 popd
 
-pushd "$LOCAL_REPO/packages/apps/CMFileManager"
-  perl -p -i -e 's#\<\/xliff\:g\> \%\<#\<\/xliff\:g\> \\\%\<#' res/values-ru/strings.xml
-  git add $(git status -s | awk '{print $2}') && git commit -m "Fixing Russian locale"
-popd
-
 # CM12 recent features
 
 # Lockscreen: Show redaction interstitial when swipe selected
@@ -52,20 +47,15 @@ pushd "$LOCAL_REPO/device/oppo/msm8974-common/"
   # http://review.cyanogenmod.org/#/c/135685/
   sed -i "s#audio.offload.pcm.16bit.enable=true#audio.offload.pcm.16bit.enable=false#" msm8974.mk
   git add $(git status -s | awk '{print $2}') && git commit -m "bacon: Disable 16-bit PCM offload for good (http://review.cyanogenmod.org/#/c/135685/)"
-  # oppo_msm8974-common: support f2fs volumes (http://review.cyanogenmod.org/#/c/92999/)
-  git fetch http://review.cyanogenmod.org/CyanogenMod/android_device_oppo_msm8974-common refs/changes/99/92999/2 && git cherry-pick FETCH_HEAD
 popd
 
-# F2FS support
+# F2FS modification
 pushd "$LOCAL_REPO/device/oneplus/bacon"
-  #git cherry-pick e5308ebdd4eff41ffd781301febae11467cb6a38 || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
-  # http://review.cyanogenmod.org/#/c/92998
-  git fetch http://review.cyanogenmod.org/CyanogenMod/android_device_oneplus_bacon refs/changes/98/92998/2 && git cherry-pick FETCH_HEAD || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
-  sed -i "s#BOARD_USERDATAEXTRAIMAGE_PARTITION_NAME := 64G#BOARD_USERDATAEXTRAIMAGE_PARTITION_NAME := 64G\nTARGET_USERIMAGES_USE_EXT4 := true\nTARGET_USERIMAGES_USE_F2FS := true#" BoardConfig.mk
-  git add $(git status -s | awk '{print $2}') && git commit -m "bacon: Add missing F2FS and EXT4 flags"
+  sed -i 's#noatime,nosuid,nodev,rw,inline_xattr#noatime,nosuid,nodev,rw,discard,inline_xattr#' rootdir/etc/fstab.bacon
+  git add $(git status -s | awk '{print $2}') && git commit -m "Add -discard option to F2FS, as it works good according to feedbacks"
 popd
 
-# fs: introduce a generic shutdown ioctl (http://review.cyanogenmod.org/#/c/92997)
+# f2fs: introduce a generic shutdown ioctl (http://review.cyanogenmod.org/#/c/92997)
 pushd "$LOCAL_REPO/kernel/oneplus/msm8974"
   git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/97/92997/2 && git cherry-pick FETCH_HEAD
 popd
@@ -88,15 +78,6 @@ pushd "$LOCAL_REPO/packages/apps/Dialer"
   git remote rm AOSP
 popd
 
-# Force OpenWeatherMap to be the weather provider - Yahoo changed API again >_<
-pushd "$LOCAL_REPO/packages/apps/LockClock"
-  git reset --hard && git clean -f -d
-  wget -q https://github.com/sultanxda/android_packages_apps_LockClock/commit/201e3f432b9266dc7cb3d35a909e7710f9017ceb.patch
-  patch -p1 -s < 201e3f432b9266dc7cb3d35a909e7710f9017ceb.patch
-  git clean -f -d
-  git add $(git status -s | awk '{print $2}') && git commit -m "Force OpenWeatherMap to be the weather provider"
-popd
-
 # Volume steps
 # http://gerrit.dirtyunicorns.com/#/c/17297/ and http://gerrit.dirtyunicorns.com/#/c/17296/
 pushd "$LOCAL_REPO/frameworks/base"
@@ -112,6 +93,100 @@ pushd "$LOCAL_REPO/kernel/oneplus/msm8974"
   #sed -i 's#CONFIG_HW_RANDOM_MSM=y#CONFIG_DIAG_CHAR=y\nCONFIG_HW_RANDOM=y\nCONFIG_HW_RANDOM_MSM=y#' arch/arm/configs/bacon_defconfig
   sed -i 's#CONFIG_HW_RANDOM_MSM=y#CONFIG_DIAG_CHAR=y\nCONFIG_HW_RANDOM_MSM=y#' arch/arm/configs/bacon_defconfig
   git add $(git status -s | awk '{print $2}') && git commit -m "Enable diagnostics for SnoopSnitch utility support"
+  # hid: Add driver for FiiO USB DAC
+  git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/10/120110/1 && git cherry-pick FETCH_HEAD
+popd
+
+pushd "$LOCAL_REPO/device/oneplus/bacon"
+  sed -i "s#SnapdragonCamera#Snap#" bacon.mk
+  git add $(git status -s | awk '{print $2}') && git commit -m "Replacing SnapdragonCamera with Snap"
+popd
+
+pushd "$LOCAL_REPO/frameworks/base"
+  git apply $HOME/uber-saber/patches/lower_highspeed.patch
+  git add $(git status -s | awk '{print $2}') && git commit -m "Adding missing high speed qualities for Snap"
+  # RemoteController: extract interface conflicting with CTS test (1/2) (http://review.cyanogenmod.org/#/c/143310/)
+  git fetch http://review.cyanogenmod.org/CyanogenMod/android_frameworks_base refs/changes/10/143310/3 && git cherry-pick FETCH_HEAD
+popd
+
+# bacon: Disable VoIP offload (http://review.cyanogenmod.org/#/c/136065/)
+pushd "$LOCAL_REPO/device/oneplus/bacon"
+  git remote add sultan https://github.com/sultanxda/android_device_oneplus_bacon.git
+  git fetch sultan
+  git cherry-pick f730ae48f890f8bb0bc7dfaa9ce24ba25de4108d || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
+  git remote rm sultan
+  cp audio/audio_effects.conf $LOCAL_REPO/device/oppo/msm8974-common/audio/
+  git rm audio/audio_effects.conf && git commit -m "Fixing LP structure"
+popd
+pushd "$LOCAL_REPO/device/oppo/msm8974-common"
+  sed -i 's/tinymix/libqcomvoiceprocessingdescriptors \\\n    tinymix/' msm8974.mk
+  git add $(git status -s | awk '{print $2}') && git commit -m "bacon: Disable VoIP offload"
+popd
+
+# bacon: Don't end up on ULL for media playback
+pushd "$LOCAL_REPO/device/oneplus/bacon"
+  git remote add sultan https://github.com/sultanxda/android_device_oneplus_bacon.git
+  git fetch sultan
+  git cherry-pick 4025ba987be315303773e661bf021ef7ac6f08d7 || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
+  git remote rm sultan
+popd
+
+# bacon: Update thermal configuration for new 8-zone driver
+pushd "$LOCAL_REPO/device/oppo/msm8974-common"
+  git apply $HOME/uber-saber/patches/android_device_oneplus_bacon_097b09ac1cd1638f762bc6a2ab6b1804a862806c.patch
+  git add $(git status -s | awk '{print $2}') && git commit -m "bacon: Update thermal configuration for new 8-zone driver"
+popd
+
+# Settings: restore proper live display color profile
+pushd "$LOCAL_REPO/packages/apps/Settings"
+  git fetch http://review.cyanogenmod.org/CyanogenMod/android_packages_apps_Settings refs/changes/49/142049/2 && git cherry-pick FETCH_HEAD
+popd
+
+# IncallUI: Screen doesn't wakeup after MT/MO call disconnect (http://review.cyanogenmod.org/#/c/143388/)
+pushd "$LOCAL_REPO/packages/apps/InCallUI"
+  git fetch http://review.cyanogenmod.org/CyanogenMod/android_packages_apps_InCallUI refs/changes/88/143388/1 && git cherry-pick FETCH_HEAD
+popd
+
+# Google May security bulletin - at least for kernel
+pushd "$LOCAL_REPO/kernel/oneplus/msm8974"
+  # ALSA: hrtimer: Fix stall by hrtimer_cancel() (http://review.cyanogenmod.org/#/c/143269/) - CVE-2016-2549
+  git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/69/143269/1 && git cherry-pick FETCH_HEAD
+  # pipe: limit the per-user amount of pages allocated in pipes (http://review.cyanogenmod.org/#/c/143268/) - CVE-2016-2847
+  git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/68/143268/1 && git cherry-pick FETCH_HEAD
+  # ALSA: timer: Harden slave timer list handling (http://review.cyanogenmod.org/#/c/143267/) - CVE-2016-2547
+  git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/67/143267/1 && git cherry-pick FETCH_HEAD
+  # ALSA: timer: Fix race among timer ioctls (http://review.cyanogenmod.org/#/c/143266/) - CVE-2016-2546
+  git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/66/143266/1 && git cherry-pick FETCH_HEAD
+  # ALSA: timer: Fix double unlink of active_list (http://review.cyanogenmod.org/#/c/143265/) - CVE-2016-2545
+  git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/65/143265/1 && git cherry-pick FETCH_HEAD
+  # ALSA: usb-audio: avoid freeing umidi object twice (http://review.cyanogenmod.org/#/c/143264/) - CVE-2016-2384
+  git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/64/143264/1 && git cherry-pick FETCH_HEAD
+popd
+
+exit 0
+
+# repo is now on branch cm-12.1, therefore "repo sync" does not drop the changes
+pushd "$LOCAL_REPO/hardware/qcom/media-caf/msm8974"
+  git remote add sultan https://github.com/sultanxda/android_hardware_qcom_media.git
+  git fetch sultan
+  git cherry-pick 6c65aa27f1e7f2c633e8996b04e8d3e123f2b50e
+  git cherry-pick 0f6c707bff89ccd3db4cb3b8b044761b7e674e93 || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
+  git cherry-pick 1afc24230b1fecd9b2ec9780b72c6af5b3154646 || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
+  git cherry-pick dc64230278eb5685342b8082036772b6415cc5cb
+  git remote rm sultan
+popd
+
+exit 0
+
+#################
+
+# Force OpenWeatherMap to be the weather provider - Yahoo changed API again >_<
+pushd "$LOCAL_REPO/packages/apps/LockClock"
+  git reset --hard && git clean -f -d
+  wget -q https://github.com/sultanxda/android_packages_apps_LockClock/commit/201e3f432b9266dc7cb3d35a909e7710f9017ceb.patch
+  patch -p1 -s < 201e3f432b9266dc7cb3d35a909e7710f9017ceb.patch
+  git clean -f -d
+  git add $(git status -s | awk '{print $2}') && git commit -m "Force OpenWeatherMap to be the weather provider"
 popd
 
 # Fix for Sultan's RIL at LP - compiled sap-api.proto has "#include <string>" line, and compiler has no idea where to get this header :(
@@ -120,10 +195,6 @@ pushd "$LOCAL_REPO/hardware/ril-caf"
   git revert ed24474ebf87f38112129146e901590b8f8c757e || git rm libril/?ilS* && git revert --continue
   git revert --no-edit 902098d12d7f14f42dac9b573a6be76160189591
 popd
-
-exit 0
-
-#################
 
 # LZ4
 pushd "$LOCAL_REPO/kernel/oneplus/msm8974"
