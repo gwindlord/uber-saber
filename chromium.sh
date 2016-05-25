@@ -10,6 +10,7 @@ fi
 set -e
 
 CHROMIUM_DIR="/mnt/sdc/chromium"
+#CHROMIUM_DIR="/mnt/sdc/chromium50"
 
 pushd "$CHROMIUM_DIR"
   ./build/update.sh

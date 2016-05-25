@@ -36,6 +36,7 @@ pushd "$LOCAL_REPO/hardware/qcom/audio-caf/msm8974"
   git fetch CM
   git cherry-pick 506b1e167f3e1b5186aa62d3dc4aabaf9024d53c
   git remote rm CM
+
   # hal: Reduce minimum offload fragment size for PCM offload (http://review.cyanogenmod.org/#/c/135647/)
   git fetch http://review.cyanogenmod.org/CyanogenMod/android_hardware_qcom_audio refs/changes/47/135647/2 && git cherry-pick FETCH_HEAD
 popd
@@ -93,6 +94,7 @@ pushd "$LOCAL_REPO/kernel/oneplus/msm8974"
   #sed -i 's#CONFIG_HW_RANDOM_MSM=y#CONFIG_DIAG_CHAR=y\nCONFIG_HW_RANDOM=y\nCONFIG_HW_RANDOM_MSM=y#' arch/arm/configs/bacon_defconfig
   sed -i 's#CONFIG_HW_RANDOM_MSM=y#CONFIG_DIAG_CHAR=y\nCONFIG_HW_RANDOM_MSM=y#' arch/arm/configs/bacon_defconfig
   git add $(git status -s | awk '{print $2}') && git commit -m "Enable diagnostics for SnoopSnitch utility support"
+
   # hid: Add driver for FiiO USB DAC
   git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/10/120110/1 && git cherry-pick FETCH_HEAD
 popd
@@ -105,16 +107,14 @@ popd
 pushd "$LOCAL_REPO/frameworks/base"
   git apply $HOME/uber-saber/patches/lower_highspeed.patch
   git add $(git status -s | awk '{print $2}') && git commit -m "Adding missing high speed qualities for Snap"
+
   # RemoteController: extract interface conflicting with CTS test (1/2) (http://review.cyanogenmod.org/#/c/143310/)
   git fetch http://review.cyanogenmod.org/CyanogenMod/android_frameworks_base refs/changes/10/143310/3 && git cherry-pick FETCH_HEAD
 popd
 
 # bacon: Disable VoIP offload (http://review.cyanogenmod.org/#/c/136065/)
 pushd "$LOCAL_REPO/device/oneplus/bacon"
-  git remote add sultan https://github.com/sultanxda/android_device_oneplus_bacon.git
-  git fetch sultan
   git cherry-pick f730ae48f890f8bb0bc7dfaa9ce24ba25de4108d || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
-  git remote rm sultan
   cp audio/audio_effects.conf $LOCAL_REPO/device/oppo/msm8974-common/audio/
   git rm audio/audio_effects.conf && git commit -m "Fixing LP structure"
 popd
@@ -123,12 +123,20 @@ pushd "$LOCAL_REPO/device/oppo/msm8974-common"
   git add $(git status -s | awk '{print $2}') && git commit -m "bacon: Disable VoIP offload"
 popd
 
-# bacon: Don't end up on ULL for media playback
 pushd "$LOCAL_REPO/device/oneplus/bacon"
-  git remote add sultan https://github.com/sultanxda/android_device_oneplus_bacon.git
-  git fetch sultan
+  # bacon: Don't end up on ULL for media playback
   git cherry-pick 4025ba987be315303773e661bf021ef7ac6f08d7 || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
-  git remote rm sultan
+  git cherry-pick ecf8af391a1711b04b4e04687fb5724afbd876d9
+
+  sed -i 's#persist.audio.fluence.voicecall=true#drm.service.enabled=true\npersist.audio.fluence.voicecall=true#' system.prop
+  git add $(git status -s | awk '{print $2}') && git commit -m "bacon: Enable DRM service for Media Scanner"
+  sed -i 's#TARGET_USERIMAGES_USE_F2FS := true#TARGET_USERIMAGES_USE_F2FS := true\n\# GPS\nBOARD_VENDOR_QCOM_LOC_PDK_FEATURE_SET := true\nUSE_DEVICE_SPECIFIC_GPS := true\nUSE_DEVICE_SPECIFIC_LOC_API := true#' BoardConfig.mk
+  git add $(git status -s | awk '{print $2}') && git commit -m "bacon: set BOARD_VENDOR_QCOM_LOC_PDK_FEATURE_SET and USE_DEVICE_SPECIFIC_GPS"
+
+  # bacon: Add missing ULL usecases (http://review.cyanogenmod.org/#/c/142139/)
+  git fetch http://review.cyanogenmod.org/CyanogenMod/android_device_oneplus_bacon refs/changes/39/142139/2 && git cherry-pick FETCH_HEAD
+  # bacon: Add RAW path on primary output (http://review.cyanogenmod.org/#/c/142138/)
+  git fetch http://review.cyanogenmod.org/CyanogenMod/android_device_oneplus_bacon refs/changes/38/142138/2 && git cherry-pick FETCH_HEAD || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
 popd
 
 # bacon: Update thermal configuration for new 8-zone driver
@@ -147,33 +155,14 @@ pushd "$LOCAL_REPO/packages/apps/InCallUI"
   git fetch http://review.cyanogenmod.org/CyanogenMod/android_packages_apps_InCallUI refs/changes/88/143388/1 && git cherry-pick FETCH_HEAD
 popd
 
-# Google May security bulletin - at least for kernel
-pushd "$LOCAL_REPO/kernel/oneplus/msm8974"
-  # ALSA: hrtimer: Fix stall by hrtimer_cancel() (http://review.cyanogenmod.org/#/c/143269/) - CVE-2016-2549
-  git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/69/143269/1 && git cherry-pick FETCH_HEAD
-  # pipe: limit the per-user amount of pages allocated in pipes (http://review.cyanogenmod.org/#/c/143268/) - CVE-2016-2847
-  git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/68/143268/1 && git cherry-pick FETCH_HEAD
-  # ALSA: timer: Harden slave timer list handling (http://review.cyanogenmod.org/#/c/143267/) - CVE-2016-2547
-  git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/67/143267/1 && git cherry-pick FETCH_HEAD
-  # ALSA: timer: Fix race among timer ioctls (http://review.cyanogenmod.org/#/c/143266/) - CVE-2016-2546
-  git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/66/143266/1 && git cherry-pick FETCH_HEAD
-  # ALSA: timer: Fix double unlink of active_list (http://review.cyanogenmod.org/#/c/143265/) - CVE-2016-2545
-  git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/65/143265/1 && git cherry-pick FETCH_HEAD
-  # ALSA: usb-audio: avoid freeing umidi object twice (http://review.cyanogenmod.org/#/c/143264/) - CVE-2016-2384
-  git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/64/143264/1 && git cherry-pick FETCH_HEAD
-popd
-
 exit 0
 
 # repo is now on branch cm-12.1, therefore "repo sync" does not drop the changes
 pushd "$LOCAL_REPO/hardware/qcom/media-caf/msm8974"
-  git remote add sultan https://github.com/sultanxda/android_hardware_qcom_media.git
-  git fetch sultan
   git cherry-pick 6c65aa27f1e7f2c633e8996b04e8d3e123f2b50e
   git cherry-pick 0f6c707bff89ccd3db4cb3b8b044761b7e674e93 || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
   git cherry-pick 1afc24230b1fecd9b2ec9780b72c6af5b3154646 || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
   git cherry-pick dc64230278eb5685342b8082036772b6415cc5cb
-  git remote rm sultan
 popd
 
 exit 0

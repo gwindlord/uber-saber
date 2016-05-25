@@ -126,14 +126,24 @@ popd
 
 pushd "$DEVICE_ONEPLUS_REPO"
   # fixing build - msm8974: remove unused resources
-  git remote add YoshiShaPow https://github.com/YoshiShaPow/android_device_oneplus_bacon.git
-  git fetch YoshiShaPow
-  git cherry-pick 58fe5f0b0431eda155827f45e61f574838a23ba1
-  git cherry-pick 76250cf690ea9ba54a3436c2781e73ed788cf3bc
-  git cherry-pick 7ede547aa174bf9b857c285aa20078fa515c9b84
-  git cherry-pick 7064a00e4454315e7d8dd2514dcf8d2d31ccdba6
-  git cherry-pick 5eb42a3da06f71e0ad0154a766a81773259dd9b8
-  git remote rm YoshiShaPow
+#  git remote add YoshiShaPow https://github.com/YoshiShaPow/android_device_oneplus_bacon.git
+#  git fetch YoshiShaPow
+#  git cherry-pick 58fe5f0b0431eda155827f45e61f574838a23ba1
+#  git cherry-pick 76250cf690ea9ba54a3436c2781e73ed788cf3bc
+#  git cherry-pick 7ede547aa174bf9b857c285aa20078fa515c9b84
+#  git cherry-pick 7064a00e4454315e7d8dd2514dcf8d2d31ccdba6
+#  git cherry-pick 5eb42a3da06f71e0ad0154a766a81773259dd9b8
+#  git remote rm YoshiShaPow
+
+  # Slimfy CM
+  git remote add SlimRoms https://github.com/SlimRoms/device_oneplus_bacon.git
+  git fetch SlimRoms
+  git cherry-pick 12002985e992dfd5103a04a05bb9a03c2c7cd52b || git add BoardConfig.mk overlay/frameworks/base/core/res/res/values/config.xml && git rm cm.dependencies && git cherry-pick --continue
+  git remote rm SlimRoms
+
+  sed -i 's#bacon_defconfig#bacon_defconfig\nTARGET_GCC_VERSION_EXP=4.9-cortex-a15\nSUPPRES_UNUSED_WARNING=true#' BoardConfig.mk
+  git add $(git status -s | awk '{print $2}') && git commit -m "Cortex 4.9 GCC and unused warnings suppressed"
+
   # bacon: Re-enable Fluence from CM13
   git cherry-pick c31a9e117266929b5ff15c665b6f587ff95f8f0f || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
   git cherry-pick 4303c6dbfd49831388fc53b702650a1492b2b9d8 || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
@@ -141,6 +151,7 @@ pushd "$DEVICE_ONEPLUS_REPO"
   mv audio/acdb/MTP_Handset_cal.acdb $DEVICE_REPO/audio/acdb/
   mv audio/acdb/MTP_Speaker_cal.acdb $DEVICE_REPO/audio/acdb/
   git rm $(git status -s | awk '{print $2}') && git commit -m "Moving necessary 5.1 files"
+
   sed -i 's#persist.audio.fluence.voicecall=true#persist.audio.fluence.voicecall=true\npersist.audio.fluence.voicerec=false\npersist.audio.fluence.speaker=false\nro.ril.amr.wideband.enable=1#' system.prop
   sed -Ei -z 's#(\s+<path name="ear">\n\s+<ctl name="RX1 MIX1 INP1" value="RX1" />\n\s+<ctl name="CLASS_H_DSM MUX" value="DSM_HPHL_RX1" />\n\s+)<ctl name="RX1 Digital Volume" value="90" />#\1<ctl name="RX1 Digital Volume" value="95" />#' audio/mixer_paths.xml
   sed -Ei -z 's#(\s+)<ctl name="RX3 Digital Volume" value="80" />#\1<ctl name="RX3 Digital Volume" value="89" />#' audio/mixer_paths.xml

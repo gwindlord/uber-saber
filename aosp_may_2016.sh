@@ -30,21 +30,10 @@ pushd "$LOCAL_REPO/system/core"
   git apply $HOME/uber-saber/patches/ad54cfed4516292654c997910839153264ae00a0.patch
   git add $(git status -s | awk '{print $2}') && git commit -m "Don't demangle symbol names."
 popd
-pushd "$LOCAL_REPO/external/bluetooth/bluedroid"
-  git remote add aosp https://android.googlesource.com/platform/system/bt && git fetch aosp
-  git cherry-pick 9b534de2aca5d790c2a1c4d76b545f16137d95dd
-  git remote rm aosp
-popd
 pushd "$LOCAL_REPO/frameworks/native"
   git remote add aosp https://android.googlesource.com/platform/frameworks/native && git fetch aosp
   git cherry-pick a59b827869a2ea04022dd225007f29af8d61837a
   git cherry-pick a30d7d90c4f718e46fb41a99b3d52800e1011b73
-  git remote rm aosp
-popd
-pushd "$LOCAL_REPO/external/wpa_supplicant_8"
-  git remote add aosp https://android.googlesource.com/platform/external/wpa_supplicant_8 && git fetch aosp
-  git cherry-pick b79e09574e50e168dd5f19d540ae0b9a05bd1535
-  git cherry-pick b845b81ec6d724bd359cdb77f515722dd4066cf8
   git remote rm aosp
 popd
 pushd "$LOCAL_REPO/frameworks/av"
@@ -58,16 +47,7 @@ pushd "$LOCAL_REPO/frameworks/av"
   git cherry-pick daa85dac2055b22dabbb3b4e537597e6ab73a866
   git remote rm aosp
 popd
-pushd "$LOCAL_REPO/packages/apps/UnifiedEmail"
-  git remote add aosp https://android.googlesource.com/platform/packages/apps/UnifiedEmail && git fetch aosp
-  git cherry-pick a55168330d9326ff2120285763c818733590266a
-  git remote rm aosp
-popd
-pushd "$LOCAL_REPO/packages/apps/Email"
-  git remote add aosp https://android.googlesource.com/platform/packages/apps/Email && git fetch aosp
-  git cherry-pick 2791f0b33b610247ef87278862e66c6045f89693
-  git remote rm aosp
-popd
+
 pushd "$LOCAL_REPO/frameworks/base"
   #git remote add aosp https://android.googlesource.com/platform/frameworks/base && git fetch aosp
   #git cherry-pick 12332e05f632794e18ea8c4ac52c98e82532e5db
@@ -81,4 +61,28 @@ popd
 pushd "$LOCAL_REPO/external/openssl"
   git apply $HOME/uber-saber/patches/CVE-2016-0705.patch
   git add $(git status -s | awk '{print $2}') && git commit -m "Remove broken DSA private key workarounds."
+popd
+
+exit 0
+
+pushd "$LOCAL_REPO/external/bluetooth/bluedroid"
+  git remote add aosp https://android.googlesource.com/platform/system/bt && git fetch aosp
+  git cherry-pick 9b534de2aca5d790c2a1c4d76b545f16137d95dd
+  git remote rm aosp
+popd
+pushd "$LOCAL_REPO/external/wpa_supplicant_8"
+  git remote add aosp https://android.googlesource.com/platform/external/wpa_supplicant_8 && git fetch aosp
+  git cherry-pick b79e09574e50e168dd5f19d540ae0b9a05bd1535
+  git cherry-pick b845b81ec6d724bd359cdb77f515722dd4066cf8
+  git remote rm aosp
+popd
+pushd "$LOCAL_REPO/packages/apps/UnifiedEmail"
+  git remote add aosp https://android.googlesource.com/platform/packages/apps/UnifiedEmail && git fetch aosp
+  git cherry-pick a55168330d9326ff2120285763c818733590266a
+  git remote rm aosp
+popd
+pushd "$LOCAL_REPO/packages/apps/Email"
+  git remote add aosp https://android.googlesource.com/platform/packages/apps/Email && git fetch aosp
+  git cherry-pick 2791f0b33b610247ef87278862e66c6045f89693
+  git remote rm aosp
 popd
