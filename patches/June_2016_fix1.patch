@@ -1,0 +1,17 @@
+diff --git a/media/libstagefright/include/SoftOMXComponent.h b/media/libstagefright/include/SoftOMXComponent.h
+index 3ab6f88..a561e89 100644
+--- a/media/libstagefright/include/SoftOMXComponent.h
++++ b/media/libstagefright/include/SoftOMXComponent.h
+@@ -170,12 +170,6 @@ private:
+ 
+ template<typename T>
+ bool isValidOMXParam(T *a) {
+-  static_assert(offsetof(typeof(*a), nSize) == 0, "nSize not at offset 0");
+-  static_assert(std::is_same< decltype(a->nSize), OMX_U32>::value, "nSize has wrong type");
+-  static_assert(offsetof(typeof(*a), nVersion) == 4, "nVersion not at offset 4");
+-  static_assert(std::is_same< decltype(a->nVersion), OMX_VERSIONTYPE>::value,
+-          "nVersion has wrong type");
+-
+   if (a->nSize < sizeof(*a)) {
+       ALOGE("b/27207275: need %zu, got %u", sizeof(*a), a->nSize);
+       android_errorWriteLog(0x534e4554, "27207275");

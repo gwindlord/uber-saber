@@ -55,10 +55,10 @@ pushd "$DEVICE_REPO"
   # msm8974: Enable adaptive LMK (http://review.cyanogenmod.org/#/c/103749/)
   git fetch http://review.cyanogenmod.org/CyanogenMod/android_device_oppo_msm8974-common refs/changes/49/103749/1 && git cherry-pick FETCH_HEAD
   # fixing build - msm8974: remove unused resources
-  git remote add YoshiShaPow https://github.com/YoshiShaPow/android_device_oppo_msm8974-common.git
-  git fetch YoshiShaPow
+  git remote add kwoktopus https://github.com/kwoktopus/android_device_oppo_msm8974-common.git
+  git fetch kwoktopus
   git cherry-pick 2cdb7c4ddb349be16ee7ecfdb4f1bc634c0d267d
-  git remote rm YoshiShaPow
+  git remote rm kwoktopus
 popd
 
 # liblog: Silence spammy logs from camera blobs (AEC_PORT and mm-camera)
@@ -126,14 +126,14 @@ popd
 
 pushd "$DEVICE_ONEPLUS_REPO"
   # fixing build - msm8974: remove unused resources
-#  git remote add YoshiShaPow https://github.com/YoshiShaPow/android_device_oneplus_bacon.git
-#  git fetch YoshiShaPow
+#  git remote add kwoktopus https://github.com/kwoktopus/android_device_oneplus_bacon.git
+#  git fetch kwoktopus
 #  git cherry-pick 58fe5f0b0431eda155827f45e61f574838a23ba1
 #  git cherry-pick 76250cf690ea9ba54a3436c2781e73ed788cf3bc
 #  git cherry-pick 7ede547aa174bf9b857c285aa20078fa515c9b84
 #  git cherry-pick 7064a00e4454315e7d8dd2514dcf8d2d31ccdba6
 #  git cherry-pick 5eb42a3da06f71e0ad0154a766a81773259dd9b8
-#  git remote rm YoshiShaPow
+#  git remote rm kwoktopus
 
   # Slimfy CM
   git remote add SlimRoms https://github.com/SlimRoms/device_oneplus_bacon.git
@@ -173,8 +173,12 @@ popd
 
 pushd "$LOCAL_REPO/external/sqlite"
   cp $SCRIPT_DIR/patches/sqlite3.11.1.patch .
-  git apply sqlite3.11.1.patch && git add $(git status -s | awk '{print $2}') && git commit -m "Upgrade SQLite to 3.11.1"
-  rm sqlite3.11.1.patch
+  git apply sqlite3.11.1.patch && rm sqlite3.11.1.patch
+  git add $(git status -s | awk '{print $2}') && git commit -m "Upgrade SQLite to 3.11.1"
+
+  cp $SCRIPT_DIR/patches/sqlite3.13.0.patch .
+  git apply sqlite3.13.0.patch && rm sqlite3.13.0.patch
+  git add $(git status -s | awk '{print $2}') && git commit -m "Upgrade SQLite to 3.13.0"
 popd
 
 #################################################################

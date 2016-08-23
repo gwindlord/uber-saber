@@ -30,24 +30,23 @@ popd
 pushd "$LOCAL_REPO/packages/services/Telephony/"
   git fetch http://review.cyanogenmod.org/CyanogenMod/android_packages_services_Telephony refs/changes/08/129008/1 && git cherry-pick FETCH_HEAD
 popd
-pushd "$LOCAL_REPO/hardware/qcom/audio-caf/msm8974"
-  # hal: APQ8084 uses AUDIO_PARAMETER_KEY_BT_SCO_WB for bluetooth wideband
-  git remote add CM https://github.com/CyanogenMod/android_hardware_qcom_audio.git
-  git fetch CM
-  git cherry-pick 506b1e167f3e1b5186aa62d3dc4aabaf9024d53c
-  git remote rm CM
 
-  # hal: Reduce minimum offload fragment size for PCM offload (http://review.cyanogenmod.org/#/c/135647/)
-  git fetch http://review.cyanogenmod.org/CyanogenMod/android_hardware_qcom_audio refs/changes/47/135647/2 && git cherry-pick FETCH_HEAD
-popd
+:<<comment
+  pushd "$LOCAL_REPO/hardware/qcom/audio-caf/msm8974"
+    # hal: APQ8084 uses AUDIO_PARAMETER_KEY_BT_SCO_WB for bluetooth wideband
+    git remote add CM https://github.com/CyanogenMod/android_hardware_qcom_audio.git
+    git fetch CM
+    git cherry-pick 506b1e167f3e1b5186aa62d3dc4aabaf9024d53c
+    git remote rm CM
+
+    # hal: Reduce minimum offload fragment size for PCM offload (http://review.cyanogenmod.org/#/c/135647/)
+    git fetch http://review.cyanogenmod.org/CyanogenMod/android_hardware_qcom_audio refs/changes/47/135647/2 && git cherry-pick FETCH_HEAD
+  popd
+comment
+
 # Ensure non-null encoded uri before attempting to parse (http://review.cyanogenmod.org/#/c/129294/)
 pushd "$LOCAL_REPO/packages/apps/ContactsCommon"
   git fetch http://review.cyanogenmod.org/CyanogenMod/android_packages_apps_ContactsCommon refs/changes/94/129294/1 && git cherry-pick FETCH_HEAD
-popd
-pushd "$LOCAL_REPO/device/oppo/msm8974-common/"
-  # http://review.cyanogenmod.org/#/c/135685/
-  sed -i "s#audio.offload.pcm.16bit.enable=true#audio.offload.pcm.16bit.enable=false#" msm8974.mk
-  git add $(git status -s | awk '{print $2}') && git commit -m "bacon: Disable 16-bit PCM offload for good (http://review.cyanogenmod.org/#/c/135685/)"
 popd
 
 # F2FS modification
@@ -80,28 +79,44 @@ pushd "$LOCAL_REPO/packages/apps/Dialer"
 popd
 
 # Volume steps
-# http://gerrit.dirtyunicorns.com/#/c/17297/ and http://gerrit.dirtyunicorns.com/#/c/17296/
 pushd "$LOCAL_REPO/frameworks/base"
-  git fetch http://gerrit.dirtyunicorns.com/android_frameworks_base refs/changes/97/17297/2 && git cherry-pick FETCH_HEAD
+  git remote add DU https://github.com/DirtyUnicorns/android_frameworks_base
+  git fetch DU
+  git cherry-pick cf997aa7c934f5e0d0d940aca1740f91ab3cb153
+  git remote rm DU
 popd
 pushd "$LOCAL_REPO/packages/apps/Settings"
-  git fetch http://gerrit.dirtyunicorns.com/android_packages_apps_Settings refs/changes/96/17296/3 && git cherry-pick FETCH_HEAD || git rm res/values/du_* && git apply $HOME/uber-saber/patches/volume_steps.patch && git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
+  git remote add DU https://github.com/DirtyUnicorns/android_packages_apps_Settings
+  git fetch DU
+  git cherry-pick 6de5019711057dbac93cd0d59416e02fb79ec7ba || git rm res/values/du_* && git apply $HOME/uber-saber/patches/volume_steps.patch && git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
+  git remote rm DU
 popd
 
-# Enable RNG hardware support and diagnostics for SnoopSnitch utility support
-# https://play.google.com/store/apps/details?id=de.srlabs.snoopsnitch
 pushd "$LOCAL_REPO/kernel/oneplus/msm8974"
+  # Enable RNG hardware support and diagnostics for SnoopSnitch utility support
+  # https://play.google.com/store/apps/details?id=de.srlabs.snoopsnitch
   #sed -i 's#CONFIG_HW_RANDOM_MSM=y#CONFIG_DIAG_CHAR=y\nCONFIG_HW_RANDOM=y\nCONFIG_HW_RANDOM_MSM=y#' arch/arm/configs/bacon_defconfig
   sed -i 's#CONFIG_HW_RANDOM_MSM=y#CONFIG_DIAG_CHAR=y\nCONFIG_HW_RANDOM_MSM=y#' arch/arm/configs/bacon_defconfig
   git add $(git status -s | awk '{print $2}') && git commit -m "Enable diagnostics for SnoopSnitch utility support"
 
-  # hid: Add driver for FiiO USB DAC
-  git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/10/120110/1 && git cherry-pick FETCH_HEAD
+  # USB: usbfs: fix potential infoleak in devio (http://review.cyanogenmod.org/#/c/147180/) - CVE-2016-4482
+  git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/80/147180/1 && git cherry-pick FETCH_HEAD
+  # mm, oom: base root bonus on current usage (http://review.cyanogenmod.org/#/c/141817/)
+  git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/17/141817/2 && git cherry-pick FETCH_HEAD
+  # persistent_ram: check PERSISTENT_RAM_SIG before writing (http://review.cyanogenmod.org/#/c/142042/)
+  git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/42/142042/3 && git cherry-pick FETCH_HEAD
+  # crypto: msm: qcrypto: Fix hash crash if not last issue (http://review.cyanogenmod.org/#/c/149487/)
+  git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/87/149487/1 && git cherry-pick FETCH_HEAD
+  # crypto: msm: qcrypto: fix crash in _qcrypto_tfm_complete (http://review.cyanogenmod.org/#/c/149483/)
+  git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/83/149483/1 && git cherry-pick FETCH_HEAD
 popd
 
 pushd "$LOCAL_REPO/device/oneplus/bacon"
   sed -i "s#SnapdragonCamera#Snap#" bacon.mk
   git add $(git status -s | awk '{print $2}') && git commit -m "Replacing SnapdragonCamera with Snap"
+
+  # bacon: Remove command-line parameters used for debugging
+  git cherry-pick 6a5d2088b8efa2b72bf7d389972b85ec075e9d02 || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
 popd
 
 pushd "$LOCAL_REPO/frameworks/base"
@@ -110,6 +125,12 @@ pushd "$LOCAL_REPO/frameworks/base"
 
   # RemoteController: extract interface conflicting with CTS test (1/2) (http://review.cyanogenmod.org/#/c/143310/)
   git fetch http://review.cyanogenmod.org/CyanogenMod/android_frameworks_base refs/changes/10/143310/3 && git cherry-pick FETCH_HEAD
+
+  # Dynamically enable MSB AGPS at runtime for newer baseband versions
+  git remote add sultan https://github.com/sultanxda/android_frameworks_base.git
+  git fetch sultan
+  git cherry-pick d1ca594271e8017d2301f8702362217e8ac136ba || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
+  git remote rm sultan
 popd
 
 # bacon: Disable VoIP offload (http://review.cyanogenmod.org/#/c/136065/)
@@ -121,6 +142,12 @@ popd
 pushd "$LOCAL_REPO/device/oppo/msm8974-common"
   sed -i 's/tinymix/libqcomvoiceprocessingdescriptors \\\n    tinymix/' msm8974.mk
   git add $(git status -s | awk '{print $2}') && git commit -m "bacon: Disable VoIP offload"
+
+  # bacon: Don't override GPS SUPL version
+  git remote add sultan https://github.com/sultanxda/android_device_oneplus_bacon
+  git fetch sultan
+  git cherry-pick 3612d54b6f19c851e7ad5a8850da5c3671196760 || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
+  git remote rm sultan
 popd
 
 pushd "$LOCAL_REPO/device/oneplus/bacon"
@@ -137,12 +164,44 @@ pushd "$LOCAL_REPO/device/oneplus/bacon"
   git fetch http://review.cyanogenmod.org/CyanogenMod/android_device_oneplus_bacon refs/changes/39/142139/2 && git cherry-pick FETCH_HEAD
   # bacon: Add RAW path on primary output (http://review.cyanogenmod.org/#/c/142138/)
   git fetch http://review.cyanogenmod.org/CyanogenMod/android_device_oneplus_bacon refs/changes/38/142138/2 && git cherry-pick FETCH_HEAD || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
+
+  # getting back PCM offload - need this for Poweramp Hi-Res output
+  # hope only Miitomo app will have choppy audio playback
+  git revert --no-edit b28d34983a7354a5957ee7ee3d80279be875aab7
+
+  # Revert "bacon: disable Mifare Reader to fix freeze after scanning MClassic"
+  git cherry-pick 37dd735c5c9b2d21f84d5ec9efba55afb8396409
+
+  # bacon: add NFA_PROPRIETARY_CFG for proper Mifare Classic support
+  git cherry-pick 5f83ae9a018dd5be75a2ec4f7a88b3478b1a9521
+
+#  git apply $HOME/uber-saber/patches/android_device_oneplus_bacon_8cb14e6b0465542c117d0328dca3b82f03604d9e.patch
+#  git add $(git status -s | awk '{print $2}') && git commit -m "bacon: Use NQ NFC for Mifare Classic support"
+
+  # bacon: add first_api_level for CTS
+  git cherry-pick 32fc93fc47a3f7fc02f210a8ed92f52e4e5d28c0 || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
+
 popd
 
-# bacon: Update thermal configuration for new 8-zone driver
 pushd "$LOCAL_REPO/device/oppo/msm8974-common"
+  # bacon: Update thermal configuration for new 8-zone driver
   git apply $HOME/uber-saber/patches/android_device_oneplus_bacon_097b09ac1cd1638f762bc6a2ab6b1804a862806c.patch
   git add $(git status -s | awk '{print $2}') && git commit -m "bacon: Update thermal configuration for new 8-zone driver"
+
+  sed -i 's#above_hispeed_delay "20000 1400000:40000 1700000:20000"#above_hispeed_delay "19000 1400000:39000 1700000:19000"#' rootdir/etc/init.qcom-common.rc
+  sed -i 's#go_hispeed_load 70#go_hispeed_load 99#' rootdir/etc/init.qcom-common.rc
+  git add $(git status -s | awk '{print $2}') && git commit -m "bacon: Delicious butter"
+
+  sed -i 's#write /sys/block/mmcblk0/bdi/read_ahead_kb 512#setprop sys.io.scheduler noop\n    write /sys/block/mmcblk0/bdi/read_ahead_kb 512#' rootdir/etc/init.qcom-common.rc
+  git add $(git status -s | awk '{print $2}') && git commit -m "bacon: Set I/O scheduler to Noop on early-init for primary eMMC device"
+
+  git apply $HOME/uber-saber/patches/3a712a50107ceece5751bb6fdd0bdfdf5cc2b4c9.patch
+  git add $(git status -s | awk '{print $2}') && git commit -m "bacon: power: Configure performance profiles"
+
+  # bacon: Sync sec_config with CAF LA.BF.1.1.3_rb1.13
+  git remote add sultan https://github.com/sultanxda/android_device_oneplus_bacon && git fetch sultan
+  git cherry-pick c6eac4868d4b786e91b293978b80c85a2de13a6b
+  git remote rm sultan
 popd
 
 # Settings: restore proper live display color profile
@@ -155,7 +214,29 @@ pushd "$LOCAL_REPO/packages/apps/InCallUI"
   git fetch http://review.cyanogenmod.org/CyanogenMod/android_packages_apps_InCallUI refs/changes/88/143388/1 && git cherry-pick FETCH_HEAD
 popd
 
+# ril: Use CLOCK_BOOTTIME instead of CLOCK_MONOTONIC
+pushd "$LOCAL_REPO/hardware/ril-caf"
+  git remote add sultan https://github.com/sultanxda/android_hardware_ril.git && git fetch sultan
+  git cherry-pick 0ccc3fc8de53bf862c9e45c1d546a68f4a21a4ae
+  git remote rm sultan
+popd
+
+pushd "$LOCAL_REPO/vendor/oneplus"
+  git apply $HOME/uber-saber/patches/004c5866123c5e6d0208a883373b2bbb760414c8.patch
+  git add $(git status -s | awk '{print $2}') && git commit -m "bacon: Remove unused blobs"
+popd
+
+# Nfc: read extra properties of Mifare Classic
+pushd "$LOCAL_REPO/packages/apps/Nfc"
+  git cherry-pick 018ec89d460f8b6389b4ffe787d293090dcc0bdd
+popd
+
 exit 0
+
+# frameworks/base: Support for third party NFC features (https://review.cyanogenmod.org/#/c/144379)
+pushd "$LOCAL_REPO/frameworks/base"
+  git fetch http://review.cyanogenmod.org/CyanogenMod/android_frameworks_base refs/changes/79/144379/2 && git cherry-pick FETCH_HEAD || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
+popd
 
 # repo is now on branch cm-12.1, therefore "repo sync" does not drop the changes
 pushd "$LOCAL_REPO/hardware/qcom/media-caf/msm8974"
@@ -165,9 +246,21 @@ pushd "$LOCAL_REPO/hardware/qcom/media-caf/msm8974"
   git cherry-pick dc64230278eb5685342b8082036772b6415cc5cb
 popd
 
-exit 0
-
 #################
+
+# libnfc-nci: Add missing support for pn547/pn544
+pushd "$LOCAL_REPO/external/libnfc-nci"
+  git remote add sultan https://github.com/sultanxda/android_vendor_nxp-nfc_opensource_libnfc-nci
+  git fetch sultan
+  git cherry-pick 8b6b584c8502eedc2210c65459b68b7c329492c4 || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
+  git remote rm sultan
+popd
+
+pushd "$LOCAL_REPO/device/oppo/msm8974-common/"
+  # http://review.cyanogenmod.org/#/c/135685/
+  sed -i "s#audio.offload.pcm.16bit.enable=true#audio.offload.pcm.16bit.enable=false#" msm8974.mk
+  git add $(git status -s | awk '{print $2}') && git commit -m "bacon: Disable 16-bit PCM offload for good (http://review.cyanogenmod.org/#/c/135685/)"
+popd
 
 # Force OpenWeatherMap to be the weather provider - Yahoo changed API again >_<
 pushd "$LOCAL_REPO/packages/apps/LockClock"

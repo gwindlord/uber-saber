@@ -1,0 +1,104 @@
+diff --git a/Android.mk b/Android.mk
+index 3744576..c98289e 100644
+--- a/Android.mk
++++ b/Android.mk
+@@ -37,9 +37,9 @@ LOCAL_PROGUARD_FLAG_FILES := proguard.flags
+ # the libraries in the APK, otherwise just put them in /system/lib and
+ # leave them out of the APK
+ ifneq (,$(TARGET_BUILD_APPS))
+-  LOCAL_JNI_SHARED_LIBRARIES := libjni_snapmosaic libjni_snaptinyplanet libRawToDng
++  LOCAL_JNI_SHARED_LIBRARIES := libjni_snapmosaic libjni_snaptinyplanet libfreedcam
+ else
+-  LOCAL_REQUIRED_MODULES := libjni_snapmosaic libjni_snaptinyplanet libRawToDng
++  LOCAL_REQUIRED_MODULES := libjni_snapmosaic libjni_snaptinyplanet libfreedcam
+ endif
+ 
+ include $(BUILD_PACKAGE)
+diff --git a/src/com/android/camera/PhotoModule.java b/src/com/android/camera/PhotoModule.java
+index beae610..6f65a02 100644
+--- a/src/com/android/camera/PhotoModule.java
++++ b/src/com/android/camera/PhotoModule.java
+@@ -103,6 +103,9 @@ import android.graphics.Color;
+ import android.graphics.Paint;
+ import android.os.SystemProperties;
+ 
++import com.freedcam.jni.RawToDng;
++import com.troop.androiddng.DngSupportedDevices;
++
+ public class PhotoModule
+         implements CameraModule,
+         PhotoController,
+diff --git a/src/com/freedcam/jni/RawToDng.java b/src/com/freedcam/jni/RawToDng.java
+index 349984a..969d360 100644
+--- a/src/com/freedcam/jni/RawToDng.java
++++ b/src/com/freedcam/jni/RawToDng.java
+@@ -3,7 +3,7 @@
+   * Copyright (C) 2013 Hensence.com
+   */
+ 
+-package com.android.camera;
++package com.freedcam.jni;
+ 
+ import java.nio.ByteBuffer;
+ import com.android.camera.util.DeviceUtils;
+@@ -14,6 +14,8 @@ import java.io.RandomAccessFile;
+ import android.util.Log;
+ import android.os.Build;
+ 
++import com.troop.androiddng.DngSupportedDevices;
++
+ public class RawToDng {
+     public static final int Qcom = 0x1;
+     public static String RGGb = "rggb";
+@@ -59,7 +61,7 @@ public class RawToDng {
+     
+     
+     static {
+-        System.loadLibrary("RawToDng");
++        System.loadLibrary("freedcam");
+     }
+     
+     private static int Calculate_rowSize(int fileSize, int height) {
+diff --git a/src/com/troop/androiddng/DngSupportedDevices.java b/src/com/troop/androiddng/DngSupportedDevices.java
+index f0cad3c..18c19a0 100644
+--- a/src/com/troop/androiddng/DngSupportedDevices.java
++++ b/src/com/troop/androiddng/DngSupportedDevices.java
+@@ -1,4 +1,4 @@
+-package com.android.camera;
++package com.troop.androiddng;
+ 
+ import com.android.camera.util.DeviceUtils;
+ 
+@@ -638,14 +638,14 @@ public class DngSupportedDevices
+         public int rawType;
+         public String BayerPattern;
+         public int rowsize;
+-        float[]matrix1;
+-        float[]matrix2;
+-        float[]neutral;
+-        float[]fowardmatrix1;
+-        float[]fowardmatrix2;
+-        float[]reductionmatrix1;
+-        float[]reductionmatrix2;
+-        float[]noiseprofile;
++        public float[]matrix1;
++        public float[]matrix2;
++        public float[]neutral;
++        public float[]fowardmatrix1;
++        public float[]fowardmatrix2;
++        public float[]reductionmatrix1;
++        public float[]reductionmatrix2;
++        public float[]noiseprofile;
+ 
+         public DngProfile(int blacklevel,int widht, int height, int rawType, String bayerPattern, int rowsize, float[]matrix1, float[] matrix2, float[]neutral,float[]fmatrix1, float[] fmatrix2,float[]rmatrix1, float[] rmatrix2,float[]noise)
+         {
+diff --git a/src/com/troop/androiddng/Matrixes.java b/src/com/troop/androiddng/Matrixes.java
+index b2a61f3..f1b7bfe 100644
+--- a/src/com/troop/androiddng/Matrixes.java
++++ b/src/com/troop/androiddng/Matrixes.java
+@@ -1,4 +1,4 @@
+-package com.android.camera;
++package com.troop.androiddng;
+ 
+ public class Matrixes
+ {

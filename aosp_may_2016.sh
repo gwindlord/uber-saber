@@ -17,12 +17,14 @@ pushd "$LOCAL_REPO/build"
 popd
 
 pushd "$LOCAL_REPO/external/aac"
-  git remote add aosp https://android.googlesource.com/platform/external/aac && git fetch aosp
+  #git remote add aosp https://android.googlesource.com/platform/external/aac
+  #git fetch aosp
   git cherry-pick 5d4405f601fa11a8955fd7611532c982420e4206
-  git remote rm aosp
+  #git remote rm aosp
 popd
 pushd "$LOCAL_REPO/external/flac"
-  git remote add aosp https://android.googlesource.com/platform/external/flac && git fetch aosp
+  git remote add aosp https://android.googlesource.com/platform/external/flac
+  git fetch aosp
   git cherry-pick b499389da21d89d32deff500376c5ee4f8f0b04c
   git remote rm aosp
 popd
@@ -31,13 +33,15 @@ pushd "$LOCAL_REPO/system/core"
   git add $(git status -s | awk '{print $2}') && git commit -m "Don't demangle symbol names."
 popd
 pushd "$LOCAL_REPO/frameworks/native"
-  git remote add aosp https://android.googlesource.com/platform/frameworks/native && git fetch aosp
+  git remote add aosp https://android.googlesource.com/platform/frameworks/native
+  git fetch aosp
   git cherry-pick a59b827869a2ea04022dd225007f29af8d61837a
   git cherry-pick a30d7d90c4f718e46fb41a99b3d52800e1011b73
   git remote rm aosp
 popd
 pushd "$LOCAL_REPO/frameworks/av"
-  git remote add aosp https://android.googlesource.com/platform/frameworks/av/ && git fetch aosp
+  git remote add aosp https://android.googlesource.com/platform/frameworks/av/
+  git fetch aosp
   git cherry-pick a2d1d85726aa2a3126e9c331a8e00a8c319c9e2b
   git cherry-pick b04aee833c5cfb6b31b8558350feb14bb1a0f353
   git cherry-pick 7fd96ebfc4c9da496c59d7c45e1f62be178e626d
@@ -56,14 +60,15 @@ pushd "$LOCAL_REPO/frameworks/base"
   git add $(git status -s | awk '{print $2}') && git commit -m "Disallow guest user from changing Wifi settings"
 popd
 
+exit 0
+
 # have to take this one from https://git.openssl.org/?p=openssl.git;a=commit;h=ab4a81f69ec88d06c9d8de15326b9296d7f498ed
 # because 6.0.1 has BoringSSL instead of OpenSSL and there is no OpenSSL fix from Google
+# CM finally fixed that
 pushd "$LOCAL_REPO/external/openssl"
   git apply $HOME/uber-saber/patches/CVE-2016-0705.patch
   git add $(git status -s | awk '{print $2}') && git commit -m "Remove broken DSA private key workarounds."
 popd
-
-exit 0
 
 pushd "$LOCAL_REPO/external/bluetooth/bluedroid"
   git remote add aosp https://android.googlesource.com/platform/system/bt && git fetch aosp

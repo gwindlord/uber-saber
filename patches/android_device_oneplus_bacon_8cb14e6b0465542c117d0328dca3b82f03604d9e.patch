@@ -1,0 +1,35 @@
+diff --git a/BoardConfig.mk b/BoardConfig.mk
+index 7b78701..20278d4 100644
+--- a/BoardConfig.mk
++++ b/BoardConfig.mk
+@@ -92,6 +92,7 @@ WITH_LZMA_OTA := true
+ BOARD_VOLD_CRYPTFS_MIGRATE := true
+ 
+ BOARD_NFC_CHIPSET := pn547
++TARGET_USES_NQ_NFC := true
+ 
+ AUDIO_FEATURE_LOW_LATENCY_PRIMARY := true
+ 
+diff --git a/bacon.mk b/bacon.mk
+index c5bebd7..0191572 100644
+--- a/bacon.mk
++++ b/bacon.mk
+@@ -44,9 +44,16 @@ PRODUCT_COPY_FILES += \
+ 
+ # NFC packages
+ PRODUCT_PACKAGES += \
+-    NfcNci \
+-    Tag \
++    NQNfcNci \
++    libnqnfc-nci \
++    libnqnfc_nci_jni \
+     nfc_nci.pn54x.default \
++    libp61-jcop-kit \
++    com.nxp.nfc.nq \
++    com.nxp.nfc.nq.xml \
++    nqnfcee_access.xml \
++    nqnfcse_access.xml \
++    Tag \
+     com.android.nfc_extras
+ 
+ # NFC access control + feature files + configuration

@@ -70,6 +70,15 @@ $SCRIPT_DIR/aosp_r37.sh $LOCAL_REPO
 # patching sources with Google May security fixes
 $SCRIPT_DIR/aosp_may_2016.sh $LOCAL_REPO
 
+# patching sources with Google June security fixes
+$SCRIPT_DIR/aosp_june_2016.sh $LOCAL_REPO
+
+# patching sources with Google July security fixes
+$SCRIPT_DIR/aosp_july_2016.sh $LOCAL_REPO
+
+# patching sources with Google August security fixes
+$SCRIPT_DIR/aosp_august_2016.sh $LOCAL_REPO
+
 # adding pre-built Chromium Snapdragon
 #$SCRIPT_DIR/chromium.sh $LOCAL_REPO
 
