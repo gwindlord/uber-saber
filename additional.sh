@@ -179,6 +179,10 @@ pushd "$LOCAL_REPO/external/sqlite"
   cp $SCRIPT_DIR/patches/sqlite3.13.0.patch .
   git apply sqlite3.13.0.patch && rm sqlite3.13.0.patch
   git add $(git status -s | awk '{print $2}') && git commit -m "Upgrade SQLite to 3.13.0"
+
+  cp $SCRIPT_DIR/patches/sqlite3.15.1.patch .
+  git apply sqlite3.15.1.patch && rm sqlite3.15.1.patch
+  git add $(git status -s | awk '{print $2}') && git commit -m "Upgrade SQLite to 3.15.1"
 popd
 
 #################################################################

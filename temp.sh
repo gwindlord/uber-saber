@@ -95,12 +95,12 @@ popd
 pushd "$LOCAL_REPO/kernel/oneplus/msm8974"
   # Enable RNG hardware support and diagnostics for SnoopSnitch utility support
   # https://play.google.com/store/apps/details?id=de.srlabs.snoopsnitch
-  #sed -i 's#CONFIG_HW_RANDOM_MSM=y#CONFIG_DIAG_CHAR=y\nCONFIG_HW_RANDOM=y\nCONFIG_HW_RANDOM_MSM=y#' arch/arm/configs/bacon_defconfig
   sed -i 's#CONFIG_HW_RANDOM_MSM=y#CONFIG_DIAG_CHAR=y\nCONFIG_HW_RANDOM_MSM=y#' arch/arm/configs/bacon_defconfig
   git add $(git status -s | awk '{print $2}') && git commit -m "Enable diagnostics for SnoopSnitch utility support"
 
   # USB: usbfs: fix potential infoleak in devio (http://review.cyanogenmod.org/#/c/147180/) - CVE-2016-4482
-  git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/80/147180/1 && git cherry-pick FETCH_HEAD
+  # Sultanxda merged it
+  #git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/80/147180/1 && git cherry-pick FETCH_HEAD
   # mm, oom: base root bonus on current usage (http://review.cyanogenmod.org/#/c/141817/)
   git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/17/141817/2 && git cherry-pick FETCH_HEAD
   # persistent_ram: check PERSISTENT_RAM_SIG before writing (http://review.cyanogenmod.org/#/c/142042/)
@@ -109,6 +109,17 @@ pushd "$LOCAL_REPO/kernel/oneplus/msm8974"
   git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/87/149487/1 && git cherry-pick FETCH_HEAD
   # crypto: msm: qcrypto: fix crash in _qcrypto_tfm_complete (http://review.cyanogenmod.org/#/c/149483/)
   git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/83/149483/1 && git cherry-pick FETCH_HEAD
+  # KEYS: Fix short sprintf buffer in /proc/keys show function (https://review.cyanogenmod.org/#/c/167139/)
+  # Sultanxda merged it
+  #git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/39/167139/1 && git cherry-pick FETCH_HEAD
+  # tcp: fix use after free in tcp_xmit_retransmit_queue() (https://review.cyanogenmod.org/#/c/167138/)
+  git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/38/167138/1 && git cherry-pick FETCH_HEAD
+  # binder: prevent kptr leak by using %pK format specifier (https://review.cyanogenmod.org/#/c/167136/)
+  git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/36/167136/1 && git cherry-pick FETCH_HEAD
+  # HID: hiddev: validate num_values for HIDIOCGUSAGES, HIDIOCSUSAGES commands (https://review.cyanogenmod.org/#/c/167134/)
+  git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/34/167134/1 && git cherry-pick FETCH_HEAD
+  # mnt: Fail collect_mounts when applied to unmounted mounts (https://review.cyanogenmod.org/#/c/167133/)
+  git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/33/167133/1 && git cherry-pick FETCH_HEAD
 popd
 
 pushd "$LOCAL_REPO/device/oneplus/bacon"
@@ -131,6 +142,7 @@ pushd "$LOCAL_REPO/frameworks/base"
   git fetch sultan
   git cherry-pick d1ca594271e8017d2301f8702362217e8ac136ba || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
   git remote rm sultan
+
 popd
 
 # bacon: Disable VoIP offload (http://review.cyanogenmod.org/#/c/136065/)
@@ -197,11 +209,14 @@ pushd "$LOCAL_REPO/device/oppo/msm8974-common"
 
   git apply $HOME/uber-saber/patches/3a712a50107ceece5751bb6fdd0bdfdf5cc2b4c9.patch
   git add $(git status -s | awk '{print $2}') && git commit -m "bacon: power: Configure performance profiles"
-
-  # bacon: Sync sec_config with CAF LA.BF.1.1.3_rb1.13
+  
   git remote add sultan https://github.com/sultanxda/android_device_oneplus_bacon && git fetch sultan
+  # bacon: Sync sec_config with CAF LA.BF.1.1.3_rb1.13
   git cherry-pick c6eac4868d4b786e91b293978b80c85a2de13a6b
+  # : Add TZ.BF.2.0-2.0.0137 TrustZone version to white list
+  git cherry-pick 124ca361647533f3548dd1a985bc3b1468c0bde9
   git remote rm sultan
+
 popd
 
 # Settings: restore proper live display color profile

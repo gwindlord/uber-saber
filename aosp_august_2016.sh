@@ -73,14 +73,20 @@ popd
 pushd "$LOCAL_REPO/kernel/oneplus/msm8974/"
   git remote add linux https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
   git fetch linux
-  git cherry-pick 5f8e44741f9f216e33736ea4ec65ca9ac03036e6 || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
+  # net: fix infoleak in rtnetlink
+  # Sultanxda merged it
+  #git cherry-pick 5f8e44741f9f216e33736ea4ec65ca9ac03036e6 || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
+  # ALSA: seq: Fix race at timer setup and close
   git cherry-pick 3567eb6af614dac436c4b16a8d426f9faed639b3
   git remote rm linux
 
   git remote add CAF https://source.codeaurora.org/quic/la/kernel/msm
   git fetch CAF
+  # [media] media: Init the reserved fields of struct media_link_desc
   git cherry-pick cc4b26575602e492efd986e9a6ffc4278cee53b5 || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
+  # msm: vidc: Check validity of userspace address
   git cherry-pick f2a3f5e63e15e97a66e8f5a300457378bcb89d9c
+  # msm: camera: Check stats index MAX in ISP driver
   git cherry-pick 8d1f7531ff379befc129a6447642061e87562bca || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
   git remote rm CAF
 popd

@@ -9,8 +9,7 @@ fi
 # errors on
 set -e
 
-CHROMIUM_DIR="/mnt/sdc/chromium"
-#CHROMIUM_DIR="/mnt/sdc/chromium50"
+CHROMIUM_DIR="/data/chromium_stable"
 
 pushd "$CHROMIUM_DIR"
   ./build/update.sh
