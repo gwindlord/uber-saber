@@ -16,6 +16,7 @@ pushd "$LOCAL_REPO/build"
   git add $(git status -s | awk '{print $2}') && git commit -m "Updating security string patch to 2016-10-01"
 popd
 pushd "$LOCAL_REPO/frameworks/native"
+  [ $(git remote | egrep \^cm) ] && git remote rm cm
   git remote add cm https://github.com/CyanogenMod/android_frameworks_native
   git fetch cm
   git cherry-pick 862a727771af5d6ec3cfa64a83bde8a6d1bef796
@@ -23,6 +24,7 @@ pushd "$LOCAL_REPO/frameworks/native"
   git remote rm cm
 popd
 pushd "$LOCAL_REPO/frameworks/av"
+  [ $(git remote | egrep \^cm) ] && git remote rm cm
   git remote add cm https://github.com/CyanogenMod/android_frameworks_av
   git fetch cm
   git cherry-pick 826b9af553ddee8fee8fa6594dd1ec3a5d1e7d7c
@@ -36,6 +38,7 @@ pushd "$LOCAL_REPO/frameworks/av"
   git remote rm cm
 popd
 pushd "$LOCAL_REPO/frameworks/base"
+  [ $(git remote | egrep \^cm) ] && git remote rm cm
   git remote add cm https://github.com/CyanogenMod/android_frameworks_base
   git fetch cm
   git cherry-pick 1a2a4df95806c551be18f90bbf0bfab93d22aac2
@@ -44,12 +47,14 @@ pushd "$LOCAL_REPO/frameworks/base"
   git remote rm cm
 popd
 pushd "$LOCAL_REPO/system/core"
+  [ $(git remote | egrep \^cm) ] && git remote rm cm
   git remote add cm https://github.com/CyanogenMod/android_system_core
   git fetch cm
   git cherry-pick 19fe3b4bc33da906a8c523e16bef5803317ddc46
   git remote rm cm
 popd
 pushd "$LOCAL_REPO/packages/providers/TelephonyProvider"
+  [ $(git remote | egrep \^cm) ] && git remote rm cm
   git remote add cm https://github.com/CyanogenMod/android_packages_providers_TelephonyProvider
   git fetch cm
   git cherry-pick 36a0ceae88ed6d45692c30302db5d2b963cf690f

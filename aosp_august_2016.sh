@@ -16,6 +16,7 @@ pushd "$LOCAL_REPO/build"
   git add $(git status -s | awk '{print $2}') && git commit -m "Updating security string patch to 2016-08-01"
 popd
 pushd "$LOCAL_REPO/frameworks/av"
+  [ $(git remote | egrep \^aosp) ] && git remote rm aosp
   git remote add aosp https://android.googlesource.com/platform/frameworks/av/
   git fetch aosp
   git cherry-pick 590d1729883f700ab905cdc9ad850f3ddd7e1f56
@@ -49,6 +50,7 @@ pushd "$LOCAL_REPO/frameworks/base"
   #git remote rm aosp
 popd
 pushd "$LOCAL_REPO/frameworks/native"
+  [ $(git remote | egrep \^aosp) ] && git remote rm aosp
   git remote add aosp https://android.googlesource.com/platform/frameworks/native
   git fetch aosp
   git cherry-pick 3bcf0caa8cca9143443814b36676b3bae33a4368
@@ -59,18 +61,21 @@ pushd "$LOCAL_REPO/frameworks/native"
   git remote rm aosp
 popd
 pushd "$LOCAL_REPO/frameworks/opt/telephony"
+  [ $(git remote | egrep \^aosp) ] && git remote rm aosp
   git remote add aosp https://android.googlesource.com/platform/frameworks/opt/telephony
   git fetch aosp
   git cherry-pick f47bc301ccbc5e6d8110afab5a1e9bac1d4ef058
   git remote rm aosp
 popd
 pushd "$LOCAL_REPO/frameworks/opt/net/wifi"
+  [ $(git remote | egrep \^aosp) ] && git remote rm aosp
   git remote add aosp https://android.googlesource.com/platform/frameworks/opt/net/wifi
   git fetch aosp
   git cherry-pick a209ff12ba9617c10550678ff93d01fb72a33399
   git remote rm aosp
 popd
 pushd "$LOCAL_REPO/kernel/oneplus/msm8974/"
+  [ $(git remote | egrep \^linux) ] && git remote rm linux
   git remote add linux https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
   git fetch linux
   # net: fix infoleak in rtnetlink
@@ -80,6 +85,7 @@ pushd "$LOCAL_REPO/kernel/oneplus/msm8974/"
   git cherry-pick 3567eb6af614dac436c4b16a8d426f9faed639b3
   git remote rm linux
 
+  [ $(git remote | egrep \^CAF) ] && git remote rm CAF
   git remote add CAF https://source.codeaurora.org/quic/la/kernel/msm
   git fetch CAF
   # [media] media: Init the reserved fields of struct media_link_desc
@@ -91,6 +97,7 @@ pushd "$LOCAL_REPO/kernel/oneplus/msm8974/"
   git remote rm CAF
 popd
 pushd "$LOCAL_REPO/system/netd"
+  [ $(git remote | egrep \^CAF) ] && git remote rm CAF
   git remote add CAF https://source.codeaurora.org/quic/la/platform/system/netd
   git fetch CAF
   git cherry-pick cc2853e6cec8ca2cf92430ad9a83358b131fc417 || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue

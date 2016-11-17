@@ -13,6 +13,7 @@ fi
 set -e
 
 pushd "$LOCAL_REPO/build"
+  [ $(git remote | egrep \^aosp_build) ] && git remote rm aosp_build
   git remote add aosp_build https://android.googlesource.com/platform/build
   git fetch aosp_build
   git cherry-pick 22c60bf23556598adff34fc585372d21f186e249
@@ -25,6 +26,7 @@ pushd "$LOCAL_REPO/build"
 popd
 
 pushd "$LOCAL_REPO/frameworks/av"
+  [ $(git remote | egrep \^aosp_frameworks_av) ] && git remote rm aosp_frameworks_av
   git remote add aosp_frameworks_av https://android.googlesource.com/platform/frameworks/av
   git fetch aosp_frameworks_av
   git cherry-pick 6616d19bac870bcec85f499f8f5c580468a31f93
@@ -35,6 +37,7 @@ pushd "$LOCAL_REPO/frameworks/av"
 popd
 
 pushd "$LOCAL_REPO/frameworks/base"
+  [ $(git remote | egrep \^aosp_frameworks_base) ] && git remote rm aosp_frameworks_base
   git remote add aosp_frameworks_base https://android.googlesource.com/platform/frameworks/base
   git fetch aosp_frameworks_base
   git cherry-pick df407ff7157c39fa149330f6784fe7d67f66b12d
@@ -46,6 +49,7 @@ pushd "$LOCAL_REPO/frameworks/base"
 popd
 
 pushd "$LOCAL_REPO/packages/apps/Settings"
+  [ $(git remote | egrep \^aosp_packages_apps_Settings) ] && git remote rm aosp_packages_apps_Settings
   git remote add aosp_packages_apps_Settings https://android.googlesource.com/platform/packages/apps/Settings
   git fetch aosp_packages_apps_Settings
   git cherry-pick 665ac7bc29396fd5af2ecfdfda2b9de7a507daa0
@@ -54,6 +58,7 @@ pushd "$LOCAL_REPO/packages/apps/Settings"
 popd
 
 pushd "$LOCAL_REPO/system/core"
+  [ $(git remote | egrep \^aosp_system_core) ] && git remote rm aosp_system_core
   git remote add aosp_system_core https://android.googlesource.com/platform/system/core
   git fetch aosp_system_core
   git cherry-pick 75ac84c0bf57d646dfae468916fcdcc071570293

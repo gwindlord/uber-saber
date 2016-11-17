@@ -13,6 +13,7 @@ fi
 set -e
 
 pushd "$LOCAL_REPO/build"
+  [ $(git remote | egrep \^aosp_build) ] && git remote rm aosp_build
   git remote add aosp_build https://android.googlesource.com/platform/build
   git fetch aosp_build
   git cherry-pick d0da231ed5e347ef78cd7cbcdef9185a1aa89016
@@ -21,6 +22,7 @@ pushd "$LOCAL_REPO/build"
 popd
 
 pushd "$LOCAL_REPO/external/skia"
+  [ $(git remote | egrep \^aosp_skia) ] && git remote rm aosp_skia
   git remote add aosp_skia https://android.googlesource.com/platform/external/skia
   git fetch aosp_skia
   git cherry-pick 3a0fdc1e084a7815b9d16c7c81cd068007b5afa1 || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
@@ -28,6 +30,7 @@ pushd "$LOCAL_REPO/external/skia"
 popd
 
 pushd "$LOCAL_REPO/frameworks/av"
+  [ $(git remote | egrep \^aosp_frameworks_av) ] && git remote rm aosp_frameworks_av
   git remote add aosp_frameworks_av https://android.googlesource.com/platform/frameworks/av
   git fetch aosp_frameworks_av
   git cherry-pick f0b53a1c06ca19656373ab48b76b71946c096a5a
@@ -45,6 +48,7 @@ pushd "$LOCAL_REPO/frameworks/av"
 popd
 
 pushd "$LOCAL_REPO/frameworks/base"
+  [ $(git remote | egrep \^aosp_frameworks_base) ] && git remote rm aosp_frameworks_base
   git remote add aosp_frameworks_base https://android.googlesource.com/platform/frameworks/base
   git fetch aosp_frameworks_base
   git cherry-pick ae98d39253ba54ddf6091ec8c3120076a6807899 || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
@@ -53,6 +57,7 @@ pushd "$LOCAL_REPO/frameworks/base"
 popd
 
 pushd "$LOCAL_REPO/frameworks/native"
+  [ $(git remote | egrep \^aosp_frameworks_native) ] && git remote rm aosp_frameworks_native
   git remote add aosp_frameworks_native https://android.googlesource.com/platform/frameworks/native
   git fetch aosp_frameworks_native
   git cherry-pick 8ac7474234d62958e88d60bc0e942711ad9272ed
@@ -60,6 +65,7 @@ pushd "$LOCAL_REPO/frameworks/native"
 popd
 
 pushd "$LOCAL_REPO/frameworks/opt/net/wifi"
+  [ $(git remote | egrep \^aosp_frameworks_opt_net_wifi) ] && git remote rm aosp_frameworks_opt_net_wifi
   git remote add aosp_frameworks_opt_net_wifi https://android.googlesource.com/platform/frameworks/opt/net/wifi
   git fetch aosp_frameworks_opt_net_wifi
   git cherry-pick c6249cce8c5025daf6f2a20fe36b7e517d5943ba

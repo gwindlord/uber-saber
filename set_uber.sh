@@ -26,6 +26,7 @@ popd
 
 # including GCC6 from DerRomtester to Sultan's kernel
 pushd "$LOCAL_REPO/kernel/oneplus/msm8974/"
+  [ $(git remote | egrep \^DerRomtester) ] && git remote rm DerRomtester
   git remote add DerRomtester https://github.com/DerRomtester/android_kernel_oneplus_msm8974.git
   git fetch DerRomtester
   #git cherry-pick 0ceb6e5718203c572a45805990316c16243f5717

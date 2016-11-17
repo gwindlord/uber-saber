@@ -35,6 +35,7 @@ DIALER_REPO="$LOCAL_REPO/packages/apps/Dialer"
 
 pushd "$VENDOR_REPO"
   # setting Nova as default launcher
+  [ $(git remote | egrep \^UberCM) ] && git remote rm UberCM
   git remote add UberCM https://github.com/UberCM/vendor_ubercm.git
   git fetch UberCM
   git cherry-pick 45c7ba3f11968e23cbaa1c93bbd9a91f0ad9f8d1 || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
@@ -55,14 +56,20 @@ pushd "$DEVICE_REPO"
   # msm8974: Enable adaptive LMK (http://review.cyanogenmod.org/#/c/103749/)
   git fetch http://review.cyanogenmod.org/CyanogenMod/android_device_oppo_msm8974-common refs/changes/49/103749/1 && git cherry-pick FETCH_HEAD
   # fixing build - msm8974: remove unused resources
-  git remote add kwoktopus https://github.com/kwoktopus/android_device_oppo_msm8974-common.git
-  git fetch kwoktopus
-  git cherry-pick 2cdb7c4ddb349be16ee7ecfdb4f1bc634c0d267d
-  git remote rm kwoktopus
+  # fixing build - msm8974: remove unused resources
+  #git remote add kwoktopus https://github.com/kwoktopus/android_device_oppo_msm8974-common.git
+  #git fetch kwoktopus
+  #git cherry-pick 2cdb7c4ddb349be16ee7ecfdb4f1bc634c0d267d
+  #git remote rm kwoktopus
+  
+  sed -i 's#<integer name="config_deviceHardwareWakeKeys">64</integer>#<!--integer name="config_deviceHardwareWakeKeys">64</integer-->#' overlay/frameworks/base/core/res/res/values/config.xml
+  sed -i 's#<integer name="config_longPressOnMenuBehavior">2</integer>#<!--integer name="config_longPressOnMenuBehavior">2</integer-->#' overlay/frameworks/base/core/res/res/values/config.xml
+  git add $(git status -s | awk '{print $2}') && git commit -m "msm8974: remove unused resources"
 popd
 
 # liblog: Silence spammy logs from camera blobs (AEC_PORT and mm-camera)
 pushd "$SYSTEM_CORE"
+  [ $(git remote | egrep \^SultanCore) ] && git remote rm SultanCore
   git remote add SultanCore https://github.com/sultanxda/android_system_core.git
   git fetch SultanCore
   git cherry-pick c407c8a2299183ce0fd0e7f7b1c026a66b5adb8d
@@ -72,12 +79,14 @@ popd
 # Slim
 # non-intrusive calls
 pushd "$FRAMEWORKS_BASE"
+  [ $(git remote | egrep \^Slimfb) ] && git remote rm Slimfb
   git remote add Slimfb https://github.com/SlimRoms/frameworks_base.git
   git fetch Slimfb
   git cherry-pick d1a5c06fa0bcd699ba6a6aec90bce732d7c68e43 || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
   git remote rm Slimfb
 popd
 pushd "$TELEPHONY_REPO"
+  [ $(git remote | egrep \^Slimtelephony) ] && git remote rm Slimtelephony
   git remote add Slimtelephony https://github.com/SlimRoms/packages_services_Telephony.git
   git fetch Slimtelephony
   git cherry-pick a5c056daf1e8a4385ce9ed982e86b3945ad1dc69 || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
@@ -110,6 +119,7 @@ pushd external/sepolicy/
 popd
 
 pushd "$DEVICE_OPPO_REPO"
+  [ $(git remote | egrep \^slimdevice) ] && git remote rm slimdevice
   git remote add slimdevice https://github.com/SlimRoms/device_oppo_common.git
   git fetch slimdevice
   # Don't break screen off gestures when dex preopting builds
@@ -136,6 +146,7 @@ pushd "$DEVICE_ONEPLUS_REPO"
 #  git remote rm kwoktopus
 
   # Slimfy CM
+  [ $(git remote | egrep \^SlimRoms) ] && git remote rm SlimRoms
   git remote add SlimRoms https://github.com/SlimRoms/device_oneplus_bacon.git
   git fetch SlimRoms
   git cherry-pick 12002985e992dfd5103a04a05bb9a03c2c7cd52b || git add BoardConfig.mk overlay/frameworks/base/core/res/res/values/config.xml && git rm cm.dependencies && git cherry-pick --continue
@@ -164,6 +175,7 @@ pushd "$DEVICE_REPO"
 popd
 
 pushd "$DIALER_REPO"
+  [ $(git remote | egrep \^CM) ] && git remote rm CM
   git remote add CM https://github.com/CyanogenMod/android_packages_apps_Dialer.git
   git fetch CM
   git cherry-pick 4395a7ed38676f405d1b0da67916cc849526b083

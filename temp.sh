@@ -21,6 +21,7 @@ popd
 
 # Lockscreen: Show redaction interstitial when swipe selected
 pushd "$LOCAL_REPO/packages/apps/Settings"
+  [ $(git remote | egrep \^CM) ] && git remote rm CM
   git remote add CM https://github.com/CyanogenMod/android_packages_apps_Settings.git
   git fetch CM
   git cherry-pick 53047194c7d8a3245b0d2568d287912f406a1a08
@@ -72,6 +73,7 @@ popd
 
 # The IT Crowd rocks! ;)
 pushd "$LOCAL_REPO/packages/apps/Dialer"
+  [ $(git remote | egrep \^AOSP) ] && git remote rm AOSP
   git remote add AOSP https://android.googlesource.com/platform/packages/apps/Dialer
   git fetch AOSP
   git cherry-pick 83131715419e89eebe8e4ea7ada7f96ec37dd8f9 || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
@@ -80,12 +82,14 @@ popd
 
 # Volume steps
 pushd "$LOCAL_REPO/frameworks/base"
+  [ $(git remote | egrep \^DU) ] && git remote rm DU
   git remote add DU https://github.com/DirtyUnicorns/android_frameworks_base
   git fetch DU
   git cherry-pick cf997aa7c934f5e0d0d940aca1740f91ab3cb153
   git remote rm DU
 popd
 pushd "$LOCAL_REPO/packages/apps/Settings"
+  [ $(git remote | egrep \^DU) ] && git remote rm DU
   git remote add DU https://github.com/DirtyUnicorns/android_packages_apps_Settings
   git fetch DU
   git cherry-pick 6de5019711057dbac93cd0d59416e02fb79ec7ba || git rm res/values/du_* && git apply $HOME/uber-saber/patches/volume_steps.patch && git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
@@ -120,6 +124,13 @@ pushd "$LOCAL_REPO/kernel/oneplus/msm8974"
   git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/34/167134/1 && git cherry-pick FETCH_HEAD
   # mnt: Fail collect_mounts when applied to unmounted mounts (https://review.cyanogenmod.org/#/c/167133/)
   git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/33/167133/1 && git cherry-pick FETCH_HEAD
+
+  # proc: Remove verifiedbootstate flag from /proc/cmdline
+  [ $(git remote | egrep \^sultan) ] && git remote rm sultan
+  git remote add sultan https://github.com/sultanxda/android_kernel_oneplus_msm8996.git
+  git fetch sultan
+  git cherry-pick abc05b16bbd33521c2fffaf491c5657a94bfcfc5
+  git remote rm sultan
 popd
 
 pushd "$LOCAL_REPO/device/oneplus/bacon"
@@ -138,6 +149,7 @@ pushd "$LOCAL_REPO/frameworks/base"
   git fetch http://review.cyanogenmod.org/CyanogenMod/android_frameworks_base refs/changes/10/143310/3 && git cherry-pick FETCH_HEAD
 
   # Dynamically enable MSB AGPS at runtime for newer baseband versions
+  [ $(git remote | egrep \^sultan) ] && git remote rm sultan
   git remote add sultan https://github.com/sultanxda/android_frameworks_base.git
   git fetch sultan
   git cherry-pick d1ca594271e8017d2301f8702362217e8ac136ba || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
@@ -156,6 +168,7 @@ pushd "$LOCAL_REPO/device/oppo/msm8974-common"
   git add $(git status -s | awk '{print $2}') && git commit -m "bacon: Disable VoIP offload"
 
   # bacon: Don't override GPS SUPL version
+  [ $(git remote | egrep \^sultan) ] && git remote rm sultan
   git remote add sultan https://github.com/sultanxda/android_device_oneplus_bacon
   git fetch sultan
   git cherry-pick 3612d54b6f19c851e7ad5a8850da5c3671196760 || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
@@ -210,6 +223,7 @@ pushd "$LOCAL_REPO/device/oppo/msm8974-common"
   git apply $HOME/uber-saber/patches/3a712a50107ceece5751bb6fdd0bdfdf5cc2b4c9.patch
   git add $(git status -s | awk '{print $2}') && git commit -m "bacon: power: Configure performance profiles"
   
+  [ $(git remote | egrep \^sultan) ] && git remote rm sultan
   git remote add sultan https://github.com/sultanxda/android_device_oneplus_bacon && git fetch sultan
   # bacon: Sync sec_config with CAF LA.BF.1.1.3_rb1.13
   git cherry-pick c6eac4868d4b786e91b293978b80c85a2de13a6b
@@ -231,6 +245,7 @@ popd
 
 # ril: Use CLOCK_BOOTTIME instead of CLOCK_MONOTONIC
 pushd "$LOCAL_REPO/hardware/ril-caf"
+  [ $(git remote | egrep \^sultan) ] && git remote rm sultan
   git remote add sultan https://github.com/sultanxda/android_hardware_ril.git && git fetch sultan
   git cherry-pick 0ccc3fc8de53bf862c9e45c1d546a68f4a21a4ae
   git remote rm sultan

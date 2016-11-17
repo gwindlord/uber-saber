@@ -17,6 +17,7 @@ pushd "$LOCAL_REPO/build"
 popd
 
 pushd "$LOCAL_REPO/system/core"
+  [ $(git remote | egrep \^aosp) ] && git remote rm aosp
   git remote add aosp https://android.googlesource.com/platform/system/core
   git fetch aosp
   git cherry-pick 864e2e22fcd0cba3f5e67680ccabd0302dfda45d
@@ -38,6 +39,7 @@ pushd "$LOCAL_REPO/external/libvpx"
   git cherry-pick 65c49d5b382de4085ee5668732bcb0f6ecaf7148
 popd
 pushd "$LOCAL_REPO/frameworks/av"
+  [ $(git remote | egrep \^aosp) ] && git remote rm aosp
   git remote add aosp https://android.googlesource.com/platform/frameworks/av/
   git fetch aosp
   git cherry-pick 2b6f22dc64d456471a1dc6df09d515771d1427c8

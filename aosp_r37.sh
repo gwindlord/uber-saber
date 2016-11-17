@@ -13,6 +13,7 @@ fi
 set -e
 
 pushd "$LOCAL_REPO/build"
+  [ $(git remote | egrep \^aosp) ] && git remote rm aosp
   git remote add aosp https://android.googlesource.com/platform/build
   git fetch aosp
   git cherry-pick b2ac0ea
@@ -23,6 +24,7 @@ pushd "$LOCAL_REPO/build"
 popd
 
 pushd "$LOCAL_REPO/external/dhcpcd"
+  [ $(git remote | egrep \^aosp) ] && git remote rm aosp
   git remote add aosp https://android.googlesource.com/platform/external/dhcpcd
   git fetch aosp
   git cherry-pick 1390ace
@@ -30,6 +32,7 @@ pushd "$LOCAL_REPO/external/dhcpcd"
 popd
 
 pushd "$LOCAL_REPO/external/skia"
+  [ $(git remote | egrep \^aosp) ] && git remote rm aosp
   git remote add aosp https://android.googlesource.com/platform/external/skia
   git fetch aosp
   git cherry-pick b36c23b
@@ -37,6 +40,7 @@ pushd "$LOCAL_REPO/external/skia"
 popd
 
 pushd "$LOCAL_REPO/frameworks/av"
+  [ $(git remote | egrep \^aosp) ] && git remote rm aosp
   git remote add aosp https://android.googlesource.com/platform/frameworks/av
   git fetch aosp
   git cherry-pick 25be9ac
@@ -47,6 +51,7 @@ pushd "$LOCAL_REPO/frameworks/av"
 popd
 
 pushd "$LOCAL_REPO/frameworks/base"
+  [ $(git remote | egrep \^aosp) ] && git remote rm aosp
   git remote add aosp https://android.googlesource.com/platform/frameworks/base
   git fetch aosp
   git cherry-pick 63363af
@@ -55,6 +60,7 @@ pushd "$LOCAL_REPO/frameworks/base"
 popd
 
 pushd "$LOCAL_REPO/frameworks/native"
+  [ $(git remote | egrep \^aosp) ] && git remote rm aosp
   git remote add aosp https://android.googlesource.com/platform/frameworks/native
   git fetch aosp
   git cherry-pick 85d253f
@@ -64,6 +70,7 @@ pushd "$LOCAL_REPO/frameworks/native"
 popd
 
 pushd "$LOCAL_REPO/libcore"
+  [ $(git remote | egrep \^aosp) ] && git remote rm aosp
   git remote add aosp https://android.googlesource.com/platform/libcore
   git fetch aosp
   git cherry-pick efd369d
@@ -71,6 +78,7 @@ pushd "$LOCAL_REPO/libcore"
 popd
 
 pushd "$LOCAL_REPO/packages/providers/DownloadProvider"
+  [ $(git remote | egrep \^aosp) ] && git remote rm aosp
   git remote add aosp https://android.googlesource.com/platform/packages/providers/DownloadProvider
   git fetch aosp
   git cherry-pick 5110b8a
@@ -78,6 +86,7 @@ pushd "$LOCAL_REPO/packages/providers/DownloadProvider"
 popd
 
 pushd "$LOCAL_REPO/packages/services/Telecomm"
+  [ $(git remote | egrep \^aosp) ] && git remote rm aosp
   git remote add aosp https://android.googlesource.com/platform/packages/services/Telecomm
   git fetch aosp
   git cherry-pick a06c9a4
@@ -86,6 +95,7 @@ pushd "$LOCAL_REPO/packages/services/Telecomm"
 popd
 
 pushd "$LOCAL_REPO/system/core"
+  [ $(git remote | egrep \^aosp) ] && git remote rm aosp
   git remote add aosp https://android.googlesource.com/platform/system/core
   git fetch aosp
   git cherry-pick 81df1cc || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue

@@ -26264,7 +26264,7 @@ index b1c89fb..9bfa1ae 100644
    for(i=0; i<argc; i++) sqlite3_free(argv[i]);
    sqlite3_free(argv);
 diff --git a/dist/sqlite3.c b/dist/sqlite3.c
-index 102a6f8..68105c5 100644
+index 102a6f8..e7101b7 100644
 --- a/dist/sqlite3.c
 +++ b/dist/sqlite3.c
 @@ -1,6 +1,6 @@
@@ -30374,7 +30374,7 @@ index 102a6f8..68105c5 100644
 +    *pUid = sStat.st_uid;
 +    *pGid = sStat.st_gid;
 +  }else{
-+      rc = unixLogError(SQLITE_IOERR_FSTAT, "stat", zDb);
++      rc = unixLogError(SQLITE_IOERR_FSTAT, "stat", zFile);
 +  }
 +  return rc;
 +}

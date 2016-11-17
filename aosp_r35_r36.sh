@@ -14,6 +14,7 @@ fi
 set -e
 
 pushd "$LOCAL_REPO/build"
+  [ $(git remote | egrep \^aosp_build) ] && git remote rm aosp_build
   git remote add aosp_build https://android.googlesource.com/platform/build
   git fetch aosp_build
   git cherry-pick fa1323c3b38495606fba31518e552faec530b199
@@ -23,6 +24,7 @@ pushd "$LOCAL_REPO/build"
 popd
 
 pushd "$LOCAL_REPO/frameworks/av"
+  [ $(git remote | egrep \^aosp) ] && git remote rm aosp
   git remote add aosp https://android.googlesource.com/platform/frameworks/av
   git fetch aosp
   git cherry-pick 6ad0c98cb9ae119156b264a7532b1e0cc701e0d8
@@ -33,6 +35,7 @@ pushd "$LOCAL_REPO/frameworks/av"
 popd
 
 pushd "$LOCAL_REPO/frameworks/native"
+  [ $(git remote | egrep \^aosp) ] && git remote rm aosp
   git remote add aosp https://android.googlesource.com/platform/frameworks/native
   git fetch aosp
   git cherry-pick b8a86fe81c0da124d04630b9b3327482fef6220a
@@ -41,6 +44,7 @@ pushd "$LOCAL_REPO/frameworks/native"
 popd
 
 pushd "$LOCAL_REPO/frameworks/opt/telephony"
+  [ $(git remote | egrep \^aosp) ] && git remote rm aosp
   git remote add aosp https://android.googlesource.com/platform/frameworks/opt/telephony
   git fetch aosp
   git cherry-pick 572af2dd8148fd6b24b1c8a0bf2ff769015ba2db

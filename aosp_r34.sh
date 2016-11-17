@@ -13,6 +13,7 @@ fi
 set -e
 
 pushd "$LOCAL_REPO/build"
+  [ $(git remote | egrep \^aosp_build) ] && git remote rm aosp_build
   git remote add aosp_build https://android.googlesource.com/platform/build
   git fetch aosp_build
   git cherry-pick 5c8bd5229ef1d55cd442df7de39b5a1f262bf6e9

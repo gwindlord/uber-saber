@@ -85,8 +85,11 @@ $SCRIPT_DIR/aosp_september_2016.sh $LOCAL_REPO
 # patching sources with Google October security fixes
 $SCRIPT_DIR/aosp_october_2016.sh $LOCAL_REPO
 
+# patching sources with Google November security fixes
+$SCRIPT_DIR/aosp_november_2016.sh $LOCAL_REPO
+
 # adding pre-built Chromium Snapdragon
-#$SCRIPT_DIR/chromium.sh $LOCAL_REPO
+$SCRIPT_DIR/chromium.sh $LOCAL_REPO
 
 # temporary changes, which will be removed or something
 $SCRIPT_DIR/temp.sh $LOCAL_REPO

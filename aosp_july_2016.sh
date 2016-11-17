@@ -16,6 +16,7 @@ pushd "$LOCAL_REPO/build"
   git add $(git status -s | awk '{print $2}') && git commit -m "Updating security string patch to 2016-07-01"
 popd
 pushd "$LOCAL_REPO/frameworks/av"
+  [ $(git remote | egrep \^aosp) ] && git remote rm aosp
   git remote add aosp https://android.googlesource.com/platform/frameworks/av/
   git fetch aosp
   git cherry-pick 60547808ca4e9cfac50028c00c58a6ceb2319301
@@ -30,6 +31,7 @@ pushd "$LOCAL_REPO/frameworks/av"
   git remote rm aosp
 popd
 pushd "$LOCAL_REPO/frameworks/native"
+  [ $(git remote | egrep \^aosp) ] && git remote rm aosp
   git remote add aosp https://android.googlesource.com/platform/frameworks/native
   git fetch aosp
   git cherry-pick 54cb02ad733fb71b1bdf78590428817fb780aff8
@@ -42,6 +44,7 @@ pushd "$LOCAL_REPO/external/tremolo"
   #git remote rm aosp
 popd
 pushd "$LOCAL_REPO/system/core"
+  [ $(git remote | egrep \^aosp) ] && git remote rm aosp
   git remote add aosp https://android.googlesource.com/platform/system/core
   git fetch aosp
   git cherry-pick ae18eb014609948a40e22192b87b10efc680daa7
@@ -54,6 +57,7 @@ pushd "$LOCAL_REPO/dalvik"
   #git remote rm aosp
 popd
 pushd "$LOCAL_REPO/frameworks/base"
+  [ $(git remote | egrep \^aosp) ] && git remote rm aosp
   git remote add aosp https://android.googlesource.com/platform/frameworks/base
   git fetch aosp
   #git cherry-pick 9b8c6d2df35455ce9e67907edded1e4a2ecb9e28 || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
@@ -63,12 +67,14 @@ pushd "$LOCAL_REPO/frameworks/base"
   git remote rm aosp
 popd
 pushd "$LOCAL_REPO/external/sepolicy"
+  [ $(git remote | egrep \^aosp) ] && git remote rm aosp
   git remote add aosp https://android.googlesource.com/platform/external/sepolicy/
   git fetch aosp
   git cherry-pick abf0663ed884af7bc880a05e9529e6671eb58f39
   git remote rm aosp
 popd
 pushd "$LOCAL_REPO/hardware/libhardware"
+  [ $(git remote | egrep \^aosp) ] && git remote rm aosp
   git remote add aosp https://android.googlesource.com/platform/hardware/libhardware
   git fetch aosp
   git cherry-pick 8b3d5a64c3c8d010ad4517f652731f09107ae9c5

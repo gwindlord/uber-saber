@@ -23,6 +23,7 @@ pushd "$LOCAL_REPO/external/aac"
   #git remote rm aosp
 popd
 pushd "$LOCAL_REPO/external/flac"
+  [ $(git remote | egrep \^aosp) ] && git remote rm aosp
   git remote add aosp https://android.googlesource.com/platform/external/flac
   git fetch aosp
   git cherry-pick b499389da21d89d32deff500376c5ee4f8f0b04c
@@ -33,6 +34,7 @@ pushd "$LOCAL_REPO/system/core"
   git add $(git status -s | awk '{print $2}') && git commit -m "Don't demangle symbol names."
 popd
 pushd "$LOCAL_REPO/frameworks/native"
+  [ $(git remote | egrep \^aosp) ] && git remote rm aosp
   git remote add aosp https://android.googlesource.com/platform/frameworks/native
   git fetch aosp
   git cherry-pick a59b827869a2ea04022dd225007f29af8d61837a
@@ -40,6 +42,7 @@ pushd "$LOCAL_REPO/frameworks/native"
   git remote rm aosp
 popd
 pushd "$LOCAL_REPO/frameworks/av"
+  [ $(git remote | egrep \^aosp) ] && git remote rm aosp
   git remote add aosp https://android.googlesource.com/platform/frameworks/av/
   git fetch aosp
   git cherry-pick a2d1d85726aa2a3126e9c331a8e00a8c319c9e2b
