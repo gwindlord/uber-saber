@@ -58,6 +58,14 @@ pushd "$LOCAL_REPO/external/bouncycastle"
   git fetch http://review.cyanogenmod.org/CyanogenMod/android_external_bouncycastle refs/changes/99/161999/1 && git cherry-pick FETCH_HEAD
 popd
 
+pushd "$LOCAL_REPO/kernel/oneplus/msm8974"
+  [ $(git remote | egrep \^CAF) ] && git remote rm CAF
+  git remote add CAF https://source.codeaurora.org/quic/la/kernel/msm-3.10 && git fetch CAF
+  # ASoC: wcd9xxx: Fix unprotected userspace access
+  git cherry-pick a7a6ddc91cce7ad5ad55c9709b24bfc80f5ac873
+  git remote rm CAF
+popd
+
 exit 0
 
 pushd "$LOCAL_REPO/external/sonivox"

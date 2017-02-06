@@ -61,7 +61,7 @@ pushd "$DEVICE_REPO"
   #git fetch kwoktopus
   #git cherry-pick 2cdb7c4ddb349be16ee7ecfdb4f1bc634c0d267d
   #git remote rm kwoktopus
-  
+
   sed -i 's#<integer name="config_deviceHardwareWakeKeys">64</integer>#<!--integer name="config_deviceHardwareWakeKeys">64</integer-->#' overlay/frameworks/base/core/res/res/values/config.xml
   sed -i 's#<integer name="config_longPressOnMenuBehavior">2</integer>#<!--integer name="config_longPressOnMenuBehavior">2</integer-->#' overlay/frameworks/base/core/res/res/values/config.xml
   git add $(git status -s | awk '{print $2}') && git commit -m "msm8974: remove unused resources"
@@ -195,6 +195,10 @@ pushd "$LOCAL_REPO/external/sqlite"
   cp $SCRIPT_DIR/patches/sqlite3.15.1.patch .
   git apply sqlite3.15.1.patch && rm sqlite3.15.1.patch
   git add $(git status -s | awk '{print $2}') && git commit -m "Upgrade SQLite to 3.15.1"
+
+  cp $SCRIPT_DIR/patches/sqlite3.15.2.patch .
+  git apply sqlite3.15.2.patch && rm sqlite3.15.2.patch
+  git add $(git status -s | awk '{print $2}') && git commit -m "Upgrade SQLite to 3.15.2"
 popd
 
 #################################################################

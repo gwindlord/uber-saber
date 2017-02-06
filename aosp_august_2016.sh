@@ -100,7 +100,10 @@ pushd "$LOCAL_REPO/system/netd"
   [ $(git remote | egrep \^CAF) ] && git remote rm CAF
   git remote add CAF https://source.codeaurora.org/quic/la/platform/system/netd
   git fetch CAF
+  # Close the opened pipe correctly
   git cherry-pick cc2853e6cec8ca2cf92430ad9a83358b131fc417 || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
+  # Add isIfaceName check to addUpstreamInterface
+  git cherry-pick e9925f5acb4401588e23ea8a27c3e318f71b5cf8
   git remote rm CAF
 popd
 

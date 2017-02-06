@@ -9,8 +9,19 @@ fi
 # errors on
 set -e
 
-BUILD_REPO="$LOCAL_REPO/build/"
 SCRIPT_DIR="$(dirname $(readlink -f $0))"
+
+pushd "$LOCAL_REPO/system/core"
+  # liblog: build log_event_write regardless of TARGET_USES_LOGD
+  git fetch https://review.cyanogenmod.org/CyanogenMod/android_system_core refs/changes/95/136095/1 && git cherry-pick FETCH_HEAD
+popd
+
+pushd "$LOCAL_REPO/build/"
+  # Avoid accidentally using the host's native 'as' command.
+  git fetch https://review.cyanogenmod.org/CyanogenMod/android_build refs/changes/84/146384/1 && git cherry-pick FETCH_HEAD
+  # kernel: don't build modules or dtbs unless enabled
+  git fetch https://review.cyanogenmod.org/CyanogenMod/android_build refs/changes/92/120592/5 && git cherry-pick FETCH_HEAD
+popd
 
 # cm: sepolicy: allow kernel to read storage (http://review.cyanogenmod.org/#/c/127767/)
 pushd "$LOCAL_REPO/vendor/slim"
@@ -27,9 +38,14 @@ pushd "$LOCAL_REPO/packages/apps/Settings"
   git cherry-pick 53047194c7d8a3245b0d2568d287912f406a1a08
   git remote rm CM
 popd
-# TeleService: Add call barring feature (http://review.cyanogenmod.org/#/c/129008/)
+
 pushd "$LOCAL_REPO/packages/services/Telephony/"
+  # # TeleService: Add call barring feature (http://review.cyanogenmod.org/#/c/129008/)
   git fetch http://review.cyanogenmod.org/CyanogenMod/android_packages_services_Telephony refs/changes/08/129008/1 && git cherry-pick FETCH_HEAD
+  # Emergency dialing screen flickering (https://review.cyanogenmod.org/#/c/146706/)
+  git fetch https://review.cyanogenmod.org/CyanogenMod/android_packages_services_Telephony refs/changes/06/146706/2 && git cherry-pick FETCH_HEAD
+  # Single digit MMI codes invalid.
+  git fetch https://review.cyanogenmod.org/CyanogenMod/android_packages_services_Telephony refs/changes/00/132100/3 && git cherry-pick FETCH_HEAD
 popd
 
 :<<comment
@@ -45,9 +61,25 @@ popd
   popd
 comment
 
-# Ensure non-null encoded uri before attempting to parse (http://review.cyanogenmod.org/#/c/129294/)
+# Fix potential NULL dereference in Visualizer effect
+pushd "$LOCAL_REPO/hardware/qcom/audio-caf/msm8974"
+  [ $(git remote | egrep \^sultan) ] && git remote rm sultan
+  git remote add sultan https://github.com/sultanxda/android_hardware_qcom_audio
+  git fetch sultan
+  git cherry-pick df4398c0761784c4cf9dbda544c89ebb3bf82ac9
+  git remote rm sultan
+popd
+
 pushd "$LOCAL_REPO/packages/apps/ContactsCommon"
+  # Ensure non-null encoded uri before attempting to parse (http://review.cyanogenmod.org/#/c/129294/)
   git fetch http://review.cyanogenmod.org/CyanogenMod/android_packages_apps_ContactsCommon refs/changes/94/129294/1 && git cherry-pick FETCH_HEAD
+  # Enable support for groups in External contacts accounts
+  git fetch https://review.cyanogenmod.org/CyanogenMod/android_packages_apps_ContactsCommon refs/changes/49/131149/2 && git cherry-pick FETCH_HEAD
+popd
+
+pushd "$LOCAL_REPO/packages/apps/Contacts"
+  # Exporting contacts Max limit
+  git fetch https://review.cyanogenmod.org/CyanogenMod/android_packages_apps_Contacts refs/changes/33/135633/3 && git cherry-pick FETCH_HEAD
 popd
 
 # F2FS modification
@@ -61,23 +93,21 @@ pushd "$LOCAL_REPO/kernel/oneplus/msm8974"
   git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/97/92997/2 && git cherry-pick FETCH_HEAD
 popd
 
-# Forward Port: Add Camera sound toggle [3/3] - was suddenly missing, so camera sound switcher did nothing >_<
-pushd "$LOCAL_REPO/frameworks/av"
-  git fetch https://review.slimroms.org/SlimRoms/frameworks_av refs/changes/53/1853/1 && git cherry-pick FETCH_HEAD
-popd
-
 # init: fix usage of otg-usb storage devices from within applications (http://review.cyanogenmod.org/#/c/134914/)
 pushd "$LOCAL_REPO/device/oneplus/bacon"
   git fetch http://review.cyanogenmod.org/CyanogenMod/android_device_oneplus_bacon refs/changes/14/134914/1 && git cherry-pick FETCH_HEAD
 popd
 
-# The IT Crowd rocks! ;)
 pushd "$LOCAL_REPO/packages/apps/Dialer"
+  # The IT Crowd rocks! ;)
   [ $(git remote | egrep \^AOSP) ] && git remote rm AOSP
   git remote add AOSP https://android.googlesource.com/platform/packages/apps/Dialer
   git fetch AOSP
   git cherry-pick 83131715419e89eebe8e4ea7ada7f96ec37dd8f9 || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
   git remote rm AOSP
+
+  # Delete failed CallRecording file
+  git fetch https://review.cyanogenmod.org/CyanogenMod/android_packages_apps_Dialer refs/changes/79/125279/2 && git cherry-pick FETCH_HEAD
 popd
 
 # Volume steps
@@ -113,17 +143,17 @@ pushd "$LOCAL_REPO/kernel/oneplus/msm8974"
   git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/87/149487/1 && git cherry-pick FETCH_HEAD
   # crypto: msm: qcrypto: fix crash in _qcrypto_tfm_complete (http://review.cyanogenmod.org/#/c/149483/)
   git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/83/149483/1 && git cherry-pick FETCH_HEAD
+  # Sultanxda merged all of it
   # KEYS: Fix short sprintf buffer in /proc/keys show function (https://review.cyanogenmod.org/#/c/167139/)
-  # Sultanxda merged it
   #git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/39/167139/1 && git cherry-pick FETCH_HEAD
   # tcp: fix use after free in tcp_xmit_retransmit_queue() (https://review.cyanogenmod.org/#/c/167138/)
-  git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/38/167138/1 && git cherry-pick FETCH_HEAD
+  #git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/38/167138/1 && git cherry-pick FETCH_HEAD
   # binder: prevent kptr leak by using %pK format specifier (https://review.cyanogenmod.org/#/c/167136/)
-  git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/36/167136/1 && git cherry-pick FETCH_HEAD
+  #git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/36/167136/1 && git cherry-pick FETCH_HEAD
   # HID: hiddev: validate num_values for HIDIOCGUSAGES, HIDIOCSUSAGES commands (https://review.cyanogenmod.org/#/c/167134/)
-  git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/34/167134/1 && git cherry-pick FETCH_HEAD
+  #git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/34/167134/1 && git cherry-pick FETCH_HEAD
   # mnt: Fail collect_mounts when applied to unmounted mounts (https://review.cyanogenmod.org/#/c/167133/)
-  git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/33/167133/1 && git cherry-pick FETCH_HEAD
+  #git fetch http://review.cyanogenmod.org/CyanogenMod/android_kernel_oneplus_msm8974 refs/changes/33/167133/1 && git cherry-pick FETCH_HEAD
 
   # proc: Remove verifiedbootstate flag from /proc/cmdline
   [ $(git remote | egrep \^sultan) ] && git remote rm sultan
@@ -131,6 +161,13 @@ pushd "$LOCAL_REPO/kernel/oneplus/msm8974"
   git fetch sultan
   git cherry-pick abc05b16bbd33521c2fffaf491c5657a94bfcfc5
   git remote rm sultan
+
+  # Getting debugfs back - seems to improve stability a bit and allows BBS and GSam to watch kernel wakelocks statisticss
+  #git revert --no-edit c70c04f2a76f092e8eebc5a86abb1d5d33f08ae3  # uncomment if have battery drain again
+  git revert --no-edit 3c3558e46e0a7f5870bfc9e21cb16d0cf867d95e
+  git revert --no-edit d043b8af86e12b347de158f66d8958dacf52b309
+  git revert --no-edit 2b39420050edb34817ea510775a51871e82dabd8
+  git revert --no-edit b0cb842c5e2f9bd7fb1251ed70ee1bc3e2514909
 popd
 
 pushd "$LOCAL_REPO/device/oneplus/bacon"
@@ -155,6 +192,50 @@ pushd "$LOCAL_REPO/frameworks/base"
   git cherry-pick d1ca594271e8017d2301f8702362217e8ac136ba || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
   git remote rm sultan
 
+  cp data/sounds/ringtones/ogg/Orion.ogg data/sounds/slim/ringtones/
+  git add $(git status -s | awk '{print $2}') && git commit -m "Adding Orion ringtone (my fav :))"
+
+:<<comment
+  # Update volume slider only if ringer mode changed
+  git fetch https://review.cyanogenmod.org/CyanogenMod/android_frameworks_base refs/changes/44/145344/2 && git cherry-pick FETCH_HEAD
+  # Reduce log noise
+  git fetch https://review.cyanogenmod.org/CyanogenMod/android_frameworks_base refs/changes/63/137463/1 && git cherry-pick FETCH_HEAD
+  # GlobalActions: Set the initial status of airplane mode toggle
+  git fetch https://review.cyanogenmod.org/CyanogenMod/android_frameworks_base refs/changes/21/135921/2 && git cherry-pick FETCH_HEAD || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
+  # fix metrics density comparisons
+  git fetch https://review.cyanogenmod.org/CyanogenMod/android_frameworks_base refs/changes/73/136273/1 && git cherry-pick FETCH_HEAD
+  # SysUI: Keep sensitive notifications redacted for swipe
+  git fetch https://review.cyanogenmod.org/CyanogenMod/android_frameworks_base refs/changes/92/133392/1 && git cherry-pick FETCH_HEAD
+  # SysUI: Fix hiding per-app sensitive notifications
+  git fetch https://review.cyanogenmod.org/CyanogenMod/android_frameworks_base refs/changes/53/135553/1 && git cherry-pick FETCH_HEAD
+  # SysUI: Fix hiding sensitive notification behavior
+  git fetch https://review.cyanogenmod.org/CyanogenMod/android_frameworks_base refs/changes/79/135779/1 && git cherry-pick FETCH_HEAD
+  # Add ability to set preconfirmed apps filter for immersive mode hint
+  git fetch https://review.cyanogenmod.org/CyanogenMod/android_frameworks_base refs/changes/96/133296/3 && git cherry-pick FETCH_HEAD
+  # SettingsProvider: Allow default volume adjust sound to be overlayed.
+  #git fetch https://review.cyanogenmod.org/CyanogenMod/android_frameworks_base refs/changes/16/133316/4 && git cherry-pick FETCH_HEAD
+  # SettingsProvider: allow ambient display/doze mode to be overlayed
+  git fetch https://review.cyanogenmod.org/CyanogenMod/android_frameworks_base refs/changes/88/133388/4 && git cherry-pick FETCH_HEAD
+  # bootanimation: Move the bootanimation playaudio code
+  git fetch https://review.cyanogenmod.org/CyanogenMod/android_frameworks_base refs/changes/08/130208/4 && git cherry-pick FETCH_HEAD
+  # LiveDisplayTile : Update entries on locale changes
+  git fetch https://review.cyanogenmod.org/CyanogenMod/android_frameworks_base refs/changes/23/132023/2 && git cherry-pick FETCH_HEAD || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
+  # StrictMode: fix deserialization of ViolationInfo on large stacks
+  git fetch https://review.cyanogenmod.org/CyanogenMod/android_frameworks_base refs/changes/80/128280/3 && git cherry-pick FETCH_HEAD
+comment
+
+  # base: Fix proximity check on power key
+  git fetch https://review.cyanogenmod.org/CyanogenMod/android_frameworks_base refs/changes/37/134137/2 && git cherry-pick FETCH_HEAD
+  # base: Fix proximity check on non power key
+  git fetch https://review.cyanogenmod.org/CyanogenMod/android_frameworks_base refs/changes/26/135526/2 && git cherry-pick FETCH_HEAD
+  # Support for country specific ECC numbers in the framework
+  git fetch https://review.cyanogenmod.org/CyanogenMod/android_frameworks_base refs/changes/97/137197/4 && git cherry-pick FETCH_HEAD
+  # SharedStorageAgent: fix off by 1
+  git fetch https://review.cyanogenmod.org/CyanogenMod/android_frameworks_base refs/changes/62/134162/2 && git cherry-pick FETCH_HEAD
+  # SystemUI: Handle possible NPE on task.group during layout.
+  git fetch https://review.cyanogenmod.org/CyanogenMod/android_frameworks_base refs/changes/43/133043/4 && git cherry-pick FETCH_HEAD
+  # AppOps: fix wifi scan op
+  git fetch https://review.cyanogenmod.org/CyanogenMod/android_frameworks_base refs/changes/85/126385/2 && git cherry-pick FETCH_HEAD
 popd
 
 # bacon: Disable VoIP offload (http://review.cyanogenmod.org/#/c/136065/)
@@ -222,7 +303,7 @@ pushd "$LOCAL_REPO/device/oppo/msm8974-common"
 
   git apply $HOME/uber-saber/patches/3a712a50107ceece5751bb6fdd0bdfdf5cc2b4c9.patch
   git add $(git status -s | awk '{print $2}') && git commit -m "bacon: power: Configure performance profiles"
-  
+
   [ $(git remote | egrep \^sultan) ] && git remote rm sultan
   git remote add sultan https://github.com/sultanxda/android_device_oneplus_bacon && git fetch sultan
   # bacon: Sync sec_config with CAF LA.BF.1.1.3_rb1.13
@@ -233,14 +314,20 @@ pushd "$LOCAL_REPO/device/oppo/msm8974-common"
 
 popd
 
-# Settings: restore proper live display color profile
 pushd "$LOCAL_REPO/packages/apps/Settings"
+  # Settings: restore proper live display color profile
   git fetch http://review.cyanogenmod.org/CyanogenMod/android_packages_apps_Settings refs/changes/49/142049/2 && git cherry-pick FETCH_HEAD
+  # Hide Keypad for pattern lock
+  git fetch https://review.cyanogenmod.org/CyanogenMod/android_packages_apps_Settings refs/changes/45/143245/5 && git cherry-pick FETCH_HEAD || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
+  # Use same technology type for LTE/4G
+  git fetch https://review.cyanogenmod.org/CyanogenMod/android_packages_apps_Settings refs/changes/48/133448/2 && git cherry-pick FETCH_HEAD
 popd
 
-# IncallUI: Screen doesn't wakeup after MT/MO call disconnect (http://review.cyanogenmod.org/#/c/143388/)
 pushd "$LOCAL_REPO/packages/apps/InCallUI"
+  # IncallUI: Screen doesn't wakeup after MT/MO call disconnect (http://review.cyanogenmod.org/#/c/143388/)
   git fetch http://review.cyanogenmod.org/CyanogenMod/android_packages_apps_InCallUI refs/changes/88/143388/1 && git cherry-pick FETCH_HEAD
+  # InCallUI: Fix background colour of tabs on DSDA phones
+  git fetch https://review.cyanogenmod.org/CyanogenMod/android_packages_apps_InCallUI refs/changes/78/127078/1 && git cherry-pick FETCH_HEAD
 popd
 
 # ril: Use CLOCK_BOOTTIME instead of CLOCK_MONOTONIC
@@ -261,7 +348,47 @@ pushd "$LOCAL_REPO/packages/apps/Nfc"
   git cherry-pick 018ec89d460f8b6389b4ffe787d293090dcc0bdd
 popd
 
+pushd "$LOCAL_REPO/frameworks/opt/telephony"
+  # [PATCH] (PICCOLO-4847) [PATCH] Force data attach when data is re-enabled after carrier-detatch.
+  git fetch https://review.cyanogenmod.org/CyanogenMod/android_frameworks_opt_telephony refs/changes/77/134277/4 && git cherry-pick FETCH_HEAD
+  sed -i 's#attachedState.get();#attachedState;#' src/java/com/android/internal/telephony/dataconnection/DcTracker.java
+  git add $(git status -s | awk '{print $2}') && git commit -m "Fixing build"
+  # Suppress error pop-ups for single digit dials.
+  git fetch https://review.cyanogenmod.org/CyanogenMod/android_frameworks_opt_telephony refs/changes/98/132098/1 && git cherry-pick FETCH_HEAD
+  # GsmMmiCode: Fix USSD NPE
+  git fetch https://review.cyanogenmod.org/CyanogenMod/android_frameworks_opt_telephony refs/changes/18/133018/1 && git cherry-pick FETCH_HEAD
+popd
+
+pushd "$LOCAL_REPO/packages/apps/DeskClock"
+  # Allow music files other than OGG to be chosen as alarm
+  git fetch https://review.cyanogenmod.org/CyanogenMod/android_packages_apps_DeskClock refs/changes/29/145329/3 && git cherry-pick FETCH_HEAD
+popd
+
+# getting back openssh for nano
+#pushd "$LOCAL_REPO/external/openssh"
+#	git revert --no-edit 6dd962236c57f327b92b0c8f09f649279980023c
+#popd
+
+pushd "$LOCAL_REPO/device/oppo/msm8974-common/"
+  # http://review.cyanogenmod.org/#/c/135685/
+  sed -i "s#audio.offload.pcm.16bit.enable=true#audio.offload.pcm.16bit.enable=false#" msm8974.mk
+  git add $(git status -s | awk '{print $2}') && git commit -m "bacon: Disable 16-bit PCM offload for good"
+popd
+
+pushd "$LOCAL_REPO/frameworks/av"
+  # Allow to use baseline profile for AVC recording
+  git fetch https://review.cyanogenmod.org/CyanogenMod/android_frameworks_av refs/changes/46/169846/4 && git cherry-pick FETCH_HEAD
+  # SoftVPXEncoder: don't skip the last input buffer with eos flag.
+  git fetch https://review.cyanogenmod.org/CyanogenMod/android_frameworks_av refs/changes/62/136162/3 && git cherry-pick FETCH_HEAD
+  # Fix potential NULL dereference in Visualizer effect
+  git fetch https://review.cyanogenmod.org/CyanogenMod/android_frameworks_av refs/changes/40/175840/1 && git cherry-pick FETCH_HEAD
+  # Forward Port: Add Camera sound toggle [3/3] - was suddenly missing, so camera sound switcher did nothing >_<
+  git fetch https://review.slimroms.org/SlimRoms/frameworks_av refs/changes/53/1853/1 && git cherry-pick FETCH_HEAD
+popd
+
 exit 0
+
+#################
 
 # frameworks/base: Support for third party NFC features (https://review.cyanogenmod.org/#/c/144379)
 pushd "$LOCAL_REPO/frameworks/base"
@@ -276,8 +403,6 @@ pushd "$LOCAL_REPO/hardware/qcom/media-caf/msm8974"
   git cherry-pick dc64230278eb5685342b8082036772b6415cc5cb
 popd
 
-#################
-
 # libnfc-nci: Add missing support for pn547/pn544
 pushd "$LOCAL_REPO/external/libnfc-nci"
   git remote add sultan https://github.com/sultanxda/android_vendor_nxp-nfc_opensource_libnfc-nci
@@ -286,11 +411,7 @@ pushd "$LOCAL_REPO/external/libnfc-nci"
   git remote rm sultan
 popd
 
-pushd "$LOCAL_REPO/device/oppo/msm8974-common/"
-  # http://review.cyanogenmod.org/#/c/135685/
-  sed -i "s#audio.offload.pcm.16bit.enable=true#audio.offload.pcm.16bit.enable=false#" msm8974.mk
-  git add $(git status -s | awk '{print $2}') && git commit -m "bacon: Disable 16-bit PCM offload for good (http://review.cyanogenmod.org/#/c/135685/)"
-popd
+
 
 # Force OpenWeatherMap to be the weather provider - Yahoo changed API again >_<
 pushd "$LOCAL_REPO/packages/apps/LockClock"
