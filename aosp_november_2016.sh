@@ -108,6 +108,9 @@ pushd "$LOCAL_REPO/frameworks/av"
   git fetch http://review.cyanogenmod.org/CyanogenMod/android_frameworks_av refs/changes/62/171562/2 && git cherry-pick FETCH_HEAD
 popd
 
+exit 0
+
+# Sultanxda merged it
 pushd "$LOCAL_REPO/kernel/oneplus/msm8974"
   [ $(git remote | egrep \^CAF) ] && git remote rm CAF
   git remote add CAF https://source.codeaurora.org/quic/la/kernel/msm-3.10 && git fetch CAF
@@ -115,8 +118,6 @@ pushd "$LOCAL_REPO/kernel/oneplus/msm8974"
   git cherry-pick ef78bd62f0c064ae4c827e158d828b2c110ebcdc || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
   git remote rm CAF
 popd
-
-exit 0
 
 # but I still love kitties ^_^
 # though I've realised how stupid it is to add this game as a system app

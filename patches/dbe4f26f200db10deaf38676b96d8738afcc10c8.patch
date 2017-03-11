@@ -1,0 +1,18 @@
+diff --git a/drivers/media/platform/msm/camera_v2/pproc/cpp/msm_cpp.c b/drivers/media/platform/msm/camera_v2/pproc/cpp/msm_cpp.c
+index bc1b0f4..cad69d7 100644
+--- a/drivers/media/platform/msm/camera_v2/pproc/cpp/msm_cpp.c
++++ b/drivers/media/platform/msm/camera_v2/pproc/cpp/msm_cpp.c
+@@ -1439,6 +1439,13 @@ static int msm_cpp_cfg(struct cpp_device *cpp_dev,
+ 		pr_err("invalid fw version %08x", cpp_dev->fw_version);
+ 	}
+ 
++	if (stripe_base == UINT_MAX || num_stripes >
++		(UINT_MAX - 1 - stripe_base) / 27) {
++		pr_err("Invalid frame message,num_strips %d is large\n",
++			num_stripes);
++		return -EINVAL;
++	}
++
+ 	if ((stripe_base + num_stripes*27 + 1) != new_frame->msg_len) {
+ 		pr_err("Invalid frame message\n");
+ 		rc = -EINVAL;
