@@ -24,8 +24,9 @@ pushd "$LOCAL_REPO/frameworks/av"
   git cherry-pick f81038006b4c59a5a148dcad887371206033c28f
   git cherry-pick d112f7d0c1dbaf0368365885becb11ca8d3f13a4
   #git cherry-pick 6fdee2a83432b3b150d6a34f231c4e2f7353c01e || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
-  # limit mediaserver memory (https://review.cyanogenmod.org/#/c/152160/)
-  git fetch http://review.cyanogenmod.org/CyanogenMod/android_frameworks_av refs/changes/60/152160/2 && git cherry-pick FETCH_HEAD
+  # limit mediaserver memory (https://review.cyanogenmod.org/#/c/152160/) (https://review.lineageos.org/#/c/62706/)
+  #git fetch http://review.cyanogenmod.org/CyanogenMod/android_frameworks_av refs/changes/60/152160/2 && git cherry-pick FETCH_HEAD
+  git fetch https://review.lineageos.org/LineageOS/android_frameworks_av refs/changes/06/62706/2 && git cherry-pick FETCH_HEAD
   git cherry-pick e7142a0703bc93f75e213e96ebc19000022afed9
   git cherry-pick daef4327fe0c75b0a90bb8627458feec7a301e1f
   git remote rm aosp
@@ -61,8 +62,9 @@ pushd "$LOCAL_REPO/frameworks/base"
   git remote add aosp https://android.googlesource.com/platform/frameworks/base
   git fetch aosp
   #git cherry-pick 9b8c6d2df35455ce9e67907edded1e4a2ecb9e28 || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
-  # DO NOT MERGE : backport of backup transport whitelist (https://review.cyanogenmod.org/#/c/152168/)
-  git fetch http://review.cyanogenmod.org/CyanogenMod/android_frameworks_base refs/changes/68/152168/2 && git cherry-pick FETCH_HEAD
+  # DO NOT MERGE : backport of backup transport whitelist (https://review.cyanogenmod.org/#/c/152168/) (https://review.lineageos.org/#/c/66004/)
+  #git fetch http://review.cyanogenmod.org/CyanogenMod/android_frameworks_base refs/changes/68/152168/2 && git cherry-pick FETCH_HEAD
+  git fetch https://review.lineageos.org/LineageOS/android_frameworks_base refs/changes/04/66004/2 && git cherry-pick FETCH_HEAD
   git cherry-pick ec2fc50d202d975447211012997fe425496c849c
   git remote rm aosp
 popd

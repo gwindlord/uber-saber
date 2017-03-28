@@ -53,8 +53,9 @@ pushd "$VENDOR_REPO"
 popd
 
 pushd "$DEVICE_REPO"
-  # msm8974: Enable adaptive LMK (http://review.cyanogenmod.org/#/c/103749/)
-  git fetch http://review.cyanogenmod.org/CyanogenMod/android_device_oppo_msm8974-common refs/changes/49/103749/1 && git cherry-pick FETCH_HEAD
+  # msm8974: Enable adaptive LMK (http://review.cyanogenmod.org/#/c/103749/) (https://review.lineageos.org/#/c/31705/)
+  #git fetch http://review.cyanogenmod.org/CyanogenMod/android_device_oppo_msm8974-common refs/changes/49/103749/1 && git cherry-pick FETCH_HEAD
+  git fetch https://review.lineageos.org/LineageOS/android_device_oppo_msm8974-common refs/changes/05/31705/1 && git cherry-pick FETCH_HEAD
   # fixing build - msm8974: remove unused resources
   # fixing build - msm8974: remove unused resources
   #git remote add kwoktopus https://github.com/kwoktopus/android_device_oppo_msm8974-common.git

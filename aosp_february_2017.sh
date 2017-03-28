@@ -67,6 +67,25 @@ pushd "$LOCAL_REPO/packages/apps/Bluetooth"
 popd
 
 pushd "$LOCAL_REPO/kernel/oneplus/msm8974/"
+  # https://source.codeaurora.org/quic/la//platform/vendor/qcom-opensource/wlan/qcacld-2.0/commit/?id=10f0051f7b3b9a7635b0762a8cf102f595f7a268
+  # https://source.codeaurora.org/quic/la//platform/vendor/qcom-opensource/wlan/qcacld-2.0/commit/?id=da87131740351b833f17f05dfa859977bc1e7684
+  git apply $HOME/uber-saber/patches/10f0051f7b3b9a7635b0762a8cf102f595f7a268_da87131740351b833f17f05dfa859977bc1e7684.patch
+  git add $(git status -s | awk '{print $2}') && git commit -m "qcacld-2.0: Avoid overflow of 'set_bssid_hotlist' and 'significant change' params"
+
+  [ $(git remote | egrep \^linux) ] && git remote rm linux
+  git remote add linux https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+  git fetch linux
+  # dccp: fix freeing skb too early for IPV6_RECVPKTINFO (CVE-2017-6074)
+  git cherry-pick 5edabca9d4cff7f1f2b68f0bac55ef99d9798ba4
+  git remote rm linux
+popd
+pushd "$LOCAL_REPO/frameworks/base"
+  git apply $HOME/uber-saber/patches/fb_feb2017_858064e946dc8dbf76bff9387e847e211703e336.patch
+  git add $(git status -s | awk '{print $2}') && git commit -m "Check provider access for content changes"
+popd
+
+exit 0
+
   [ $(git remote | egrep \^CAF) ] && git remote rm CAF
   git remote add CAF https://source.codeaurora.org/quic/la/kernel/msm-3.10
   git fetch CAF
@@ -80,22 +99,3 @@ pushd "$LOCAL_REPO/kernel/oneplus/msm8974/"
   # msm: crypto: Fix integer over flow check in qce driver
   git cherry-pick 8f8066581a8e575a7d57d27f36c4db63f91ca48f || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
   git remote rm CAF
-
-  # https://source.codeaurora.org/quic/la//platform/vendor/qcom-opensource/wlan/qcacld-2.0/commit/?id=10f0051f7b3b9a7635b0762a8cf102f595f7a268
-  # https://source.codeaurora.org/quic/la//platform/vendor/qcom-opensource/wlan/qcacld-2.0/commit/?id=da87131740351b833f17f05dfa859977bc1e7684
-  git apply $HOME/uber-saber/patches/10f0051f7b3b9a7635b0762a8cf102f595f7a268_da87131740351b833f17f05dfa859977bc1e7684.patch
-  git add $(git status -s | awk '{print $2}') && git commit -m "qcacld-2.0: Avoid overflow of 'set_bssid_hotlist' and 'significant change' params"
-
-  [ $(git remote | egrep \^linux) ] && git remote rm linux
-  git remote add linux https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
-  git fetch linux
-  # dccp: fix freeing skb too early for IPV6_RECVPKTINFO
-  git cherry-pick 5edabca9d4cff7f1f2b68f0bac55ef99d9798ba4
-  git remote rm linux
-popd
-pushd "$LOCAL_REPO/frameworks/base"
-  git apply $HOME/uber-saber/patches/fb_feb2017_858064e946dc8dbf76bff9387e847e211703e336.patch
-  git add $(git status -s | awk '{print $2}') && git commit -m "Check provider access for content changes"
-popd
-
-exit 0

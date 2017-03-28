@@ -28,8 +28,9 @@ pushd "$LOCAL_REPO/frameworks/base"
   #git fetch aosp
   #git cherry-pick 9878bb99b77c3681f0fda116e2964bac26f349c3 || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
   #git remote rm aosp
-  # Kill the real/isolated uid group, not the ApplicationInfo uid (https://review.cyanogenmod.org/#/c/149393/)
-  git fetch http://review.cyanogenmod.org/CyanogenMod/android_frameworks_base refs/changes/93/149393/1 && git cherry-pick FETCH_HEAD
+  # Kill the real/isolated uid group, not the ApplicationInfo uid (https://review.cyanogenmod.org/#/c/149393/) (https://review.lineageos.org/#/c/66098/)
+  #git fetch http://review.cyanogenmod.org/CyanogenMod/android_frameworks_base refs/changes/93/149393/1 && git cherry-pick FETCH_HEAD
+  git fetch https://review.lineageos.org/LineageOS/android_frameworks_base refs/changes/98/66098/1 && git cherry-pick FETCH_HEAD
 popd
 pushd "$LOCAL_REPO/external/libvpx"
   git cherry-pick cc274e2abe8b2a6698a5c47d8aa4bb45f1f9538d
@@ -44,8 +45,9 @@ pushd "$LOCAL_REPO/frameworks/av"
   git fetch aosp
   git cherry-pick 2b6f22dc64d456471a1dc6df09d515771d1427c8
   #git cherry-pick 295c883fe3105b19bcd0f9e07d54c6b589fc5bff || git rm media/libstagefright/codecs/avcenc/SoftAVCEnc.cpp && git cherry-pick --continue
-  # Verify OMX buffer sizes prior to access (https://review.cyanogenmod.org/#/c/149392/)
-  git fetch http://review.cyanogenmod.org/CyanogenMod/android_frameworks_av refs/changes/92/149392/1 && git cherry-pick FETCH_HEAD
+  # Verify OMX buffer sizes prior to access (https://review.cyanogenmod.org/#/c/149392/) (https://review.lineageos.org/#/c/62740/)
+  #git fetch http://review.cyanogenmod.org/CyanogenMod/android_frameworks_av refs/changes/92/149392/1 && git cherry-pick FETCH_HEAD
+  git fetch https://review.lineageos.org/LineageOS/android_frameworks_av refs/changes/40/62740/1 && git cherry-pick FETCH_HEAD
   git cherry-pick 94d9e646454f6246bf823b6897bd6aea5f08eda3
   #git cherry-pick 0bb5ced60304da7f61478ffd359e7ba65d72f181 || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
 #  git apply $HOME/uber-saber/patches/June_2016_fix1.patch
@@ -54,8 +56,9 @@ pushd "$LOCAL_REPO/frameworks/av"
   sed -i 's#kMSGSMFrameSize#65#' media/libstagefright/codecs/gsm/dec/SoftGSM.cpp
   git add $(git status -s | awk '{print $2}') && git commit -m "Adding missing constant"
   #git cherry-pick 4e32001e4196f39ddd0b86686ae0231c8f5ed944 || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
-  # check OMX buffer size before use in (vorbis|opus)dec (https://review.cyanogenmod.org/#/c/149390/)
-  git fetch http://review.cyanogenmod.org/CyanogenMod/android_frameworks_av refs/changes/90/149390/1 && git cherry-pick FETCH_HEAD
+  # check OMX buffer size before use in (vorbis|opus)dec (https://review.cyanogenmod.org/#/c/149390/) (https://review.lineageos.org/#/c/62742/)
+  #git fetch http://review.cyanogenmod.org/CyanogenMod/android_frameworks_av refs/changes/90/149390/1 && git cherry-pick FETCH_HEAD
+  git fetch https://review.lineageos.org/LineageOS/android_frameworks_av refs/changes/42/62742/1 && git cherry-pick FETCH_HEAD
   git cherry-pick ad40e57890f81a3cf436c5f06da66396010bd9e5
   git cherry-pick d2f47191538837e796e2b10c1ff7e1ee35f6e0ab
   git cherry-pick 918eeaa29d99d257282fafec931b4bda0e3bae12 || git add media/libstagefright/codecs/hevcdec/SoftHEVC.cpp && git rm media/libstagefright/codecs/avcdec/SoftAVCDec.cpp media/libstagefright/codecs/avcdec/SoftAVCDec.h media/libstagefright/codecs/mpeg2dec/SoftMPEG2.cpp media/libstagefright/codecs/mpeg2dec/SoftMPEG2.h && git cherry-pick --continue
@@ -64,8 +67,9 @@ pushd "$LOCAL_REPO/frameworks/av"
   git cherry-pick 45737cb776625f17384540523674761e6313e6d4 || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
   git cherry-pick b57b3967b1a42dd505dbe4fcf1e1d810e3ae3777
   # git cherry-pick dd3546765710ce8dd49eb23901d90345dec8282f || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
-  # AudioSource: initialize variables (https://review.cyanogenmod.org/#/c/149385/)
-  git fetch http://review.cyanogenmod.org/CyanogenMod/android_frameworks_av refs/changes/85/149385/1 && git cherry-pick FETCH_HEAD
+  # AudioSource: initialize variables (https://review.cyanogenmod.org/#/c/149385/) (https://review.lineageos.org/#/c/62747/)
+  #git fetch http://review.cyanogenmod.org/CyanogenMod/android_frameworks_av refs/changes/85/149385/1 && git cherry-pick FETCH_HEAD
+  git fetch https://review.lineageos.org/LineageOS/android_frameworks_av refs/changes/47/62747/1 && git cherry-pick FETCH_HEAD
   git remote rm aosp
 popd
 

@@ -104,4 +104,4 @@ $SCRIPT_DIR/aosp_march_2017.sh $LOCAL_REPO
 $SCRIPT_DIR/temp.sh $LOCAL_REPO
 
 # adding pre-built Chromium Snapdragon
-$SCRIPT_DIR/chromium.sh $LOCAL_REPO
+#$SCRIPT_DIR/chromium.sh $LOCAL_REPO

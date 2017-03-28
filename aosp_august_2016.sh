@@ -26,26 +26,32 @@ pushd "$LOCAL_REPO/frameworks/av"
   git cherry-pick 8e438e153f661e9df8db0ac41d587e940352df06
   git remote rm aosp
 
-  # DO NOT MERGE: Camera: Adjust pointers to ANW buffers to avoid infoleak (http://review.cyanogenmod.org/#/c/155621/)
-  git fetch http://review.cyanogenmod.org/CyanogenMod/android_frameworks_av refs/changes/21/155621/2 && git cherry-pick FETCH_HEAD
+  # DO NOT MERGE: Camera: Adjust pointers to ANW buffers to avoid infoleak (http://review.cyanogenmod.org/#/c/155621/) (https://review.lineageos.org/#/c/62642/)
+  #git fetch http://review.cyanogenmod.org/CyanogenMod/android_frameworks_av refs/changes/21/155621/2 && git cherry-pick FETCH_HEAD
+  git fetch https://review.lineageos.org/LineageOS/android_frameworks_av refs/changes/42/62642/2 && git cherry-pick FETCH_HEAD
 
-  # DO NOT MERGE omx: check buffer port before using (http://review.cyanogenmod.org/#/c/155622/)
-  git fetch http://review.cyanogenmod.org/CyanogenMod/android_frameworks_av refs/changes/22/155622/2 && git cherry-pick FETCH_HEAD
+  # DO NOT MERGE omx: check buffer port before using (http://review.cyanogenmod.org/#/c/155622/) (https://review.lineageos.org/#/c/62641/)
+  #git fetch http://review.cyanogenmod.org/CyanogenMod/android_frameworks_av refs/changes/22/155622/2 && git cherry-pick FETCH_HEAD
+  git fetch https://review.lineageos.org/LineageOS/android_frameworks_av refs/changes/41/62641/2 && git cherry-pick FETCH_HEAD
 popd
 pushd "$LOCAL_REPO/frameworks/base"
   #git remote add aosp https://android.googlesource.com/platform/frameworks/base/
   #git fetch aosp
-  # Don't trust callers to supply app info to bindBackupAgent() (http://review.cyanogenmod.org/#/c/155624/)
-  git fetch http://review.cyanogenmod.org/CyanogenMod/android_frameworks_base refs/changes/24/155624/2 && git cherry-pick FETCH_HEAD
+  # Don't trust callers to supply app info to bindBackupAgent() (http://review.cyanogenmod.org/#/c/155624/) (https://review.lineageos.org/#/c/65880/)
+  #git fetch http://review.cyanogenmod.org/CyanogenMod/android_frameworks_base refs/changes/24/155624/2 && git cherry-pick FETCH_HEAD
+  git fetch https://review.lineageos.org/LineageOS/android_frameworks_base refs/changes/80/65880/2 && git cherry-pick FETCH_HEAD
   #git cherry-pick e7cf91a198de995c7440b3b64352effd2e309906 || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
-  # DO NOT MERGE: Reduce shell power over user management. (http://review.cyanogenmod.org/#/c/155625/)
-  git fetch http://review.cyanogenmod.org/CyanogenMod/android_frameworks_base refs/changes/25/155625/2 && git cherry-pick FETCH_HEAD
+  # DO NOT MERGE: Reduce shell power over user management. (http://review.cyanogenmod.org/#/c/155625/) (https://review.lineageos.org/#/c/65879/)
+  #git fetch http://review.cyanogenmod.org/CyanogenMod/android_frameworks_base refs/changes/25/155625/2 && git cherry-pick FETCH_HEAD
+  git fetch https://review.lineageos.org/LineageOS/android_frameworks_base refs/changes/79/65879/2 && git cherry-pick FETCH_HEAD
   #git cherry-pick 01875b0274e74f97edf6b0d5c92de822e0555d03 || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
-  # DO NOT MERGE Fix intent filter priorities (http://review.cyanogenmod.org/#/c/155623/)
-  git fetch http://review.cyanogenmod.org/CyanogenMod/android_frameworks_base refs/changes/23/155623/1 && git cherry-pick FETCH_HEAD
+  # DO NOT MERGE Fix intent filter priorities (http://review.cyanogenmod.org/#/c/155623/) (https://review.lineageos.org/#/c/65881/)
+  #git fetch http://review.cyanogenmod.org/CyanogenMod/android_frameworks_base refs/changes/23/155623/1 && git cherry-pick FETCH_HEAD
+  git fetch https://review.lineageos.org/LineageOS/android_frameworks_base refs/changes/81/65881/1 && git cherry-pick FETCH_HEAD
   #git cherry-pick a75537b496e9df71c74c1d045ba5569631a16298
-  # DO NOT MERGE: Add pm operation to set user restrictions. (http://review.cyanogenmod.org/#/c/155626/)
-  git fetch http://review.cyanogenmod.org/CyanogenMod/android_frameworks_base refs/changes/26/155626/2 && git cherry-pick FETCH_HEAD
+  # DO NOT MERGE: Add pm operation to set user restrictions. (http://review.cyanogenmod.org/#/c/155626/) (https://review.lineageos.org/#/c/65878/)
+  #git fetch http://review.cyanogenmod.org/CyanogenMod/android_frameworks_base refs/changes/26/155626/2 && git cherry-pick FETCH_HEAD
+  git fetch https://review.lineageos.org/LineageOS/android_frameworks_base refs/changes/78/65878/2 && git cherry-pick FETCH_HEAD
   #git cherry-pick 4e4743a354e26467318b437892a9980eb9b8328a || git add $(git status -s | awk '{print $2}') && git cherry-pick --continue
   #git remote rm aosp
 popd
